@@ -1,0 +1,8 @@
+Variable,n,Events,HR per SD (95% CI),p,LRT p,delta C (out-of-fold)
+PD-susceptibility PRS (Nalls),291,115,1.01 (0.83-1.21),0.948,0.948,-0.0019
+Progression PRS,291,115,1.17 (0.96-1.42),0.122,0.122,-0.0115
+DaTSCAN putaminal binding (worse side),799,164,0.99 (0.81-1.20),0.912,0.912,-0.0009
+DaTSCAN striatal asymmetry (laterality),799,164,1.01 (0.84-1.20),0.941,0.941,-0.0027
+CSF Abeta42,350,135,0.87 (0.73-1.03),0.102,0.100,-0.0003
+CSF total tau,361,137,0.80 (0.65-0.98),0.031,0.027,+0.0106
+CSF phosphorylated tau,338,125,0.79 (0.63-0.99),0.042,0.035,+0.0072

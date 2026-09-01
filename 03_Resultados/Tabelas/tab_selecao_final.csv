@@ -1,0 +1,4 @@
+Modelo,nº vars,C aparente,C corrigido (otimismo),C leave-one-site-out
+Atual-9 (decomposto),9,0.699,0.685,0.668
+Forward-5,5,0.706,0.696,0.687
+Total-6 (recomendado),6,0.712,0.702,0.69

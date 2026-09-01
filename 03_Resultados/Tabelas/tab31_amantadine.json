@@ -1,0 +1,47 @@
+{
+ "n": 813,
+ "events": 165,
+ "baseline_users": 66,
+ "started_during_followup": {
+  "total": 90,
+  "event_before": 22,
+  "event_after": 31,
+  "event_free": 37
+ },
+ "masking_candidates": {
+  "with_prior_score": 10,
+  "score_zero": 23,
+  "no_assessment": 4
+ },
+ "A_crude": {
+  "HR": 1.8350730822182646,
+  "lo": 1.2210743659562915,
+  "hi": 2.7578117360974734,
+  "p": 0.003489520134692291
+ },
+ "A_adjusted": {
+  "HR": 1.50420229651053,
+  "lo": 1.0127364287312692,
+  "hi": 2.23416921188676,
+  "p": 0.043107602213066726,
+  "delta_C": 0.0030854235099778693
+ },
+ "B": {
+  "C_refit": 0.6667373333333335,
+  "delta_C": -0.029223135271295497,
+  "C_frozen_non_users": 0.68944,
+  "C_frozen_users": 0.7425641025641025
+ },
+ "C": {
+  "plausible_events": 175,
+  "plausible_delta_C": -0.004384436287009685,
+  "extreme_events": 202,
+  "extreme_delta_C": -0.054326471080606176
+ },
+ "D": {
+  "median_amantadine_mg": 200.0,
+  "median_total_mg": 755.3,
+  "median_share_pct": 31.789473684210524
+ },
+ "C_reference": 0.695960468604629
+}

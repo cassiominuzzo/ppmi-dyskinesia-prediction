@@ -1,0 +1,577 @@
+var,p,dom
+updrs_totscore,6.712204154059935e-09,Clínica
+updrs2_score,1.0171036743450784e-08,Clínica
+Clinical_Stage,1.534944031241738e-07,Clínica
+MSEADLG,4.422202482030962e-06,Clínica
+NP1FATG,5.129906415670101e-06,Clínica
+pigd,2.7594307495999963e-05,Clínica
+updrs3_score,5.428957688391536e-05,Clínica
+age_datscan,0.0002063995465012,Neuroimagem
+age_upsit,0.0002087114270982,Clínica
+age,0.0002898284427638,Clínica
+agediag,0.000337706261138,Clínica
+ageonset,0.0004664053016469,Clínica
+age_LP,0.0006508253479721,Clínica
+updrs1_score,0.0014345481770978,Clínica
+comp_bradicinesia,0.0020220569934202,Clínica
+scopa_gi,0.0023141469176914,Clínica
+tau,0.0027876700876921,Biomarcador
+comp_marcha_pi,0.004446781991525,Clínica
+NP1DDS,0.0064296304901842,Clínica
+EDUCYRS,0.0070311501462571,Clínica
+td_pigd_ratio,0.0078258865586547,Clínica
+asyn,0.0136351050618686,Biomarcador
+ptau,0.015577940303691,Biomarcador
+DVS_FAS,0.0171414659037118,Clínica
+HVLTREC,0.0185062775279875,Clínica
+NP1APAT,0.0187981549512853,Clínica
+lexical,0.0239339291590205,Clínica
+DVT_FAS,0.0239407600937268,Clínica
+handed,0.0244675003215038,Clínica
+TMT_A,0.0268492915954789,Clínica
+DVZ_TMTA,0.02966679239177,Clínica
+scopa_therm,0.0318770439497024,Clínica
+stai_trait,0.0325141280645476,Clínica
+NP1HALL,0.0328222652345374,Clínica
+MIA_PUTAMEN_R,0.0332645723218955,Neuroimagem
+resp,0.0334295163704626,Clínica
+NP1ANXS,0.0366936060171734,Clínica
+hy,0.0418956211469469,Clínica
+urate,0.0509055644607849,Biomarcador
+MIA_LOWPUT_EXPECTED,0.0548594278678752,Neuroimagem
+CSFSAA,0.0580035179411267,Biomarcador
+NP1DPRS,0.0581211018007231,Clínica
+scopa,0.0724011365494383,Clínica
+NHY,0.0728868555682388,Clínica
+VLTANIM,0.0892749254473344,Clínica
+hvlt_discrimination,0.0921164103530322,Clínica
+gds,0.1061410376439731,Clínica
+upsit_pctl,0.1207354266898695,Clínica
+DVS_SFTANIM,0.1310099536634464,Clínica
+DOMSIDE,0.1384105536926948,Clínica
+rem,0.1419675224604643,Clínica
+lns,0.1707267593425996,Clínica
+datscan_putamen_min,0.1740067878051466,Neuroimagem
+abeta,0.1767957609356303,Biomarcador
+nfl_serum,0.1888563184132813,Biomarcador
+HVLTRDLY,0.1953821711022512,Clínica
+BMI,0.1955930027801904,Clínica
+moca,0.2046286817278183,Clínica
+stai,0.2100607706649931,Clínica
+MIA_STRIATUM_R,0.2144631361228565,Neuroimagem
+TMT_B,0.2158438789188785,Clínica
+total_di_22_6_BMP,0.2255312816423237,Biomarcador
+MIA_PUTAMEN_BILAT,0.2262427807152689,Neuroimagem
+DVSD_SDM,0.2347747232615997,Clínica
+DVT_SDM,0.2347747232615998,Clínica
+comp_axial,0.2391844699679335,Clínica
+PRIMDIAG,0.240444881553757,Clínica
+_2_2__di_22_6_BMP,0.2861389454821891,Biomarcador
+duration,0.3063472195152934,Clínica
+duration_yrs,0.3078327626309474,Clínica
+hvlt_retention,0.3084392034941937,Clínica
+MIA_CAUDATE_L,0.3268454856748194,Neuroimagem
+DVT_TOTAL_RECALL,0.3405819134467325,Clínica
+DVT_RECOG_DISC_INDEX,0.361044375891706,Clínica
+upsit,0.3824541989679938,Clínica
+DVZ_TMTB,0.3852688258704755,Clínica
+scopa_pm,0.4334436551104783,Clínica
+DVS_JLO_MSSA,0.5109001000070519,Clínica
+scopa_ur,0.513130703623256,Clínica
+bjlot,0.5210055738369745,Clínica
+DVS_BNT,0.5250465933776702,Clínica
+scopa_sex,0.5368007872481044,Clínica
+MIA_CAUDATE_BILAT,0.5394730383646431,Neuroimagem
+DVS_LNS,0.5499880336913827,Clínica
+MODBNT,0.5689549044149933,Clínica
+APOE_e4,0.5749212395789234,Genética
+MIA_STRIATUM_L,0.5797953252327314,Neuroimagem
+comp_fala,0.5954879035250222,Clínica
+scopa_cv,0.5960921734677678,Clínica
+fampd,0.6355420645669693,Genética
+NP1COG,0.6560732858666891,Clínica
+DVT_RETENTION,0.6632059454162713,Clínica
+hvlt_immediaterecall,0.6822189926632407,Clínica
+ess,0.7290120444622671,Clínica
+MIA_STRIATUM_BILAT,0.7564889378995809,Neuroimagem
+HVLTFPRL,0.7586310419904854,Clínica
+cogstate,0.7905865509860063,Clínica
+total_di_18_1_BMP,0.7952772223359962,Biomarcador
+stai_state,0.8034884886180168,Clínica
+comp_assimetria_lr,0.8208656555925876,Clínica
+DVT_DELAYED_RECALL,0.8221740100210407,Clínica
+comp_tremor,0.8542448442592685,Clínica
+SDMTOTAL,0.8876011160959221,Clínica
+MIA_PUTAMEN_L,0.8954554926812938,Neuroimagem
+DVS_JLO_MSSAE,0.9280025202213504,Clínica
+MIA_CAUDATE_R,0.933266124184432,Neuroimagem
+DVT_SFTANIM,0.9469122303156652,Clínica
+DVZ_CLCKDRAW,0.9489080888686452,Clínica
+DVT_CLCKDRAW,0.9497342125501114,Clínica
+race,0.956289454816296,Clínica
+quip,0.9588019805586216,Clínica
+CSFSAA_assay,0.9645357375216876,Biomarcador
+clockdraw,0.9711906567215504,Clínica
+datscan_putamen_asym,0.9970230886582774,Neuroimagem
+NP2HOBB,2.1643034959951417e-05,Clínica
+NP2DRES,5.662564907956242e-05,Clínica
+NP2FREZ,5.911631419247431e-05,Clínica
+NP3BRADY,0.0004367074728907,Clínica
+NP2TURN,0.0007412622874223,Clínica
+NP2EAT,0.0008527828482367,Clínica
+NP2WALK,0.0012674751098448,Clínica
+NP2HYGN,0.0013219048086453,Clínica
+NP3LGAGL,0.0019146296909683,Clínica
+NP3FTAPL,0.0027992735002125,Clínica
+NP3RIGLU,0.0056849320663137,Clínica
+NP3TOT,0.0059093596429415,Clínica
+NP3TTAPL,0.007130930954462,Clínica
+NP3HMOVL,0.0071577172246953,Clínica
+NP3RIGLL,0.0133334732703538,Clínica
+NP3RIGRL,0.0142767673283925,Clínica
+NP2RISE,0.0187185356690026,Clínica
+NP3PRSPL,0.0356329281126728,Clínica
+NP3GAIT,0.0428930479900408,Clínica
+NP3RTALL,0.0519518394882933,Clínica
+NP3LGAGR,0.0716691708879727,Clínica
+NP1SLPN,0.0864757925596563,Clínica
+NP3KTRML,0.1014597060879078,Clínica
+NP3FACXP,0.1044692848806315,Clínica
+NP3FRZGT,0.1083069028661126,Clínica
+NP2TRMR,0.1362561150469917,Clínica
+NP3RIGRU,0.1409632541527768,Clínica
+NP2SPCH,0.165889851263433,Clínica
+NP1PAIN,0.1780211675767926,Clínica
+NP3FTAPR,0.1789150226719207,Clínica
+NP3PTRML,0.1948852440842569,Clínica
+NP2HWRT,0.1983204456346532,Clínica
+NP2SWAL,0.2487451628292962,Clínica
+NP3PSTBL,0.2512459914866182,Clínica
+NP3RIGN,0.2643972711969952,Clínica
+NP3RTARU,0.288177309145063,Clínica
+NP3RTCON,0.3107227365487713,Clínica
+NP3RTALU,0.3187607921490551,Clínica
+NP1SLPD,0.3767053664486662,Clínica
+NP3TTAPR,0.3832143863356855,Clínica
+NP3SPCH,0.4296388186010406,Clínica
+NP1LTHD,0.4525371311360973,Clínica
+NP2SALV,0.4912450058317611,Clínica
+NP3RTARL,0.4918724096012213,Clínica
+NP1URIN,0.5631767084720019,Clínica
+NP3PTRMR,0.5702824162408697,Clínica
+NP1CNST,0.6624228364988252,Clínica
+NP3PRSPR,0.6728802331927273,Clínica
+NP3RISNG,0.8476606630431338,Clínica
+NP3RTALJ,0.9054568741986694,Clínica
+NP3KTRMR,0.9158790953603818,Clínica
+NP3POSTR,0.9716030894854852,Clínica
+NP3HMOVR,0.9841199741171744,Clínica
+FF_FRZGT1W,0.0266496350784092,Clínica
+OCF_FEATAPATHY,0.0538156661375781,Clínica
+FF_FRZGT12M,0.0683727088089079,Clínica
+OCF_FEATLMBAPX,0.1003933231750875,Clínica
+OCF_FEATACTTRM,0.1232744212267996,Clínica
+orthostatic_drop_dia,0.1310552152074274,Clínica
+OCF_FEATCOGFLC,0.1562818933565375,Clínica
+OCF_FEATDYSTNA,0.218189287952973,Clínica
+FF_FLNFR1W,0.2362626512938841,Clínica
+Park_FEATPOSINS,0.2599406027288929,Clínica
+NE_SENRSP,0.2994379607859536,Clínica
+NE_CORDRSP,0.3119089880978412,Clínica
+FF_FLNFR12M,0.3202569111166695,Clínica
+OCF_FEATDEPRES,0.3271698917133733,Clínica
+NE_RFLXRSP,0.3481310617747338,Clínica
+OCF_FEATMYCLNS,0.4104756863747281,Clínica
+HR_rise_stand,0.4231812441291376,Clínica
+OCF_FEATDYSPHG,0.4290400071110604,Clínica
+OCF_FEATSBDERM,0.4740627877903085,Clínica
+OCF_FEATDELHAL,0.5059588193850988,Clínica
+OCF_FEATANXITY,0.5119345595883935,Clínica
+OCF_FEATBWLDYS,0.520206516793028,Clínica
+NQoL_upperUE,0.5687739438509678,Clínica
+Park_FEATTREMOR,0.5762216772710138,Clínica
+Park_FEATRIGID,0.6117274002610511,Clínica
+OCF_FEATGZEPAL,0.6371766092789974,Clínica
+OCF_FEATPYRTCT,0.6614162585643131,Clínica
+OCF_FEATWDGAIT,0.6687540422382766,Clínica
+OCF_FEATALCREP,0.67922335972345,Clínica
+NQoL_cog,0.6942030913359738,Clínica
+NE_MNTLRSP,0.6960781547117909,Clínica
+OCF_FEATSUGRBD,0.6987201683564257,Clínica
+OCF_FEATURNDYS,0.7014556314435301,Clínica
+NE_MTRRSP,0.7088838688754291,Clínica
+OCF_FEATCRTSNS,0.7279567417630999,Clínica
+OCF_FEATSHGAIT,0.7508481407229477,Clínica
+NQoL_lowerLE,0.7516427952147253,Clínica
+OCF_FEATSEXDYS,0.7673925982084682,Clínica
+CGI_invest,0.7694982405167258,Clínica
+OCF_FEATPOSHYP,0.7864141851279356,Clínica
+OCF_FEATDYSART,0.8307763370864312,Clínica
+OCF_FEATPST3YR,0.8447632229044345,Clínica
+NQoL_comm,0.8561429706036607,Clínica
+Park_PSGLVL,0.8702167581432176,Clínica
+OCF_FEATSTPPOS,0.8760175470361471,Clínica
+orthostatic_drop_sys,0.8971724531884363,Clínica
+OCF_FEATDIMOLF,0.9099826075119812,Clínica
+Park_FEATBRADY,0.923458900004123,Clínica
+NE_CNRSP,0.9264736887361984,Clínica
+OCF_FEATDCRARM,0.9339755820269284,Clínica
+OCF_FEATMCRGRA,0.9692129898886735,Clínica
+CSF LRRK2__Cerebrospinal Fluid,0.0004576166107058,Biomarcador
+NFL__Plasma,0.0057800133151759,Biomarcador
+GFAP__Plasma,0.012792286698144,Biomarcador
+APP__miRNA,0.0161107444191369,Biomarcador
+C24:1 Cer__Cerebrospinal Fluid,0.0192819261167601,Biomarcador
+GRS__DNA,0.0275944307441001,Biomarcador
+NfL__Serum,0.0323911449261479,Biomarcador
+HDL__Plasma,0.0376200795551601,Biomarcador
+C20 GlcCer__Cerebrospinal Fluid,0.0447850024999493,Biomarcador
+EFTUD2__miRNA,0.0497014556770491,Biomarcador
+Apolipoprotein A1__Plasma,0.0516939141675359,Biomarcador
+tTau__Cerebrospinal Fluid,0.0518092187436197,Biomarcador
+C18 GlcCer__Cerebrospinal Fluid,0.0568719469605465,Biomarcador
+total Cer__Cerebrospinal Fluid,0.0586377996040171,Biomarcador
+Glucosylsphingosine__Cerebrospinal Fluid,0.0622887414308169,Biomarcador
+GUSB__miRNA,0.0651368609088045,Biomarcador
+C23 GlcCer__Cerebrospinal Fluid,0.0678112593469786,Biomarcador
+C24:1 GL2__Cerebrospinal Fluid,0.0700120474953621,Biomarcador
+CSF Alpha-synuclein__Cerebrospinal Fluid,0.0761472821993136,Biomarcador
+total GL2__Cerebrospinal Fluid,0.0808589635581913,Biomarcador
+LRRK2 CSF__Cerebrospinal Fluid,0.0825656872396426,Biomarcador
+pTau__Cerebrospinal Fluid,0.0832009381491772,Biomarcador
+GLT25D1__miRNA,0.0843066944635634,Biomarcador
+C24:1 Cer__Plasma,0.0844535871099466,Biomarcador
+DJ-1__miRNA,0.0912785099604225,Biomarcador
+MTDNA_ND1_CN__Cerebrospinal Fluid,0.0936583677227661,Biomarcador
+GFAP__Cerebrospinal Fluid,0.0948287283748692,Biomarcador
+C16 GlcCer__Cerebrospinal Fluid,0.097513912776608,Biomarcador
+C18 Cer__Cerebrospinal Fluid,0.0987354422113726,Biomarcador
+C24 GlcCer__Cerebrospinal Fluid,0.1015230018130245,Biomarcador
+MTDNA_ND4_CN__Cerebrospinal Fluid,0.1026458345590788,Biomarcador
+IL-6__Cerebrospinal Fluid,0.1067612029118687,Biomarcador
+UBC__miRNA,0.1074923569940635,Biomarcador
+total GlcCer__Cerebrospinal Fluid,0.1133894405666425,Biomarcador
+eMTBR-TAU243__Cerebrospinal Fluid,0.1136885836783225,Biomarcador
+pTau181__Cerebrospinal Fluid,0.1182464193182474,Biomarcador
+MON1B__miRNA,0.1185362817984894,Biomarcador
+ZNF746__miRNA,0.1234648193488148,Biomarcador
+C16 SM__Cerebrospinal Fluid,0.1239633011577279,Biomarcador
+C20 Cer__Cerebrospinal Fluid,0.1332628388220677,Biomarcador
+LAMB2 (rep 1)__miRNA,0.1358183104701198,Biomarcador
+Ptau217p__Plasma,0.1369669762643179,Biomarcador
+C23 Cer__Cerebrospinal Fluid,0.1407579381171614,Biomarcador
+C24:1 GlcCer__Cerebrospinal Fluid,0.1410866005865904,Biomarcador
+C16 GL2__Cerebrospinal Fluid,0.1431899636809449,Biomarcador
+C24:1 SM__Cerebrospinal Fluid,0.151444457395261,Biomarcador
+CSF Albumin__Cerebrospinal Fluid,0.1538748632054435,Biomarcador
+C16 GL2__Plasma,0.1568394492254322,Biomarcador
+C24 GL2__Plasma,0.1641860643236572,Biomarcador
+FBXO7-001__miRNA,0.1664073012673455,Biomarcador
+C20 SM__Plasma,0.1724554425239269,Biomarcador
+CATL__Cerebrospinal Fluid,0.1748572707908436,Biomarcador
+ALDH1A1 (rep 1)__miRNA,0.1754009819766318,Biomarcador
+C18 SM__Cerebrospinal Fluid,0.1814311950803143,Biomarcador
+total GL2__Plasma,0.1903419796109247,Biomarcador
+SRCAP__miRNA,0.1937746988522791,Biomarcador
+Total SM__Cerebrospinal Fluid,0.1979239042615692,Biomarcador
+a-Synuclein__Cerebrospinal Fluid,0.2000207547889904,Biomarcador
+ZNF160__miRNA,0.2019746581852333,Biomarcador
+PtdEtn 18:0/22:6__Serum,0.2074465976018972,Biomarcador
+C18 GL2__Plasma,0.2275440155685647,Biomarcador
+LAMB2 (rep 2)__miRNA,0.2284741484946241,Biomarcador
+C24 Cer__Cerebrospinal Fluid,0.2482117057456909,Biomarcador
+ASC__Cerebrospinal Fluid,0.2563435602864984,Biomarcador
+PlsEtn 18:0/18:2__Serum,0.2622888565493797,Biomarcador
+C5ORF4__miRNA,0.2688251628273229,Biomarcador
+HMGB1__Cerebrospinal Fluid,0.3010175112283656,Biomarcador
+C24:1 GL2__Plasma,0.3027816998766283,Biomarcador
+Triglycerides__Plasma,0.3030732659384885,Biomarcador
+pS65 Ubiquitin__Cerebrospinal Fluid,0.3109781612129487,Biomarcador
+NFL__Cerebrospinal Fluid,0.3191612086053599,Biomarcador
+GCase activity__Cerebrospinal Fluid,0.3194889826127607,Biomarcador
+C23 Cer__Plasma,0.3222629366091752,Biomarcador
+COPZ1__miRNA,0.3225561246221936,Biomarcador
+PtdEtn 18:0/20:5__Serum,0.326339955774636,Biomarcador
+ABeta40__Cerebrospinal Fluid,0.3280531094067426,Biomarcador
+WLS__miRNA,0.3293662359032182,Biomarcador
+GCase activity__Plasma,0.3309163977919807,Biomarcador
+ALDH1A1 (rep 2)__miRNA,0.3438410694096071,Biomarcador
+DHPR__miRNA,0.3469435388768626,Biomarcador
+C20 SM__Cerebrospinal Fluid,0.3607790653421792,Biomarcador
+sTREM2__Cerebrospinal Fluid,0.3614503047138627,Biomarcador
+PlsEtn 16:0/18:2__Serum,0.3617599555852803,Biomarcador
+NDNA_B2M_CN__Cerebrospinal Fluid,0.3732294316826399,Biomarcador
+Total Cholesterol__Plasma,0.3739916365276274,Biomarcador
+ABeta raw__Cerebrospinal Fluid,0.3791210783927493,Biomarcador
+ABeta__Cerebrospinal Fluid,0.3791386896218718,Biomarcador
+Serum IGF-1__Serum,0.3819077753300323,Biomarcador
+C22 GlcCer__Cerebrospinal Fluid,0.3938531052381641,Biomarcador
+PGK1 (rep 1)__miRNA,0.3958463220338387,Biomarcador
+C24 SM__Cerebrospinal Fluid,0.3989913037088692,Biomarcador
+GAPDH__miRNA,0.3996303389161699,Biomarcador
+PlsEtn 16:0/20:5__Serum,0.4033014625570104,Biomarcador
+C22 Cer__Cerebrospinal Fluid,0.4045763160813338,Biomarcador
+SOD2__miRNA,0.4145781446194507,Biomarcador
+total Ceramide__Plasma,0.4170742387600135,Biomarcador
+YKL40__Cerebrospinal Fluid,0.4179125480594673,Biomarcador
+FBXO7-010__miRNA,0.4210526932724694,Biomarcador
+C23 SM__Cerebrospinal Fluid,0.4401976435338545,Biomarcador
+C16 Cer__Cerebrospinal Fluid,0.4429980260877398,Biomarcador
+S100__Cerebrospinal Fluid,0.4806698301125236,Biomarcador
+PAR assay__Cerebrospinal Fluid,0.4855324663118857,Biomarcador
+FBXO7-007__miRNA,0.4861066901938489,Biomarcador
+C24:1 GlcCer__Plasma,0.4926080000808982,Biomarcador
+C22 SM__Plasma,0.4940126726786613,Biomarcador
+C16 Cer__Plasma,0.4943848051408749,Biomarcador
+SKP1 (rep 1)__miRNA,0.506660682890719,Biomarcador
+C22 GlcCer__Plasma,0.5226932445637709,Biomarcador
+"2,2' di-22:6-BMP__Urine",0.5312358116561408,Biomarcador
+FBXO7-005__miRNA,0.5340879045047333,Biomarcador
+PtdEtn 16:0/22:6__Serum,0.5375609269417398,Biomarcador
+Plasma Albumin__Plasma,0.5447148117101908,Biomarcador
+PtdEtn 16:0/18:2__Serum,0.5482299620705144,Biomarcador
+LAMP2__Cerebrospinal Fluid,0.5509061337669184,Biomarcador
+PSMC4 (rep 1)__miRNA,0.551070653326708,Biomarcador
+CSF Hemoglobin__Cerebrospinal Fluid,0.5601452448733766,Biomarcador
+RPL13__miRNA,0.5647789024208975,Biomarcador
+FBXO7-008__miRNA,0.5682399540429938,Biomarcador
+SNCA-007__miRNA,0.5717983544477786,Biomarcador
+Total SM__Plasma,0.5724817177183463,Biomarcador
+PlsEtn 18:0/20:5__Serum,0.5726833269055461,Biomarcador
+SNCA-E4E6__miRNA,0.5874688918617421,Biomarcador
+UBE2K (rep 1)__miRNA,0.5885816971482434,Biomarcador
+Ubiquitin__Cerebrospinal Fluid,0.5925701567492418,Biomarcador
+MTDNA_DELETION__Cerebrospinal Fluid,0.5958489866514696,Biomarcador
+GM2A__Cerebrospinal Fluid,0.5961977805705492,Biomarcador
+PtdEtn 18:0/18:2__Serum,0.598642911630761,Biomarcador
+C18 SM__Plasma,0.5993294231369481,Biomarcador
+pS65 Ubiquitin__Plasma,0.6033581597720842,Biomarcador
+GBA__Cerebrospinal Fluid,0.6091428588669725,Biomarcador
+C22 SM__Cerebrospinal Fluid,0.609591798379741,Biomarcador
+CSF lgG__Cerebrospinal Fluid,0.6270444454874511,Biomarcador
+EGF ELISA__Plasma,0.6361776417318759,Biomarcador
+Progranulin__Cerebrospinal Fluid,0.6375020653915341,Biomarcador
+total di-22:6-BMP__Urine,0.6515413221907356,Biomarcador
+PtdEtn 16:0/18:1__Serum,0.6534885192984454,Biomarcador
+C16 SM__Plasma,0.666307437434116,Biomarcador
+GPNMB__Cerebrospinal Fluid,0.6669439485239714,Biomarcador
+HSPA8 (rep 2)__miRNA,0.6706711773518983,Biomarcador
+PtdEtn 16:0/20:5__Serum,0.6739666651848688,Biomarcador
+plasma lgG__Plasma,0.6918269680901863,Biomarcador
+CATS__Cerebrospinal Fluid,0.6942184489586369,Biomarcador
+C24 GlcCer__Plasma,0.6983798786266363,Biomarcador
+LDL__Plasma,0.7027214060024632,Biomarcador
+C22 GL2__Plasma,0.7151748323204798,Biomarcador
+C18 Cer__Plasma,0.7207793777460922,Biomarcador
+C24 Cer__Plasma,0.7211437831926484,Biomarcador
+PtdEtn 18:0/20:4__Serum,0.7232200890215682,Biomarcador
+PlsEtn 16:0/20:4__Serum,0.7328231076651632,Biomarcador
+PtdEtn 18:0/18:1__Serum,0.7336246546708034,Biomarcador
+PlsEtn 18:0/18:1__Serum,0.7347715028313098,Biomarcador
+PlsEtn 18:0/20:4__Serum,0.7520885494378948,Biomarcador
+GAPDH (rep 2)__miRNA,0.7573066469783657,Biomarcador
+PlsEtn 16:0/22:6__Serum,0.7595021285210012,Biomarcador
+C16 GlcCer__Plasma,0.7621942467890561,Biomarcador
+PGK1 (rep 2)__miRNA,0.7650056256850138,Biomarcador
+PTBP1__miRNA,0.7666878159674615,Biomarcador
+GAPDH (rep 1)__miRNA,0.781548941842868,Biomarcador
+CATB__Cerebrospinal Fluid,0.7825618587909795,Biomarcador
+LAMP1__Cerebrospinal Fluid,0.7845020962384834,Biomarcador
+Progranulin__Plasma,0.7928355823500196,Biomarcador
+C23 SM__Plasma,0.7974657406673946,Biomarcador
+GCase activity__Whole Blood,0.8028604091852838,Biomarcador
+total di-18:1-BMP__Urine,0.8110394863664161,Biomarcador
+C23 GL2__Plasma,0.81608083560062,Biomarcador
+HSPA8 (rep 1)__miRNA,0.8171171983101639,Biomarcador
+C20 GL2__Plasma,0.8362257732571097,Biomarcador
+ABeta 1-42__Cerebrospinal Fluid,0.8554594883872281,Biomarcador
+ABeta42__Cerebrospinal Fluid,0.8685751080396064,Biomarcador
+SNCA-E3E4__miRNA,0.8742511139255416,Biomarcador
+PlsEtn 18:0/22:6__Serum,0.8795524949922027,Biomarcador
+C24 SM__Plasma,0.8919020488168314,Biomarcador
+C23 GlcCer__Plasma,0.8921725767155093,Biomarcador
+C24:1 SM__Plasma,0.9005057563250216,Biomarcador
+LC3__Cerebrospinal Fluid,0.9126264800960412,Biomarcador
+total GlcCer__Plasma,0.9227235093963092,Biomarcador
+SNCA-3UTR-2__miRNA,0.9264283278411246,Biomarcador
+C22 Cer__Plasma,0.936461626640734,Biomarcador
+C20 GlcCer__Plasma,0.9404110013504527,Biomarcador
+HNF4A__miRNA,0.9456394800142734,Biomarcador
+CATD__Cerebrospinal Fluid,0.9463889043145094,Biomarcador
+UBE2K (rep 2)__miRNA,0.9501595276021936,Biomarcador
+C18 GlcCer__Plasma,0.957914547736876,Biomarcador
+PtdEtn 16:0/20:4__Serum,0.9591798547474972,Biomarcador
+SNCA-3UTR-1__miRNA,0.9633554059761636,Biomarcador
+PSMC4 (rep 2)__miRNA,0.9646900582599576,Biomarcador
+SKP1 (rep 2)__miRNA,0.9844641170992174,Biomarcador
+PlsEtn 16:0/18:1__Serum,0.9851862018628398,Biomarcador
+CATF__Cerebrospinal Fluid,0.989869953959294,Biomarcador
+lh_parsorbitalis,0.0380253780039221,Neuroimagem
+rh_frontalpole,0.0397716182963069,Neuroimagem
+rh_pericalcarine,0.0437798248969159,Neuroimagem
+rh_paracentral,0.0508262043498081,Neuroimagem
+rh_parsopercularis,0.065744158657536,Neuroimagem
+rh_postcentral,0.0707009425539377,Neuroimagem
+rh_posteriorcingulate,0.0771076534159577,Neuroimagem
+rh_fusiform,0.0923611922231905,Neuroimagem
+lh_superiorfrontal,0.0979686654448368,Neuroimagem
+rh_parsorbitalis,0.0988968541811394,Neuroimagem
+rh_parahippocampal,0.1195725119317652,Neuroimagem
+rh_transversetemporal,0.1338068523704689,Neuroimagem
+rh_caudalanteriorcingulate,0.1407858724470926,Neuroimagem
+rh_supramarginal,0.1431096055338268,Neuroimagem
+rh_isthmuscingulate,0.1487860930088756,Neuroimagem
+lh_entorhinal,0.1645923844420672,Neuroimagem
+lh_caudalmiddlefrontal,0.168064294704754,Neuroimagem
+lh_cuneus,0.1733096970907058,Neuroimagem
+lh_insula,0.1874294267738621,Neuroimagem
+lh_fusiform,0.1942991474493998,Neuroimagem
+rh_lingual,0.2048484237313173,Neuroimagem
+rh_inferiorparietal,0.2220690865130978,Neuroimagem
+rh_superiorfrontal,0.2252359063054993,Neuroimagem
+lh_lingual,0.2385804660762026,Neuroimagem
+lh_pericalcarine,0.2489443950501155,Neuroimagem
+lh_rostralmiddlefrontal,0.2752740276314338,Neuroimagem
+lh_frontalpole,0.2897307610392918,Neuroimagem
+lh_lateralorbitofrontal,0.3138688037792406,Neuroimagem
+rh_entorhinal,0.3190620028324934,Neuroimagem
+lh_postcentral,0.328315225545066,Neuroimagem
+lh_parsopercularis,0.3390593439809352,Neuroimagem
+lh_superiorparietal,0.340565695211133,Neuroimagem
+rh_lateraloccipital,0.3529001528798067,Neuroimagem
+lh_middletemporal,0.3657472005746006,Neuroimagem
+lh_inferiorparietal,0.3690622602130217,Neuroimagem
+lh_parstriangularis,0.3782658816266434,Neuroimagem
+rh_medialorbitofrontal,0.4030216167399082,Neuroimagem
+rh_superiortemporal,0.431406062903456,Neuroimagem
+lh_precentral,0.4558898492686667,Neuroimagem
+rh_cuneus,0.4560477573938988,Neuroimagem
+rh_superiorparietal,0.4729056205816048,Neuroimagem
+rh_WhiteSurfArea,0.4839537081512405,Neuroimagem
+rh_rostralanteriorcingulate,0.4924750999620878,Neuroimagem
+lh_supramarginal,0.49386241946832,Neuroimagem
+rh_caudalmiddlefrontal,0.4968978121727013,Neuroimagem
+rh_lateralorbitofrontal,0.4976813920204346,Neuroimagem
+lh_posteriorcingulate,0.4978617549794182,Neuroimagem
+lh_transversetemporal,0.4979763014655306,Neuroimagem
+lh_isthmuscingulate,0.4998149090737567,Neuroimagem
+lh_temporalpole,0.5456183636712728,Neuroimagem
+lh_superiortemporal,0.557093170120776,Neuroimagem
+lh_rostralanteriorcingulate,0.557544468712187,Neuroimagem
+lh_WhiteSurfArea,0.5744009280361553,Neuroimagem
+rh_precentral,0.5813063296234454,Neuroimagem
+rh_rostralmiddlefrontal,0.6068087575300161,Neuroimagem
+lh_lateraloccipital,0.6380859513308174,Neuroimagem
+lh_paracentral,0.6471489319087359,Neuroimagem
+rh_precuneus,0.6656703303555911,Neuroimagem
+lh_parahippocampal,0.6800893545817668,Neuroimagem
+lh_caudalanteriorcingulate,0.7493277587591258,Neuroimagem
+lh_precuneus,0.7511063993271456,Neuroimagem
+rh_bankssts,0.7745877690940012,Neuroimagem
+rh_inferiortemporal,0.7766700753209133,Neuroimagem
+lh_medialorbitofrontal,0.7898940155254262,Neuroimagem
+rh_parstriangularis,0.7926971412052229,Neuroimagem
+rh_temporalpole,0.8320853369073529,Neuroimagem
+lh_inferiortemporal,0.875357407175891,Neuroimagem
+lh_bankssts,0.8821571408774622,Neuroimagem
+rh_middletemporal,0.8845517380627355,Neuroimagem
+rh_insula,0.9055688851111652,Neuroimagem
+rh_MeanThickness,0.909697225018986,Neuroimagem
+lh_MeanThickness,0.996512730244501,Neuroimagem
+putamen_pior,0.0557486833427559,Neuroimagem
+putamen_assim,0.442835270843401,Neuroimagem
+caudate_pior,0.2375208490006265,Neuroimagem
+caudate_assim,0.9176778185203996,Neuroimagem
+striatum_pior,0.525722219066225,Neuroimagem
+striatum_assim,0.302349462552851,Neuroimagem
+CC_Central,0.0045340715998318,Neuroimagem
+Serum Glucose,0.0049675398423344,Biomarcador
+Lymphocytes,0.0117048336091957,Biomarcador
+Left_choroid_plexus,0.0193148698903642,Neuroimagem
+Serum Uric Acid,0.030613358367411,Biomarcador
+Right_choroid_plexus,0.0415824482986065,Neuroimagem
+Right_Inf_Lat_Vent,0.0487392325832221,Neuroimagem
+Left_Inf_Lat_Vent,0.0615682312569487,Neuroimagem
+Basophils,0.1084797777809908,Biomarcador
+MCV,0.143765925203564,Biomarcador
+Hemoglobin,0.146228880817052,Biomarcador
+Left_vessel,0.1565720590953228,Neuroimagem
+Total Bilirubin,0.1620190079604708,Biomarcador
+CC_Mid_Anterior,0.1972775149951239,Neuroimagem
+Right_vessel,0.2121006620965601,Neuroimagem
+Basophils (%),0.2184696041634149,Biomarcador
+3rd_Ventricle,0.2214799327318787,Neuroimagem
+Lymphocytes (%),0.2318695309420267,Biomarcador
+Monocytes (%),0.2320756201004142,Biomarcador
+Left_Lateral_Ventricle,0.2349889219113355,Neuroimagem
+Left_Amygdala,0.2433670486041705,Neuroimagem
+CC_Mid_Posterior,0.2438163100506002,Neuroimagem
+Left_Thalamus,0.2443630461599463,Neuroimagem
+Platelets,0.2531375088219912,Biomarcador
+Right_Lateral_Ventricle,0.2532587017475572,Neuroimagem
+Left_Putamen,0.2570835309403479,Neuroimagem
+CSF,0.2772220713863565,Neuroimagem
+WBC,0.2811536416592181,Biomarcador
+ALT (SGPT),0.3030757360750798,Biomarcador
+Left_VentralDC,0.313303547525363,Neuroimagem
+Right_Cerebellum_Cortex,0.3281977308492805,Neuroimagem
+non_WM_hypointensities,0.3312703292258226,Neuroimagem
+Hematocrit,0.3464505441035748,Biomarcador
+Left_Pallidum,0.3522124454830123,Neuroimagem
+Neutrophils (%),0.3541507755833113,Biomarcador
+RBC,0.3690860327484122,Biomarcador
+Left_Cerebellum_Cortex,0.3883802883329497,Neuroimagem
+Brain_Stem,0.3983056546293624,Neuroimagem
+Right_Pallidum,0.4045108819104739,Neuroimagem
+WM_hypointensities,0.4111217849844075,Neuroimagem
+Right_Amygdala,0.4180456095000173,Neuroimagem
+Right_Thalamus,0.430473100980874,Neuroimagem
+Creatinine(Rate Blanked)-2dp,0.4354873235241786,Biomarcador
+Right_Accumbens_area,0.436653564976849,Neuroimagem
+Urea Nitrogen,0.4594949449723526,Biomarcador
+TotalGrayVol,0.465741246996245,Neuroimagem
+rhCortexVol,0.4766614568236174,Neuroimagem
+MaskVol,0.4790433136294685,Neuroimagem
+CortexVol,0.5104805853477439,Neuroimagem
+lhCortexVol,0.5470498119915996,Neuroimagem
+BrainSegVol,0.5725038864226166,Neuroimagem
+5th_Ventricle,0.5880081695968269,Neuroimagem
+SupraTentorialVol,0.596473041699429,Neuroimagem
+Right_VentralDC,0.6237310829563671,Neuroimagem
+Serum Sodium,0.6267671469761584,Biomarcador
+EstimatedTotalIntraCranialVol,0.6294756200163967,Neuroimagem
+Right_Putamen,0.6430824376180571,Neuroimagem
+CC_Posterior,0.6612919986400018,Neuroimagem
+AST (SGOT),0.6662710457938236,Biomarcador
+BrainSegVolNotVent,0.6680497103233296,Neuroimagem
+CC_Anterior,0.6683347537043789,Neuroimagem
+4th_Ventricle,0.6711289921362134,Neuroimagem
+Right_Caudate,0.67633736892696,Neuroimagem
+Total Protein,0.6913188077319918,Biomarcador
+SupraTentorialVolNotVent,0.7047715021952778,Neuroimagem
+rhSurfaceHoles,0.720133190583551,Neuroimagem
+Albumin-BCG,0.7202148186572843,Biomarcador
+Serum Potassium,0.7469412010852212,Biomarcador
+SubCortGrayVol,0.7504069344271376,Neuroimagem
+Neutrophils,0.7588788923055183,Biomarcador
+Serum Bicarbonate,0.7686572469822762,Biomarcador
+SurfaceHoles,0.7867256042797196,Neuroimagem
+Calcium (EDTA),0.791670473344612,Biomarcador
+Serum Chloride,0.8195286566236684,Biomarcador
+Monocytes,0.8324120369556961,Biomarcador
+Left_Cerebellum_White_Matter,0.8487887528129093,Neuroimagem
+Left_Hippocampus,0.8509122943755297,Neuroimagem
+lhSurfaceHoles,0.8520414584179014,Neuroimagem
+Left_Caudate,0.8538588346370832,Neuroimagem
+Right_Cerebellum_White_Matter,0.8920702020246516,Neuroimagem
+Eosinophils (%),0.9010615822146368,Biomarcador
+rhCerebralWhiteMatterVol,0.924458893241976,Neuroimagem
+CerebralWhiteMatterVol,0.937348967430523,Neuroimagem
+lhCerebralWhiteMatterVol,0.9503862849353966,Neuroimagem
+Optic_Chiasm,0.9535295802789462,Neuroimagem
+Eosinophils,0.96721255046388,Biomarcador
+Right_Hippocampus,0.9773486513709028,Neuroimagem
+Alkaline Phosphatase-QT,0.9799460957160756,Biomarcador
+Left_Accumbens_area,0.9876930634245034,Neuroimagem
+PRS_Nalls,0.477,Genética
+PRS_Progression,0.146,Genética

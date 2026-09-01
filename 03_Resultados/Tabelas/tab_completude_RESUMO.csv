@@ -1,0 +1,32 @@
+Domínio,Fonte,Screenado,Resultado,Disposição
+"Demografia (idade, sexo, IMC, educação, raça)",curated,Sim,idade/sexo/IMC discriminam,NO MODELO
+MDS-UPDRS Parte I (não-motor) — itens,curated+itens,Sim,NP1FATG preditivo,NO MODELO (NP1FATG)
+MDS-UPDRS Parte II (AVDs) — 13 itens,itens,Sim,total preditivo; FREEZING agrega isolado,updrs2_score NO MODELO; NP2FREZ CANDIDATO (+0.011)
+MDS-UPDRS Parte III (motor) — itens/compósitos,curated+itens,Sim,bradicinesia preditiva,NO MODELO (comp_bradicinesia)
+Subtipo TD/PIGD,curated,Sim,razão preditiva,NO MODELO (td_pigd_ratio)
+Schwab-England AVD (MSEADLG),curated,Sim,preditivo,NO MODELO (MSEADLG)
+"Cognição (MoCA, HVLT, SDMT, TMT, BNT, JLO, LNS, fluência)",curated,Sim,NÃO prediz LID,fora (achado reportável)
+Autonômico (SCOPA-AUT + 6 subdomínios),curated,Sim,scopa_gi marginal,opcional
+"Sono (RBD/rem, Epworth)",curated,Sim,NS,fora
+"Humor (GDS, STAI) + olfato (UPSIT) + ICD (QUIP)",curated,Sim,NS,fora
+"Genética (LRRK2, GBA, APOE, SNCA, hist. familiar)",curated/bruto,Sim,NS no PPMI,fora (validação externa)
+"DaTSCAN (SBR estriatal, todas regiões)",curated,Sim,fraco,fora
+"LCR core (Abeta, tau, p-tau, α-sinucleína, NfL, SAA, urato)",curated,Sim,NS,fora
+Bioquímica + hemograma (25 analitos),script 21,Sim,0 sobrevivem FDR,fora
+MRI subcortical FreeSurfer (64 volumes),script 21,Sim,0 FDR,fora
+"MRI cortical FreeSurfer (espessura+área, 140 regiões)",script 29,Sim,0 FDR,fora
+"Biomarcadores-alvo: GFAP, GCase, esfingolipídeos, pTau217, pS65-Ub (189)",script 27,Sim,0 FDR (LRRK2-LCR só em subgrupo),fora (não-deployável)
+"Escalas funcionais: Neuro-QoL ×4, PDAQ-27, Particip. Motor Fn",script 28,Sim,0 FDR,fora
+Freezing/Falls (tabela dedicada),script 28,Sim,freezing nominal < NP2FREZ,fora (NP2FREZ melhor)
+Features of Parkinsonism / Other Clinical Features (sem vazamento),script 28,Sim,0 FDR,fora
+Exame neurológico + físico + CGI/PGI,script 28,Sim,0 FDR,fora
+Sinais vitais — hipotensão ortostática,script 28,Sim,0 FDR,fora
+Comorbidades (Medical Conditions),script 23,Sim,"depressão/ansiedade fracas, redundantes",fora
+Medicações basais não-dopa (7 classes),script 23,Sim,antidepressivo/benzo fracos,fora
+"Ômicas: proteômica urina/CSF, metabolômica, pQTL (alta-dim)",—,Não,"sub-estudos, alta-dim, não-deployável",EXCLUÍDO (sub-estudo futuro)
+Proteômica Olink NPX (Projects 196/9000),—,Não,0% overlap com a coorte,EXCLUÍDO (sem dado)
+"Wearables: marcha Opals/Axivity, Roche App",—,Não,cobertura <5%,EXCLUÍDO (escasso)
+PPMI Online / Remote Screening,—,Não,overlap baixo (coorte presencial),EXCLUÍDO (escasso)
+"PET substudies (tau, SV2A, AV-133), DTI, subst. cinzenta",—,Não,cobertura <10%,EXCLUÍDO (escasso)
+MDS-UPDRS Parte IV / FEATDYSKIN / estado-ON / LEDD,—,Não,desfecho/exposição/pós-levodopa,EXCLUÍDO (vazamento)
+"Enrollment, consentimento, visit type, QC de imagem",—,Não,administrativo,EXCLUÍDO (sem preditor)

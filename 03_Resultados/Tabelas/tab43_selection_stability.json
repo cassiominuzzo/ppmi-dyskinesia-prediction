@@ -1,0 +1,37 @@
+{
+ "bootstrap": 100,
+ "target_size": 6,
+ "selection_full_sample": [
+  "ageonset",
+  "updrs_totscore",
+  "SEX",
+  "NP2FREZ",
+  "BMI",
+  "td_pigd_ratio"
+ ],
+ "identical_to_total6": true,
+ "frequency": {
+  "updrs_totscore": 33.0,
+  "updrs1_score": 9.0,
+  "updrs2_score": 8.0,
+  "updrs3_score": 16.0,
+  "comp_bradicinesia": 9.0,
+  "td_pigd_ratio": 51.0,
+  "pigd": 10.0,
+  "MSEADLG": 37.0,
+  "hy": 21.0,
+  "Clinical_Stage": 11.0,
+  "NP1FATG": 29.0,
+  "NP1DPRS": 23.0,
+  "NP2FREZ": 63.0,
+  "ageonset": 96.0,
+  "SEX": 67.0,
+  "BMI": 66.0,
+  "scopa_gi": 12.0,
+  "EDUCYRS": 39.0
+ },
+ "exact_recovery_pct": 2.0,
+ "stable_at_80pct": [
+  "ageonset"
+ ]
+}

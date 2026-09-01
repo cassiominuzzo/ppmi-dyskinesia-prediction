@@ -1,0 +1,5 @@
+modelo,k,C_aparente,C_corrigido,C_OOF,dC_corr_vs_base,dC_OOF_vs_base
+Total-6 (base),6,0.7083,0.6883,0.6854,0.0,0.0
++PRS_Nalls,7,0.7097,0.68,0.6811,-0.0082,-0.0043
++PRS_Progression,7,0.7025,0.6833,0.6751,-0.005,-0.0103
++ambos,8,0.7024,0.6761,0.6724,-0.0122,-0.013

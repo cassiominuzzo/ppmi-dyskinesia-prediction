@@ -1,0 +1,6 @@
+metrica,valor
+C apparent,0.68
+C otimismo,0.019
+C CORRIGIDO (bootstrap),0.661
+C leave-one-site-out,0.654
+calib slope (bootstrap),0.92

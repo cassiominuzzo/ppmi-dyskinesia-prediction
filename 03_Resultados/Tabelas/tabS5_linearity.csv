@@ -1,0 +1,5 @@
+predictor,df,LR_chi2,p,note
+updrs_totscore,2,0.495,0.781,
+ageonset,2,0.652,0.722,
+BMI,2,1.35,0.509,
+td_pigd_ratio,2,0.223,0.894,

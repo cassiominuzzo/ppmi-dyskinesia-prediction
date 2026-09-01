@@ -1,0 +1,6 @@
+characteristic,value,n_available,n_total
+"Levodopa daily dose at time-zero, mg",300 [250-450],805,813
+"Total levodopa-equivalent daily dose at time-zero, mg",400 [300-600],809,813
+"Total dopaminergic daily dose at time-zero, amantadine excluded, mg",400 [300-600],808,813
+"Dopamine agonist at time-zero, n (%)",227 (28%),813,813
+"Amantadine at time-zero, n (%)",66 (8%),813,813

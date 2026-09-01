@@ -1,0 +1,286 @@
+{
+  "modelo": "Total-6 (Cox PH)",
+  "desfecho": "Discinesia problemática (MDS-UPDRS 4.1>=2 OU 4.2>=2)",
+  "horizontes": [
+    3,
+    5,
+    7,
+    10
+  ],
+  "n": 813,
+  "eventos": 165,
+  "desempenho": {
+    "C_aparente": 0.712,
+    "C_corrigido": 0.701,
+    "C_corrigido_IC95": [
+      0.656,
+      0.75
+    ],
+    "C_fora_da_amostra": 0.696,
+    "LOSO_IIQ": [
+      0.576,
+      0.79
+    ],
+    "LOSO_mediana": 0.727,
+    "LOSO_ponderada_por_eventos": 0.666,
+    "LOSO_sitios_avaliaveis": 23,
+    "calibracao": "observed-to-expected 1.02, 1.02 and 1.02 at 3, 5 and 7 years"
+  },
+  "coeficientes": {
+    "updrs_totscore": 0.01820067483435665,
+    "ageonset": -0.030261443489475598,
+    "SEX": -0.2919818089443341,
+    "BMI": -0.034380328769057285,
+    "td_pigd_ratio": -0.0649687671095703,
+    "NP2FREZ": 0.25736201135635567
+  },
+  "baseline_survival_hor": {
+    "3": 0.8926704619147218,
+    "5": 0.7816301115216746,
+    "7": 0.6425648352777131,
+    "10": 0.4508249519838049
+  },
+  "means": {
+    "updrs_totscore": 43.539975399754,
+    "ageonset": 61.05613910933631,
+    "SEX": 0.6420664206642066,
+    "BMI": 26.87753059368698,
+    "td_pigd_ratio": 2.0831126394695665,
+    "NP2FREZ": 0.2091020910209102
+  },
+  "baseline_survival_grid": {
+    "t": [
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      2.5,
+      3.0,
+      3.5,
+      4.0,
+      4.5,
+      5.0,
+      5.5,
+      6.0,
+      6.5,
+      7.0,
+      7.5,
+      8.0,
+      8.5,
+      9.0,
+      9.5,
+      10.0,
+      10.5,
+      11.0,
+      11.5,
+      12.0,
+      12.5,
+      13.0
+    ],
+    "S0": [
+      0.99461,
+      0.97939,
+      0.96316,
+      0.93744,
+      0.91306,
+      0.89267,
+      0.86583,
+      0.8503,
+      0.82622,
+      0.78163,
+      0.75216,
+      0.7198,
+      0.68001,
+      0.64256,
+      0.61295,
+      0.60036,
+      0.534,
+      0.51609,
+      0.4966,
+      0.45082,
+      0.37507,
+      0.35605,
+      0.31482,
+      0.31482,
+      0.25566,
+      0.25566
+    ]
+  },
+  "competing_risk_factor": {
+    "3": 0.9972,
+    "5": 0.9821,
+    "7": 0.9627,
+    "10": 0.9191
+  },
+  "nota_competitivo": "7- and 10-year risk adjusted for the competing risk of death (Aalen-Johansen); 3 and 5 years practically unchanged.",
+  "convencao_sobrevida_basal": "step",
+  "inputs": [
+    {
+      "var": "updrs_totscore",
+      "label": "Total MDS-UPDRS (Parts I+II+III)",
+      "tipo": "slider",
+      "min": 0,
+      "max": 120,
+      "step": 1,
+      "default": 42,
+      "help": "Sum of Parts I, II and III of the MDS-UPDRS (Part IV excluded)."
+    },
+    {
+      "var": "ageonset",
+      "label": "Age at PD onset (years)",
+      "tipo": "slider",
+      "min": 25,
+      "max": 90,
+      "step": 1,
+      "default": 62,
+      "help": "Age at first motor symptom."
+    },
+    {
+      "var": "SEX",
+      "label": "Sex",
+      "tipo": "select",
+      "options": {
+        "Female": 0,
+        "Male": 1
+      },
+      "default": "Male",
+      "help": "Biological sex (female associated with higher risk)."
+    },
+    {
+      "var": "BMI",
+      "label": "BMI (kg/m^2)",
+      "tipo": "slider",
+      "min": 15.0,
+      "max": 50.0,
+      "step": 0.1,
+      "default": 26.0,
+      "help": "Weight/height^2. Lower BMI is associated with higher risk (dose per kg)."
+    },
+    {
+      "var": "td_pigd_ratio",
+      "label": "TD/PIGD ratio",
+      "tipo": "number",
+      "min": 0.0,
+      "max": 12.0,
+      "step": 0.1,
+      "default": 1.6,
+      "help": "Mean tremor items / mean PIGD items (gait, freezing, postural instability). <0.9 = PIGD-dominant (higher risk); >1.15 = tremor-dominant."
+    },
+    {
+      "var": "NP2FREZ",
+      "label": "Freezing of gait (MDS-UPDRS 2.13)",
+      "tipo": "select",
+      "options": {
+        "0 - None": 0,
+        "1 - Slight": 1,
+        "2 - Mild": 2,
+        "3 - Moderate": 3,
+        "4 - Severe": 4
+      },
+      "default": "0 - None",
+      "help": "Item 2.13 (self-reported freezing)."
+    }
+  ],
+  "modelo_dinamico": {
+    "nota": "Modelo dinamico: Total-6 + responsividade a levodopa (continua, % de melhora UPDRS-III OFF->ON). Uso em SEGUIMENTO, apos challenge OFF/ON. Exploratorio.",
+    "coeficientes": {
+      "updrs_totscore": 0.020425076642149983,
+      "ageonset": -0.03043798957782471,
+      "SEX": -0.2764210941464227,
+      "BMI": -0.039682961414182795,
+      "td_pigd_ratio": -0.08592272521441346,
+      "NP2FREZ": 0.3060286907021475,
+      "resp": 0.00814200919352043
+    },
+    "means": {
+      "updrs_totscore": 43.89085545722714,
+      "ageonset": 60.63341415121024,
+      "SEX": 0.6460176991150443,
+      "BMI": 26.97343000782892,
+      "td_pigd_ratio": 2.155813101710125,
+      "NP2FREZ": 0.19321533923303835,
+      "resp": 26.845632373663772
+    },
+    "baseline_survival_hor": {
+      "3": 0.8984798595015226,
+      "5": 0.7882025600424056,
+      "7": 0.6506111392985512,
+      "10": 0.45370999427149744
+    },
+    "baseline_survival_grid": {
+      "t": [
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5,
+        4.0,
+        4.5,
+        5.0,
+        5.5,
+        6.0,
+        6.5,
+        7.0,
+        7.5,
+        8.0,
+        8.5,
+        9.0,
+        9.5,
+        10.0,
+        10.5,
+        11.0,
+        11.5,
+        12.0,
+        12.5,
+        13.0
+      ],
+      "S0": [
+        0.99755,
+        0.98038,
+        0.96227,
+        0.94327,
+        0.91751,
+        0.89848,
+        0.87074,
+        0.85477,
+        0.83366,
+        0.7882,
+        0.75795,
+        0.72464,
+        0.68366,
+        0.65061,
+        0.62003,
+        0.60705,
+        0.53903,
+        0.52034,
+        0.50052,
+        0.45371,
+        0.37726,
+        0.35768,
+        0.31502,
+        0.31502,
+        0.2534,
+        0.2534
+      ]
+    },
+    "resp_hr_por_10pct": 1.085,
+    "resp_hr_bruto": 1.0082,
+    "resp_p": 0.04465980598242057,
+    "resp_input": {
+      "min": -20.0,
+      "max": 100.0,
+      "step": 5.0,
+      "default": 27.0
+    },
+    "n": 678,
+    "eventos": 154,
+    "desempenho": {
+      "C_OOF": 0.689,
+      "C_apparent": 0.704,
+      "C_Total6_mesmo_n": 0.7,
+      "dC_apparent": 0.004
+    }
+  }
+}

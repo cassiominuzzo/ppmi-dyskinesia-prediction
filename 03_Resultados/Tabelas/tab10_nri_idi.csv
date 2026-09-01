@@ -1,0 +1,4 @@
+transicao,n_comp,eventos_5a,C_L1,C_modelo,dC,IDI,NRI_continuo
+L1 -> L1+L3_DaTSCAN,919,108,0.682,0.683,0.0,0.001,0.03
+L1 -> L1+L4_LCR,382,75,0.699,0.711,0.012,0.0019,0.065
+L1 -> L5_combinado,378,75,0.699,0.712,0.013,0.0078,0.195

@@ -1,0 +1,4 @@
+metodo,slope
+bootstrap,0.973
+cross-validation 5-fold,0.9
+leave-one-site-out,0.859

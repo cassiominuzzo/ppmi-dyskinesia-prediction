@@ -1,0 +1,33 @@
+{
+ "affected": {
+  "3439": 550,
+  "41280": 1126,
+  "41293": 427,
+  "42351": 669,
+  "42415": 881
+ },
+ "n_affected": 5,
+ "C_full": 0.695960468604629,
+ "C_retained": 0.6922283986736883,
+ "delta_C": -0.0037320699309406624,
+ "n_retained": 808,
+ "events_retained": 163,
+ "agonist_at_time_zero": 227,
+ "amantadine_at_time_zero": 66,
+ "hazard_ratios_full": {
+  "updrs_totscore": 1.01836731657871,
+  "ageonset": 0.9701918500452664,
+  "SEX": 0.7467821206049235,
+  "BMI": 0.9662039595853511,
+  "td_pigd_ratio": 0.9370967311598687,
+  "NP2FREZ": 1.2935133085179646
+ },
+ "hazard_ratios_retained": {
+  "updrs_totscore": 1.0190141037716798,
+  "ageonset": 0.9696108982630948,
+  "SEX": 0.7520221787207059,
+  "BMI": 0.9671614037654658,
+  "td_pigd_ratio": 0.9428177244158548,
+  "NP2FREZ": 1.2765517728998765
+ }
+}

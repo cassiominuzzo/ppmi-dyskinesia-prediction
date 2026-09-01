@@ -1,0 +1,32 @@
+{
+ "n": 813,
+ "events": 165,
+ "parameters": 6,
+ "events_per_parameter": 27.5,
+ "likelihood_ratio": 69.34620639106697,
+ "r2_cox_snell": 0.08176018567343135,
+ "r2_max": 0.8894460488490216,
+ "r2_nagelkerke": 0.0919225913468639,
+ "criterion_1_n": 629.9920429072317,
+ "criterion_1_met": true,
+ "criterion_2_shrinkage": 0.6476952715878882,
+ "criterion_2_n": 126.20862526833103,
+ "criterion_2_met": true,
+ "criterion_3": {
+  "3": {
+   "incidence": 0.12155485562269486,
+   "lo": 0.09638450669365317,
+   "hi": 0.15272228765151952,
+   "margin": 0.028168890478933173,
+   "met": true
+  },
+  "5": {
+   "incidence": 0.24022545855888378,
+   "lo": 0.19894562495182477,
+   "hi": 0.2884142424663132,
+   "margin": 0.04473430875724421,
+   "met": true
+  }
+ },
+ "van_houwelingen_shrinkage": 0.9134776029972865
+}

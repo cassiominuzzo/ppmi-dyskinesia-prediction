@@ -1,0 +1,28 @@
+{
+ "excluded_n": 9,
+ "excluded_events": 1,
+ "excluded_detail": "{(3, 'PRKN'): 1, (3, 'SWEDD'): 7, (4, 'LRRK2'): 1}",
+ "C_full": 0.695960468604629,
+ "C_retained": 0.6925780647648418,
+ "delta_C": -0.0033824038397871625,
+ "C_frozen_full": 0.6989765887557674,
+ "C_frozen_retained": 0.6965304548959137,
+ "n_retained": 804,
+ "events_retained": 164,
+ "hazard_ratios_full": {
+  "updrs_totscore": 1.01836731657871,
+  "ageonset": 0.9701918500452664,
+  "SEX": 0.7467821206049235,
+  "BMI": 0.9662039595853511,
+  "td_pigd_ratio": 0.9370967311598687,
+  "NP2FREZ": 1.2935133085179646
+ },
+ "hazard_ratios_retained": {
+  "updrs_totscore": 1.0183503578811983,
+  "ageonset": 0.9706707254364471,
+  "SEX": 0.7511935691989639,
+  "BMI": 0.965695460647318,
+  "td_pigd_ratio": 0.9367092865427287,
+  "NP2FREZ": 1.2792592194189447
+ }
+}

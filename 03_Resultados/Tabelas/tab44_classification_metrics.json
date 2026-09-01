@@ -1,0 +1,67 @@
+{
+ "horizon": 5,
+ "overall_incidence": 0.24022545855888378,
+ "rows": [
+  {
+   "threshold": 0.1,
+   "flagged_n": 784,
+   "flagged_pct": 96.4329643296433,
+   "sensitivity": 99.25468084801568,
+   "specificity": 4.507066316077434,
+   "ppv": 24.725467464968077,
+   "npv": 96.00000000000003,
+   "number_needed_to_flag": 4.0444129172353795
+  },
+  {
+   "threshold": 0.15,
+   "flagged_n": 626,
+   "flagged_pct": 76.99876998769987,
+   "sensitivity": 86.13546397530499,
+   "specificity": 26.23464618974208,
+   "ppv": 26.873067368420656,
+   "npv": 86.65804510464079,
+   "number_needed_to_flag": 3.7211978308629177
+  },
+  {
+   "threshold": 0.2,
+   "flagged_n": 433,
+   "flagged_pct": 53.25953259532595,
+   "sensitivity": 73.01556692304435,
+   "specificity": 53.49048404701182,
+   "ppv": 32.933443444384494,
+   "npv": 86.94972524861332,
+   "number_needed_to_flag": 3.0364270948123733
+  },
+  {
+   "threshold": 0.25,
+   "flagged_n": 292,
+   "flagged_pct": 35.916359163591636,
+   "sensitivity": 57.76342568835192,
+   "specificity": 71.78500914943787,
+   "ppv": 38.63488880015065,
+   "npv": 85.10818314472856,
+   "number_needed_to_flag": 2.5883340966057102
+  },
+  {
+   "threshold": 0.3,
+   "flagged_n": 161,
+   "flagged_pct": 19.803198031980322,
+   "sensitivity": 36.3110525713409,
+   "specificity": 86.36280175854338,
+   "ppv": 44.04762927997554,
+   "npv": 81.81904576423548,
+   "number_needed_to_flag": 2.2702697428817338
+  },
+  {
+   "threshold": 0.4,
+   "flagged_n": 60,
+   "flagged_pct": 7.380073800738007,
+   "sensitivity": 15.674265360740138,
+   "specificity": 95.21029045325537,
+   "ppv": 51.02059526126814,
+   "npv": 78.10236710183645,
+   "number_needed_to_flag": 1.9599928124694805
+  }
+ ],
+ "best_youden_threshold": 0.25
+}

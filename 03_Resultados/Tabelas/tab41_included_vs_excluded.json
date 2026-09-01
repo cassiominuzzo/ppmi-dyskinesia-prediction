@@ -1,0 +1,50 @@
+{
+ "eligible": 1441,
+ "included": 813,
+ "excluded": 628,
+ "excluded_pct": 43.58084663428175,
+ "events_included": 165,
+ "events_excluded": 137,
+ "rate_included": 0.2029520295202952,
+ "rate_excluded": 0.21815286624203822,
+ "logrank_p": 0.1776196398479034,
+ "hr_group": 1.1700510765260144,
+ "hr_group_lo": 0.9308767965150643,
+ "hr_group_hi": 1.4706774589343097,
+ "hr_group_p": 0.1782888414580524,
+ "incidence": {
+  "3": {
+   "included": 0.12155485562269486,
+   "excluded": 0.0892691205422318
+  },
+  "5": {
+   "included": 0.24022545855888378,
+   "excluded": 0.21605316969348776
+  },
+  "7": {
+   "included": 0.3770345509730406,
+   "excluded": 0.35015785279682565
+  }
+ },
+ "missingness": {
+  "td_pigd_ratio": 485,
+  "ageonset": 452,
+  "updrs_totscore": 360,
+  "updrs3_score": 353,
+  "pigd": 351,
+  "hy": 350,
+  "BMI": 339,
+  "Clinical_Stage": 337,
+  "updrs1_score": 336,
+  "scopa_gi": 336,
+  "MSEADLG": 333,
+  "NP1FATG": 332,
+  "NP1DPRS": 331,
+  "SEX": 331,
+  "EDUCYRS": 331,
+  "comp_bradicinesia": 328,
+  "updrs2_score": 327,
+  "NP2FREZ": 327
+ },
+ "missing_exactly_one": 246
+}

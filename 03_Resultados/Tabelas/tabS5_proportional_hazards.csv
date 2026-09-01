@@ -1,0 +1,13 @@
+predictor,time_transform,chi2,p
+updrs_totscore,rank,0.106,0.745
+ageonset,rank,0.975,0.323
+SEX,rank,0.491,0.483
+BMI,rank,0.709,0.4
+td_pigd_ratio,rank,0.189,0.664
+NP2FREZ,rank,0.019,0.891
+updrs_totscore,km,0.466,0.495
+ageonset,km,0.328,0.567
+SEX,km,0.185,0.667
+BMI,km,1.014,0.314
+td_pigd_ratio,km,0.09,0.764
+NP2FREZ,km,0.075,0.784

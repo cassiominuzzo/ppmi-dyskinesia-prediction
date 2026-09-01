@@ -1,0 +1,28 @@
+{
+ "overlap": {
+  "0": 0,
+  "1": 1,
+  "2": 5,
+  "3": 28,
+  "4": 51,
+  "5": 13,
+  "6": 2
+ },
+ "median_overlap": 4,
+ "at_least_4": 66,
+ "top6": [
+  "ageonset",
+  "SEX",
+  "BMI",
+  "NP2FREZ",
+  "td_pigd_ratio",
+  "EDUCYRS"
+ ],
+ "alternatives": {
+  "Total-6 publicado": 0.695960468604629,
+  "Seis mais frequentes": 0.6701169612850552,
+  "Total-6 trocando MDS-UPDRS por MSEADLG": 0.6882051379421649,
+  "Total-6 trocando MDS-UPDRS por Parte III": 0.6918392921563787,
+  "So idade de inicio (a mais estavel)": 0.6246012683464028
+ }
+}

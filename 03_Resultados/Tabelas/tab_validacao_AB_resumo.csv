@@ -1,0 +1,7 @@
+Métrica,Modelo A (8 var),Modelo B (8+NP2FREZ)
+C-index aparente,0.64,0.65
+C-index corrigido (otimismo),0.629,0.64
+C-index caso-completo,0.691,0.704
+C-index LOSO (pooled),0.663,0.673
+Calibration slope (ideal=1),1.32,1.267
+Net benefit @ pt=0.10 (3a),0.022,0.037

@@ -1,0 +1,62 @@
+{
+ "protocol": "six standardised clinical predictors plus the standardised candidate, Cox with ridge penalty 0.05",
+ "reproduction_max_HR_diff": 0.000327524586344774,
+ "reproduction_max_p_diff": 3.3306690738754696e-16,
+ "published_row": {
+  "n": 813.0,
+  "HR": 1.092,
+  "lo": 0.968,
+  "hi": 1.231,
+  "p": 0.1531425971848644,
+  "LRT_p": 0.1615278769950395,
+  "dC": 0.0039
+ },
+ "recomputed": {
+  "amantadine removed, unconvertible dose treated as missing": {
+   "n": 808,
+   "events": 165,
+   "HR": 1.0972540460979594,
+   "lo": 0.9640052944391402,
+   "hi": 1.248920984794811,
+   "p": 0.1600179827193421,
+   "LRT_p": 0.1677142365490844
+  },
+  "amantadine removed, absent dose read as zero": {
+   "n": 813,
+   "events": 165,
+   "HR": 1.100806696528916,
+   "lo": 0.9670643254176998,
+   "hi": 1.253045274521432,
+   "p": 0.1461613374137658,
+   "LRT_p": 0.15376489456919792
+  },
+  "amantadine included, unconvertible dose treated as missing": {
+   "n": 809,
+   "events": 165,
+   "HR": 1.1288922371320056,
+   "lo": 0.991975645422918,
+   "hi": 1.2847066245397374,
+   "p": 0.06608717447826132,
+   "LRT_p": 0.07164563001080185
+  },
+  "amantadine included, absent dose read as zero": {
+   "n": 813,
+   "events": 165,
+   "HR": 1.1317218436702872,
+   "lo": 0.9943938813189093,
+   "hi": 1.288015096936939,
+   "p": 0.06082206468385194,
+   "LRT_p": 0.06618042148491908
+  }
+ },
+ "primary": "amantadine removed, unconvertible dose treated as missing",
+ "delta_C": {
+  "base": 0.6947444726350127,
+  "with_dose": 0.6986341351748345,
+  "change": 0.0038896625398218143,
+  "lo": -0.007905583980714882,
+  "hi": 0.04513742500241544,
+  "replicates": 20
+ },
+ "fdr_global_changes": 2
+}
