@@ -1,13 +1,13 @@
-tempo-zero,desfecho,trunc,n,ev,inc_5a,C,HR_UPDRStot,HR_ageonset,HR_NP2FREZ
-levodopa,any (>=1),right-cens,816,324,0.57,0.661,1.011,0.977,1.277
-levodopa,any (>=1),exclui-prevalentes,784,292,0.551,0.649,1.009,0.978,1.285
-levodopa,primaria (>=2 OU),right-cens,819,166,0.242,0.711,1.018,0.971,1.311
-levodopa,primaria (>=2 OU),exclui-prevalentes,812,159,0.235,0.693,1.016,0.972,1.282
-levodopa,4.1>=2 (Martinez),right-cens,819,144,0.225,0.712,1.018,0.971,1.384
-levodopa,4.1>=2 (Martinez),exclui-prevalentes,813,138,0.219,0.696,1.016,0.973,1.381
-1a-dopaminergica,any (>=1),right-cens,819,328,0.4,0.601,1.01,0.993,0.997
-1a-dopaminergica,any (>=1),exclui-prevalentes,794,303,0.379,0.584,1.009,0.993,1.021
-1a-dopaminergica,primaria (>=2 OU),right-cens,819,166,0.151,0.666,1.018,0.985,1.127
-1a-dopaminergica,primaria (>=2 OU),exclui-prevalentes,816,163,0.148,0.659,1.017,0.984,1.11
-1a-dopaminergica,4.1>=2 (Martinez),right-cens,819,144,0.144,0.672,1.018,0.985,1.213
-1a-dopaminergica,4.1>=2 (Martinez),exclui-prevalentes,816,141,0.14,0.665,1.017,0.983,1.196
+tempo-zero,desfecho,trunc,n,ev,inc_5a,C,C_oof,HR_UPDRStot,HR_ageonset,HR_NP2FREZ
+levodopa,any (>=1),right-cens,810,321,0.567,0.662,0.6474,1.011,0.976,1.266
+levodopa,any (>=1),exclui-prevalentes,778,289,0.548,0.651,0.634,1.009,0.977,1.273
+levodopa,primaria (>=2 OU),right-cens,813,165,0.24,0.712,0.696,1.018,0.97,1.294
+levodopa,primaria (>=2 OU),exclui-prevalentes,806,158,0.233,0.695,0.6769,1.017,0.971,1.263
+levodopa,4.1>=2 (Martinez),right-cens,813,143,0.223,0.713,0.6946,1.018,0.971,1.365
+levodopa,4.1>=2 (Martinez),exclui-prevalentes,807,137,0.217,0.697,0.6793,1.016,0.972,1.361
+1a-dopaminergica,any (>=1),right-cens,813,325,0.398,0.603,0.5768,1.01,0.993,0.987
+1a-dopaminergica,any (>=1),exclui-prevalentes,788,300,0.378,0.585,0.5478,1.009,0.993,1.01
+1a-dopaminergica,primaria (>=2 OU),right-cens,813,165,0.15,0.668,0.648,1.018,0.985,1.111
+1a-dopaminergica,primaria (>=2 OU),exclui-prevalentes,810,162,0.147,0.662,0.6401,1.018,0.984,1.093
+1a-dopaminergica,4.1>=2 (Martinez),right-cens,813,143,0.142,0.674,0.6485,1.018,0.984,1.195
+1a-dopaminergica,4.1>=2 (Martinez),exclui-prevalentes,810,140,0.139,0.667,0.6411,1.018,0.983,1.177
