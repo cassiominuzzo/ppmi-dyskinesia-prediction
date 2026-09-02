@@ -49,6 +49,7 @@
 
 import argparse
 import csv
+import json
 import os
 import warnings
 
@@ -69,6 +70,10 @@ REBUILT = os.path.join(TAB, "tab_incremental_value_all_domains_rebuilt.csv")
 PER_UNIT = {"orthostasis", "quip_any", "GBA", "LRRK2", "SNCA", "APOE_e4", "any_mut",
             "CSFSAA_pos"}
 _CURATED = None
+
+# The constant the published Supplementary Table S4 was built with. See screen() for how it
+# was recovered and for why it is 85 per cent power rather than the 80 the header claims.
+PUBLISHED_K = 3.0
 
 
 def ip(d):
@@ -421,14 +426,33 @@ def screen(d, col):
         if col in PER_UNIT else full
     r = reported.summary.loc[col]
     lrt = 2 * (full.log_likelihood_ - base.log_likelihood_)
-    # the smallest hazard ratio this many events could have detected with 80% power, on
-    # the standardised scale, so a reader can tell an absent effect from an underpowered one
+
+    # The smallest hazard ratio the screen could have detected for this candidate, which is
+    # what tells a reader whether a null is an absent effect or an unexamined one. Schoenfeld
+    # gives it in closed form for a Cox model: with d events and a predictor of standard
+    # deviation s, an effect of log hazard ratio b is detected with power 1-B at two-sided
+    # level a when b x s x sqrt(d) = z_(1-a/2) + z_(1-B). So the detectable ratio is
+    # exp(K / (sqrt(d) x s)), with s equal to one for the standardised continuous candidates
+    # and to the sample standard deviation for the eight reported per unit.
+    #
+    # Two constants are returned because the published table used the second. Solving for K
+    # across all 88 checkable rows of Supplementary Table S4 gives 3.00 with a spread of
+    # 0.03, which is exactly the scatter that rounding the printed value to two decimals
+    # produces. But K = 3.00 is not the 80% the column header claims: z_0.975 + z_0.80 is
+    # 2.8016, and 3.00 solves to z of 1.04, which is 85% power. The published numbers are
+    # right for 85% and about 0.02 too large for 80%.
+    #
+    # Both are given so the discrepancy is visible and so the table can be checked against
+    # the constant it was actually built with, rather than the one it says it used.
     events = int(x.event.sum())
-    min_hr = float(np.exp((norm.ppf(0.975) + norm.ppf(0.80)) / np.sqrt(events)))
+    spread = 1.0 if col not in PER_UNIT else float(x[col].std())
+    root = np.sqrt(events) * spread
+    k80 = norm.ppf(0.975) + norm.ppf(0.80)
     return dict(n=len(x), events=events, HR=float(r["exp(coef)"]),
                 lo=float(r["exp(coef) lower 95%"]), hi=float(r["exp(coef) upper 95%"]),
                 p=float(r["p"]), LRT_p=float(chi2.sf(max(lrt, 0), 1)),
-                min_HR_80pct=round(min_hr, 3))
+                min_HR_80pct=round(float(np.exp(k80 / root)), 3),
+                min_HR_85pct=round(float(np.exp(PUBLISHED_K / root)), 3))
 
 
 def bh(p):
@@ -509,14 +533,37 @@ def main():
         rows.append(dict(domain=row.domain, variable=v, label=row.label, unit=row.unit,
                          n=got["n"], events=got["events"], HR=round(got["HR"], 3),
                          lo=round(got["lo"], 3), hi=round(got["hi"], 3), p=got["p"],
-                         LRT_p=got["LRT_p"], min_HR_80pct=got["min_HR_80pct"],
+                         LRT_p=got["LRT_p"], min_HR_80pct=got["min_HR_80pct"], min_HR_85pct=got["min_HR_85pct"],
                          source="rebuilt"))
     print("\n%d of %d candidates reproduce the published hazard ratio and p"
           % (agree, len(published)))
 
     out = pd.DataFrame(rows)
-    out["FDR_domain"] = out.groupby("domain").p.transform(lambda s: bh(s.values))
-    out["FDR_global"] = bh(out.p.values)
+
+    # The false-discovery adjustment is computed over the dose row the supplement actually
+    # reports, which is the amantadine-free one from 50_treatment_candidate_recomputed.py,
+    # not the approximation rebuilt here. The two differ, 0.160 against 0.061, and a single
+    # p value shifts every adjusted p in a Benjamini-Hochberg step-up: leaving the
+    # approximation in moves the global adjustment of the four cerebrospinal fluid
+    # candidates from 0.774 to 0.771 and would put this table quietly out of step with the
+    # supplement over a row that neither of them reports.
+    corrected = os.path.join(TAB, "tab50_treatment_candidate.json")
+    p_for_fdr = out.p.values.copy()
+    if os.path.exists(corrected):
+        with open(corrected, encoding="utf-8") as fh:
+            fixed = json.load(fh)
+        dose = out.index[out.domain.str.startswith("G.")]
+        if len(dose):
+            p_for_fdr[dose[0]] = fixed["recomputed"][fixed["primary"]]["p"]
+            print("dose row: false-discovery adjustment uses the amantadine-free p of "
+                  "%.4f from script 50, not the %.4f rebuilt here"
+                  % (p_for_fdr[dose[0]], out.p.iloc[dose[0]]))
+    else:
+        print("script 50 has not been run, so the false-discovery columns use the dose "
+              "row rebuilt here and will not match the supplement")
+    out["FDR_domain"] = pd.Series(p_for_fdr, index=out.index).groupby(
+        out.domain).transform(lambda s: bh(s.values))
+    out["FDR_global"] = bh(p_for_fdr)
     print("nominally associated at p<0.05: %d; surviving global false-discovery control "
           "at 0.05: %d" % (int((out.p < 0.05).sum()), int((out.FDR_global < 0.05).sum())))
     if args.write:
