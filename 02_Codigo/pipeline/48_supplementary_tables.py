@@ -366,7 +366,15 @@ for dom in sorted(iv.domain.unique()):
         ])
 table(["Domain and candidate predictor", "n", "Events", "HR (95% CI)", "p", "LRT p",
        "FDR p, within domain", "FDR p, all 89", "Change in C (95% CI)",
-       "Smallest HR detectable with 80% power"],
+       # 85, not 80. The column is exp(K / (sqrt(events) x SD)), Schoenfeld's closed form,
+       # and solving K across the 88 checkable rows gives 3.00 with a spread of 0.03, which
+       # is the scatter that printing to two decimals produces. z_0.975 + z_0.80 is 2.8016;
+       # 3.00 solves to z of 1.04, which is 85% power. The numbers are right, the label was
+       # not. 52_multimodal_screen.py writes both constants, min_HR_80pct and min_HR_85pct,
+       # so the two can be compared. The column read here still carries the published name
+       # because it comes from the corrected file that 50_treatment_candidate_recomputed.py
+       # derives from the original screen, where that name was assigned.
+       "Smallest HR detectable with 85% power"],
       rows, widths=[7.2, 1.0, 1.1, 3.0, 1.3, 1.3, 1.9, 1.6, 4.2, 2.2],
       size=7, group_rows=groups)
 best = iv.loc[iv.p.idxmin()]
@@ -387,7 +395,7 @@ legend(
     "How much weight a null carries depends on what the analysis could have detected, and the last "
     "column states that directly: the smallest hazard ratio, per standard deviation for a "
     "continuous candidate and per unit for a binary one, that this screen would have detected with "
-    "80% power. In survival analysis that quantity is governed by the number of events rather than "
+    "85% power. In survival analysis that quantity is governed by the number of events rather than "
     "by the number of participants, and the two diverge here. The polygenic scores, for instance, "
     "were measured in 291 of the 813, which is 36% of the sample but 70% of the events, because "
     "those 291 belong entirely to the earlier recruitment wave and therefore have the longest "
