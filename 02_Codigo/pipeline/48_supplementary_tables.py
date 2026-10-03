@@ -1,14 +1,18 @@
 # 48_supplementary_tables.py
-# Produces: 00_Manuscrito/Supplementary Tables (rebuilt).docx, the sixteen supplementary
+# Produces: 00_Manuscrito/Supplementary Tables (rebuilt).docx, the eighteen supplementary
 # tables of the manuscript with their legends.
 #
 # Every number is read from a file in 03_Resultados/Tabelas/; none is typed in, so the
 # document can be regenerated after any upstream script is re-run. The numbering follows
-# the order of first citation in the manuscript, which is what fixes S1 to S16.
+# the order of first citation in the manuscript, which is what fixes S1 to S18.
 #
-# Two tables have a source outside the numbered pipeline and say so in their own legend:
-# S4 comes from tab_incremental_value_all_domains.csv, the 89-variable incremental-value
-# analysis, and S15 from the tabS7 files of the matched-degrees-of-freedom analysis.
+# Renumbered in October 2026, when the manuscript was restructured to follow STROBE and its
+# Results began citing the supplement in a different order. Each block below still carries
+# the number it had before, which is how it is referred to in the comments and in earlier
+# notes; title() prints the new number through NEW_NUMBER, and reorder_by_number() puts the
+# blocks in that order when the document is saved, carrying the landscape section of the
+# 89-candidate screen with it. The Supplementary Methods that open the hand-edited supplement
+# are prose, not output, and are not rebuilt here.
 #
 # Usage:  python 48_supplementary_tables.py [output.docx]
 
@@ -102,6 +106,12 @@ def landscape(section):
 ONLY = {int(x) for x in os.environ.get("LID_ONLY", "").replace(",", " ").split()} or None
 CURRENT = [0]
 
+# Number each block had before October 2026 -> number in the restructured manuscript.
+# "U" is the table of unadjusted hazard ratios, which STROBE item 16a asks for and which
+# the earlier supplement did not have. LID_ONLY takes the new numbers.
+NEW_NUMBER = {8: 1, 17: 2, "U": 3, 9: 4, 11: 5, 12: 6, 13: 7, 4: 8, 2: 9, 15: 10, 1: 11,
+              10: 12, 3: 13, 5: 14, 6: 15, 7: 16, 14: 17, 16: 18}
+
 
 def active():
     return ONLY is None or CURRENT[0] in ONLY
@@ -121,6 +131,7 @@ def para(text, bold=False, size=9, space_before=0, space_after=4, italic=False):
 
 
 def title(n, text):
+    n = NEW_NUMBER[n]
     CURRENT[0] = n
     if not active():
         return
@@ -186,20 +197,35 @@ s37, s39 = load("tab37_eligibility_sensitivity.json"), load("tab39_drug_name_qua
 title(1, "Sensitivity analyses: definition of time-zero, definition of the outcome, "
          "handling of prevalent cases, eligibility and drug-name matching")
 sub("A. Time-zero, outcome definition and prevalent cases")
-S1A = [
-    ("Levodopa initiation", "Any dyskinesia (≥ 1)", "Right-censored", 810, 321, "57%", "0.662", "0.649", "1.0114"),
-    ("Levodopa initiation", "Any dyskinesia (≥ 1)", "Prevalent cases excluded", 778, 289, "55%", "0.651", "0.634", "1.0094"),
-    ("Levodopa initiation", "Problematic (4.1 or 4.2 ≥ 2), primary", "Right-censored", 813, 165, "24%", "0.712", "0.693", "1.0184"),
-    ("Levodopa initiation", "Problematic (4.1 or 4.2 ≥ 2)", "Prevalent cases excluded", 806, 158, "23%", "0.695", "0.673", "1.0167"),
-    ("Levodopa initiation", "Item 4.1 ≥ 2 only", "Right-censored", 813, 143, "22%", "0.713", "0.690", "1.0185"),
-    ("Levodopa initiation", "Item 4.1 ≥ 2 only", "Prevalent cases excluded", 807, 137, "22%", "0.697", "0.678", "1.0160"),
-    ("First dopaminergic therapy", "Any dyskinesia (≥ 1)", "Right-censored", 813, 325, "40%", "0.603", "0.583", "1.0102"),
-    ("First dopaminergic therapy", "Any dyskinesia (≥ 1)", "Prevalent cases excluded", 788, 300, "38%", "0.585", "0.554", "1.0090"),
-    ("First dopaminergic therapy", "Problematic (4.1 or 4.2 ≥ 2)", "Right-censored", 813, 165, "15%", "0.668", "0.644", "1.0178"),
-    ("First dopaminergic therapy", "Problematic (4.1 or 4.2 ≥ 2)", "Prevalent cases excluded", 810, 162, "15%", "0.662", "0.637", "1.0175"),
-    ("First dopaminergic therapy", "Item 4.1 ≥ 2 only", "Right-censored", 813, 143, "14%", "0.674", "0.648", "1.0179"),
-    ("First dopaminergic therapy", "Item 4.1 ≥ 2 only", "Prevalent cases excluded", 810, 140, "14%", "0.667", "0.641", "1.0176"),
-]
+# Read from 11_supplementary_table_S3.py since October 2026. Until then these twelve rows
+# were typed in here, against the rule this script states at the top, and the out-of-fold
+# column still carried the values of a cross-validation that was never recorded, which put
+# 0.693 in the primary row where every other part of the paper says 0.696. Script 11 now
+# computes the column with the protocol of cohort.py and reproduces the sample of every row.
+_s1 = load("tab44_sensibilidade.csv")
+_TZ = {"levodopa": "Levodopa initiation", "1a-dopaminergica": "First dopaminergic therapy"}
+_OUT = {"any (>=1)": "Any dyskinesia (≥ 1)", "primaria (>=2 OU)": "Problematic (4.1 or 4.2 ≥ 2)",
+        "4.1>=2 (Martinez)": "Item 4.1 ≥ 2 only"}
+_PREV = {"right-cens": "Right-censored", "exclui-prevalentes": "Prevalent cases excluded"}
+
+
+def _pct(x):
+    from decimal import Decimal, ROUND_HALF_UP
+    return "%d%%" % int(Decimal(repr(100 * float(x))).quantize(Decimal(1), rounding=ROUND_HALF_UP))
+
+
+def _r(x, places):
+    from decimal import Decimal, ROUND_HALF_UP
+    return str(Decimal(repr(float(x))).quantize(Decimal(1).scaleb(-places), rounding=ROUND_HALF_UP))
+
+
+S1A = []
+for _, r in _s1.iterrows():
+    out = _OUT[r["desfecho"]]
+    if r["tempo-zero"] == "levodopa" and r["desfecho"] == "primaria (>=2 OU)" and r["trunc"] == "right-cens":
+        out += ", primary"
+    S1A.append((_TZ[r["tempo-zero"]], out, _PREV[r["trunc"]], int(r["n"]), int(r["ev"]),
+                _pct(r["inc_5a"]), _r(r["C"], 3), _r(r["C_oof"], 3), _r(r["HR_UPDRStot"], 4)))
 table(["Time-zero", "Outcome definition", "Prevalent cases", "n", "Events",
        "5-year incidence", "C (apparent)", "C (out-of-fold)", "HR per MDS-UPDRS point"],
       [list(r) for r in S1A],
@@ -230,7 +256,8 @@ legend(
     "dopaminergic drug of any kind, which places the origin before the exposure that causes the "
     "outcome. (B) Two eligibility questions raised during quality control. Neither exclusion changes "
     "discrimination by more than 0.004. Change in C is against the primary out-of-fold value of "
-    f"{s37['C_full']:.4f}. Sources: 37_eligibility_sensitivity.py and 39_drug_name_quality_control.py.")
+    f"{s37['C_full']:.4f}. Sources: 11_supplementary_table_S3.py for panel A, and "
+    "37_eligibility_sensitivity.py and 39_drug_name_quality_control.py for panel B.")
 
 # ============================================================== S2 ==============
 a = load("tab31_amantadine.json")
@@ -315,15 +342,37 @@ table(["Group", "n", "Events", "Event rate", "Median follow-up, years", "Imputed
       widths=[8.6, 1.3, 1.3, 1.5, 2.6, 1.6])
 
 sub("B. Total-6 coefficients, complete case against multiple imputation")
-S3B = [
-    ("Total MDS-UPDRS (Parts I+II+III)", "+0.0182 (0.0046)", "+0.0180 (0.0102 to 0.0258)", "0.020", f"{MINUS}0.04"),
-    ("Age at onset, years", f"{MINUS}0.0303 (0.0070)", f"{MINUS}0.0210 ({MINUS}0.0337 to {MINUS}0.0082)", "0.075", "+1.32"),
-    ("Sex (1 = male)", f"{MINUS}0.2920 (0.1475)", f"{MINUS}0.3529 ({MINUS}0.6084 to {MINUS}0.0973)", "0.021", f"{MINUS}0.41"),
-    ("Body-mass index, kg/m²", f"{MINUS}0.0344 (0.0156)", f"{MINUS}0.0209 ({MINUS}0.0473 to 0.0054)", "0.035", "+0.86"),
-    ("TD/PIGD ratio", f"{MINUS}0.0650 (0.0416)", f"{MINUS}0.0650 ({MINUS}0.1410 to 0.0111)", "0.124", "0.00"),
-    ("Freezing of gait (item 2.13)", "+0.2574 (0.1422)", "+0.2917 (0.0395 to 0.5439)", "0.007", "+0.24"),
-    ("Apparent C-index", "0.712", "0.702 (range 0.690 to 0.709)", "", ""),
-]
+# Read from 29_multiple_imputation.py since October 2026; these rows used to be typed in.
+_mi = load("tabS6_multiple_imputation.csv").set_index("predictor")
+_mic = load("tabS6_mi_cindex.csv")
+_p32 = load("tab32_internal_performance.json")
+_LAB = [("updrs_totscore", "Total MDS-UPDRS (Parts I+II+III)"), ("ageonset", "Age at onset, years"),
+        ("SEX", "Sex (1 = male)"), ("BMI", "Body-mass index, kg/m²"), ("td_pigd_ratio", "TD/PIGD ratio"),
+        ("NP2FREZ", "Freezing of gait (item 2.13)")]
+
+
+def _signed(x, places, plus=True):
+    from decimal import Decimal, ROUND_HALF_UP
+    v = Decimal(repr(float(x))).quantize(Decimal(1).scaleb(-places), rounding=ROUND_HALF_UP)
+    if v == 0:
+        return ("%." + str(places) + "f") % 0
+    body = ("%." + str(places) + "f") % abs(v)
+    return (MINUS + body) if v < 0 else (("+" + body) if plus else body)
+
+
+S3B = []
+for key, lab in _LAB:
+    r = _mi.loc[key]
+    S3B.append((lab,
+                "%s (%s)" % (_signed(r.cc_beta, 4), _signed(r.cc_se, 4, plus=False)),
+                "%s (%s to %s)" % (_signed(r.mi_beta, 4), _signed(r.mi_lo, 4, plus=False),
+                                   _signed(r.mi_hi, 4, plus=False)),
+                _signed(r.fmi, 3, plus=False),
+                _signed(r.diff_in_cc_se, 2)))
+S3B.append(("Apparent C-index", _signed(_p32["C_apparent"], 3, plus=False),
+            "%s (range %s to %s)" % (_signed(_mic.c_index.mean(), 3, plus=False),
+                                     _signed(_mic.c_index.min(), 3, plus=False),
+                                     _signed(_mic.c_index.max(), 3, plus=False)), "", ""))
 table(["Predictor", "Complete case (n = 813), β (SE)",
        "Multiple imputation (n = 1,114), β (95% CI)",
        "Fraction of missing information", "Shift, in complete-case SE"],
@@ -331,9 +380,9 @@ table(["Predictor", "Complete case (n = 813), β (SE)",
 
 legend(
     "(A) Of the 1,447 patients with an MDS-UPDRS Part IV assessment at or after levodopa initiation, "
-    "six had their only assessment on the date of initiation itself, giving zero follow-up, and one "
-    "further participant already met the outcome at that date; seven were therefore excluded and the "
-    "analysis base is 1,441 participants with 302 events. Imputation was restricted to the 1,114 "
+    "six had their only assessment on the date of initiation itself, giving zero follow-up, one of "
+    "whom already met the outcome at that date, so the analysis base is 1,441 participants with 302 "
+    "events. Imputation was restricted to the 1,114 "
     "participants with at least one pre-levodopa assessment, because the remaining 327 have no "
     "predictor information at all and imputing them would extrapolate rather than recover. Those 327 "
     "have a higher event rate and longer follow-up, which is why the imputed estimate is a check on "
@@ -343,7 +392,7 @@ legend(
     "compatible with the survival model, and estimates were pooled by Rubin's rules. The shift column "
     "expresses the difference between the two estimates in units of the complete-case standard error, "
     "so that a value below one means the two agree within the noise of the complete-case analysis. "
-    "Only age at onset moves by more than one standard error. Source: 05_multiple_imputation.py.")
+    "Only age at onset moves by more than one standard error. Source: 29_multiple_imputation.py.")
 
 # ============================================================== S4 ==============
 iv = pd.read_csv(os.path.join(TAB, "tab_incremental_value_all_domains_corrected.csv"))
@@ -418,7 +467,7 @@ legend(
     "is the only one in this table estimated under the cross-validation protocol documented in "
     "cohort.py, twenty repetitions of stratified five-fold, because that row was recomputed; the "
     "other 88 carry the estimate of the original screen. Rows within each domain are ordered by p. "
-    "Sources: tab_incremental_value_all_domains_corrected.csv and "
+    "Sources: 52_multimodal_screen.py, which rebuilds the 89 candidates from the raw tables, and "
     "50_treatment_candidate_recomputed.py.")
 
 sec = doc.add_section()
@@ -431,6 +480,14 @@ sec.left_margin = sec.right_margin = Cm(1.6)
 pen = load("tab42_penalty_sensitivity.csv")
 penj = load("tab42_penalty_sensitivity.json")
 title(5, "Sensitivity of the development model to the ridge penalty")
+_base = pen[pen.penalty == 0].iloc[0]
+_top = pen[pen.penalty == pen.penalty.max()].iloc[0]
+_shift = {k: abs(_top[k] / _base[k] - 1) * 100 for k in
+          ("updrs_totscore", "ageonset", "SEX", "BMI", "td_pigd_ratio", "NP2FREZ")}
+SHRINK_NAME = {"updrs_totscore": "the total MDS-UPDRS", "ageonset": "age at onset", "SEX": "sex",
+               "BMI": "body-mass index", "td_pigd_ratio": "the TD/PIGD ratio",
+               "NP2FREZ": "freezing of gait"}[max(_shift, key=_shift.get)]
+SHRINK_PCT = max(_shift.values())
 NAMES = {"updrs_totscore": "Total MDS-UPDRS", "ageonset": "Age at onset", "SEX": "Sex (1 = male)",
          "BMI": "Body-mass index", "td_pigd_ratio": "TD/PIGD ratio", "NP2FREZ": "Freezing of gait"}
 rows = []
@@ -443,9 +500,11 @@ table(["Ridge penalty", "C (apparent)", "Calibration slope (apparent)"] + list(N
 legend(
     "Hazard ratios are per unit of each predictor. The penalty was varied across six values from none "
     "to 0.5, refitting the whole model at each value. Apparent discrimination varies by "
-    f"{penj['c_spread']:.4f} across the entire range, and no hazard ratio moves by more than "
-    f"{penj['largest_hr_shift_vs_unpenalised_pct']:.1f}% against the unpenalised fit, so the "
-    "specification does not depend on the choice of penalty. The calibration slope behaves differently "
+    f"{penj['c_spread']:.4f} across the entire range, so the ranking of patients does not depend on "
+    "the choice of penalty. At the penalty used, no hazard ratio moves by more than "
+    f"{penj['largest_hr_shift_vs_unpenalised_pct']:.1f}% against the unpenalised fit; at the largest "
+    f"penalties the estimates shrink toward one, by up to {SHRINK_PCT:.0f}% for {SHRINK_NAME} at "
+    f"{pen.penalty.max():g}, as a ridge penalty is designed to do. The calibration slope behaves differently "
     "and is the reason a penalty was used at all: it is 1.00 in the apparent, unpenalised fit, which "
     "is what an unpenalised model always gives in the data it was fitted to, and rises steeply as the "
     "penalty grows. The value of 0.05 was fixed before the analyses reported in the paper and was not "
@@ -695,7 +754,7 @@ legend(
     "term by a likelihood-ratio test. No continuous predictor gained from the more flexible form, all "
     "p at or above 0.51, so each was kept on its original scale, which is also what keeps the "
     "calculator a sum of six terms. Sex and freezing of gait are not in panel B because neither is "
-    "continuous. Source: 04_model_assumptions.py.")
+    "continuous. Source: 28_model_assumptions.py.")
 
 # ============================================================= S11 ==============
 tv = load("tab33_temporal_validation.json")
@@ -927,7 +986,8 @@ legend(
     "the six clinical predictors by hazard ratio, so that its size can be judged against terms already "
     "in the model. Any use of this variable is a refinement made at a later visit, not part of the "
     "prediction made at levodopa initiation, and the calculator keeps the two separate. Sources: "
-    "46_dynamic_landmark.py and 50_responsiveness_robustness.py.")
+    "13_supplementary_table_S4.py, and 06_dynamic_model_refit.py for the dynamic mode of the "
+    "calculator.")
 
 # ============================================================= S17 ==============
 an = load("tab51_outcome_anchoring.json")
@@ -999,5 +1059,99 @@ legend(
     "threshold marks a functional change rather than that dyskinesia causes it. Source: "
     "51_outcome_anchoring.py.")
 
+# ============================================================== U ===============
+un = load("tab53_unadjusted_hazard_ratios.csv")
+title("U", "Unadjusted and adjusted hazard ratios of the six predictors")
+
+
+def _hu(v, places=2):
+    from decimal import Decimal, ROUND_HALF_UP
+    return str(Decimal(repr(float(v))).quantize(Decimal(1).scaleb(-places), rounding=ROUND_HALF_UP))
+
+
+table(["Predictor", "Hazard ratio per", "Unadjusted hazard ratio (95% CI)", "p",
+       "Adjusted hazard ratio (95% CI), Table 2"],
+      [[r.predictor, r.increment.replace("kg/m2", "kg/m²"),
+        f"{_hu(r.unadjusted_HR)} ({_hu(r.unadjusted_lo)} to {_hu(r.unadjusted_hi)})",
+        "<0.001" if r.unadjusted_p < 0.001 else _hu(r.unadjusted_p, 3),
+        f"{_hu(r.adjusted_HR)} ({_hu(r.adjusted_lo)} to {_hu(r.adjusted_hi)})"]
+       for _, r in un.iterrows()],
+      widths=[4.6, 3.0, 4.2, 1.6, 4.6])
+legend(
+    "Unadjusted hazard ratios come from a Cox model with each predictor alone, without penalty, in "
+    "the development sample of 813 participants with 165 events. Adjusted hazard ratios are those of "
+    "the six-variable model reported in Table 2, fitted with the ridge penalty of 0.05, and both are "
+    "given per the increment shown, as in Table 2. Every predictor keeps its direction after "
+    "adjustment, and every estimate moves toward one, as expected when predictors share information: "
+    "freezing of gait, in particular, also enters the TD/PIGD ratio and the total MDS-UPDRS. Source: "
+    "53_strobe_additions.py.")
+
 doc.save(OUT)
+
+
+def reorder_by_number(path):
+    """Put the table blocks in the order of their printed numbers, and keep the landscape section
+    of the 89-candidate screen around that block wherever it lands."""
+    import copy
+    import re
+    from docx import Document as _D
+    from docx.oxml.ns import qn
+    d = _D(path)
+    body = d.element.body
+    kids = list(body.iterchildren())
+    text = lambda el: "".join(t.text or "" for t in el.iter(qn("w:t")))
+    starts = []
+    for i, el in enumerate(kids):
+        m = re.match(r"^Supplementary Table S(\d+)\.", text(el)) if el.tag == qn("w:p") else None
+        if m:
+            starts.append((int(m.group(1)), i))
+    if not starts:
+        return
+    final = kids[-1]
+    blocks = {}
+    for k, (n, a) in enumerate(starts):
+        b = starts[k + 1][1] if k + 1 < len(starts) else len(kids) - 1
+        blocks[n] = kids[a:b]
+    intro = kids[:starts[0][1]]
+    landscape_block, portrait = None, None
+    for n, blk in blocks.items():
+        for el in blk:
+            sp = el.find(".//" + qn("w:sectPr"))
+            if sp is None or el.tag != qn("w:p"):
+                continue
+            if sp.find(qn("w:pgSz")).get(qn("w:orient")) == "landscape":
+                landscape_block = n
+    for n, blk in list(blocks.items()) + [(0, intro)]:
+        if n == landscape_block:
+            continue
+        for el in blk:
+            sp = el.find(".//" + qn("w:sectPr"))
+            if sp is not None and el.tag == qn("w:p"):
+                portrait = copy.deepcopy(sp)
+                sp.getparent().remove(sp)
+    order = sorted(blocks)
+    if landscape_block is not None and portrait is not None:
+        k = order.index(landscape_block)
+        prev = blocks[order[k - 1]] if k > 0 else intro
+        last = prev[-1]
+        if last.tag != qn("w:p"):
+            last = d.add_paragraph()._p
+            prev.append(last)
+        ppr = last.find(qn("w:pPr"))
+        if ppr is None:
+            ppr = last.makeelement(qn("w:pPr"), {})
+            last.insert(0, ppr)
+        ppr.append(portrait)
+    for el in list(body.iterchildren()):
+        body.remove(el)
+    for el in intro:
+        body.append(el)
+    for n in order:
+        for el in blocks[n]:
+            body.append(el)
+    body.append(final)
+    d.save(path)
+
+
+reorder_by_number(OUT)
 print("saved", OUT)

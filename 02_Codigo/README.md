@@ -41,12 +41,12 @@ Run in order. Each script states at the top which manuscript element it produces
 | `03_baseline_predictor_matrix.py` | Baseline predictor matrix, all candidates pre-levodopa |
 | `03b_candidate_matrix.py` | `candidate_matrix.parquet`, the analysis matrix, rebuilt from the raw tables. The default run checks all 39 columns against the stored file and stops if any diverges |
 | `04_table1_and_incidence.py` | The eligible cohort described, and cumulative incidence. Note that this describes the 1,447 eligible, not the development sample |
-| `04b_table1.py` | Table 1 of the manuscript: the 813 of the development sample, with the treatment rows from script 27. Prints each cell beside the published one |
+| `04b_table1.py` | Table 1 of the manuscript: the 813 of the development sample, with the treatment rows from script 27 and the four rows STROBE item 14a asks for (age at levodopa initiation, disease duration, Hoehn and Yahr stage, race). Prints each cell beside the published one |
 | `05_final_model_internal_validation.py` | Table 2; optimism correction; leave-one-site-out |
 | `06_dynamic_model_refit.py` | Dynamic mode of the calculator |
-| `11_supplementary_table_S3.py` | Supplementary Table S3 |
+| `11_supplementary_table_S3.py` | Supplementary Table S11, panel A: the twelve analyses varying time-zero, outcome definition and prevalent cases, with the out-of-fold concordance of each. The file name keeps an older numbering |
 | `12_competing_risk.py` | Aalen-Johansen adjustment, factor c(t) in Table 2 |
-| `13_supplementary_table_S4.py` | Supplementary Table S4 |
+| `13_supplementary_table_S4.py` | Supplementary Table S18: levodopa responsiveness across thresholds. The file name keeps an older numbering |
 | `21_full_audit.py` | Independent re-derivation of every key number from the raw tables |
 | `27_treatments_at_time_zero.py` | Treatment rows of Table 1, the amantadine-free dose included. Rewritten in August 2026 to import the audited drug searches from `cohort.py` |
 | `28_model_assumptions.py` | Proportional hazards and linearity checks |
@@ -67,12 +67,13 @@ Run in order. Each script states at the top which manuscript element it produces
 | `44_classification_metrics.py` | Sensitivity, specificity and predictive values by risk threshold |
 | `45_informative_censoring.py` | Censoring decomposition, dropout model and delta-based imputation |
 | `46_calculator_artifacts.py` | Regenerates `05_Calculadora/calculator_artifacts.json` from the raw data |
-| `48_supplementary_tables.py` | Builds the seventeen supplementary tables with their legends, reading every number from `03_Resultados/Tabelas/` |
-| `49_head_to_head_unified.py` | Supplementary Table S15 and Supplementary Figure S2 from one analysis: the published predictor sets with paired bootstrap intervals, and the discrimination attainable at each model size. Replaces the two earlier scripts, which used different samples and different cross-validation |
+| `48_supplementary_tables.py` | Builds the eighteen supplementary tables with their legends, reading every number from `03_Resultados/Tabelas/`, in the order the manuscript cites them |
+| `49_head_to_head_unified.py` | Supplementary Table S10 and Supplementary Figure S2 from one analysis: the published predictor sets with paired bootstrap intervals, and the discrimination attainable at each model size. Replaces the two earlier scripts, which used different samples and different cross-validation |
 | `49b_loo_variables.py` | Builds the seven baseline factors reported by Loo 2024, including the two the candidate matrix does not carry |
-| `50_treatment_candidate_recomputed.py` | Recomputes the treatment row of Supplementary Table S4 with the amantadine-free dose, after reproducing the protocol of the multimodal screen |
-| `52_multimodal_screen.py` | Supplementary Table S4: all 89 multimodal candidates rebuilt from the raw downloads and rescreened. `--probe` reports the sample recovered for each candidate against the published one |
-| `51_outcome_anchoring.py` | Supplementary Table S17: whether crossing the outcome threshold is followed by a loss of function on the Modified Schwab and England scale |
+| `50_treatment_candidate_recomputed.py` | Recomputes the treatment row of Supplementary Table S8 with the amantadine-free dose, after reproducing the protocol of the multimodal screen |
+| `52_multimodal_screen.py` | Supplementary Table S8: all 89 multimodal candidates rebuilt from the raw downloads and rescreened. `--probe` reports the sample recovered for each candidate against the published one |
+| `51_outcome_anchoring.py` | Supplementary Table S2: whether crossing the outcome threshold is followed by a loss of function on the Modified Schwab and England scale |
+| `53_strobe_additions.py` | Supplementary Table S3, the unadjusted hazard ratios, and the descriptive numbers STROBE asks for: person-time and incidence rate, the assessment schedule, the timing of the two sources of predictors, the examinations recorded in the ON state, the participants with no pre-levodopa assessment, the boundaries of the risk tertiles in Figure 2 and the two patients of the Discussion |
 
 ### Scripts removed with the external validation
 
@@ -95,14 +96,14 @@ current results, so a reader needs to be told which is which. `legacy/README.md`
 each one and its replacement. Nothing in the paper comes from that folder.
 
 Every figure and table in the manuscript and in the supplement is produced by a script
-in this folder. Two qualifications, both of which are stated in the scripts themselves.
-Panel B of Supplementary Table S3 is written from constants inside
-`48_supplementary_tables.py` rather than read from `tabS6_multiple_imputation.csv`; the
-constants agree with that file, and re-running `29_multiple_imputation.py` reproduces it
-exactly, but the wiring is by hand. And the levodopa-equivalent dose that the published
+in this folder. Two qualifications, both of which are stated in the scripts themselves and
+in the legend of Supplementary Table S8. The levodopa-equivalent dose that the published
 screen used cannot be recovered, because no dose column survives in the processed data:
-`50_treatment_candidate_recomputed.py` establishes this and replaces that one row of
-Supplementary Table S4 with the amantadine-free dose the Methods describe.
+`50_treatment_candidate_recomputed.py` establishes this and replaces that one row with the
+amantadine-free dose the Methods describe. And the change in out-of-fold concordance of
+the other 88 candidates carries the estimate of the original screen, whose cross-validation
+seeding was never recorded: `52_multimodal_screen.py` reproduces their hazard ratios and p
+values but not that column.
 
 Figures are written to `../03_Resultados/Figuras/` in PNG, SVG and PDF.
 

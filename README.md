@@ -30,7 +30,7 @@ replacing it. There are two such cases and both are documented in `02_Codigo/REA
 
 | Folder | Contents |
 | --- | --- |
-| `02_Codigo/pipeline/` | 40 Python scripts, run in the order given in `02_Codigo/README.md` |
+| `02_Codigo/pipeline/` | 40 numbered Python scripts and the shared module `cohort.py`, run in the order given in `02_Codigo/README.md` |
 | `02_Codigo/pipeline/figuras_R/` | The four R scripts that draw the figures |
 | `02_Codigo/pipeline/legacy/` | Nine superseded scripts, kept for traceability. Nothing in the paper comes from them |
 | `02_Codigo/exploratory/` | The model-selection history that preceded the six-variable specification. These do not reproduce the manuscript |

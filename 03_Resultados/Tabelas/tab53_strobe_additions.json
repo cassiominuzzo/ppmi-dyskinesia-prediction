@@ -1,0 +1,62 @@
+{
+ "person_years": 2789.787816563997,
+ "rate_per_1000_py": 59.14428295239311,
+ "part_iv_interval_months": {
+  "median": 6.044678055190539,
+  "q1": 5.946123521681997,
+  "q3": 10.972404730617608
+ },
+ "part_iv_assessments_per_participant": {
+  "median": 4.0,
+  "q1": 3.0,
+  "q3": 9.0
+ },
+ "timing_curated_visit": {
+  "median_days": 181.0,
+  "q1_days": 61.0,
+  "q3_days": 242.0,
+  "within_six_months_pct": 49.20049200492005,
+  "same_calendar_month_n": 108,
+  "same_calendar_month_pct": 13.284132841328415
+ },
+ "timing_raw_mdsupdrs_visit": {
+  "median_days": 31.0,
+  "q1_days": 0.0,
+  "q3_days": 121.0,
+  "within_six_months_pct": 89.0528905289053,
+  "same_calendar_month_n": 279,
+  "same_calendar_month_pct": 34.31734317343174
+ },
+ "exam_on_state_n": 200,
+ "exam_on_state_pct": 24.600246002460025,
+ "exam_on_state_on_agonist_n": 156,
+ "eligible_n": 1441,
+ "no_prelevodopa_assessment_n": 327,
+ "no_prelevodopa_event_rate_pct": 29.357798165137616,
+ "no_prelevodopa_median_followup": 4.0,
+ "development_median_followup": 2.414784394250513,
+ "with_some_assessment_n": 1114,
+ "tdpigd_missing_n": 158,
+ "tdpigd_missing_because_pigd_zero_n": 158,
+ "tdpigd_undefined_n": 158,
+ "tdpigd_undefined_pct": 14.183123877917415,
+ "tertile_sizes": [
+  271,
+  271,
+  271
+ ],
+ "tertile_bounds_risk5_pct": [
+  16.937839342982024,
+  25.45553150196286
+ ],
+ "patients": {
+  "man_68": {
+   "risk5_pct": 10.837412320981622,
+   "centile": 4.674046740467404
+  },
+  "woman_55": {
+   "risk5_pct": 45.57618541590333,
+   "centile": 94.95694956949569
+  }
+ }
+}

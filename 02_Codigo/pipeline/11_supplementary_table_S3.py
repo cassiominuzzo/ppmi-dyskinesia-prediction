@@ -64,7 +64,7 @@ for tzn,tzc in [('levodopa','tzero_levodopa'),('1a-dopaminergica','tzero_any_dop
             rows.append({'tempo-zero':tzn,'desfecho':fn,'trunc':exn,'n':len(d),'ev':int(d.event.sum()),
                 'inc_5a':round(inc5,3),'C':round(cph.concordance_index_,3),
                 'C_oof':round(coof,4),
-                'HR_UPDRStot':round(cph.summary.loc['updrs_totscore','exp(coef)'],3),
+                'HR_UPDRStot':round(cph.summary.loc['updrs_totscore','exp(coef)'],4),
                 'HR_ageonset':round(cph.summary.loc['ageonset','exp(coef)'],3),
                 'HR_NP2FREZ':round(cph.summary.loc['NP2FREZ','exp(coef)'],3)})
 R=pd.DataFrame(rows); R.to_csv(TAB+'/tab44_sensibilidade.csv',index=False)
