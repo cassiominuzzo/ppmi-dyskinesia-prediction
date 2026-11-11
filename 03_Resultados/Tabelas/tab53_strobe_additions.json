@@ -11,6 +11,12 @@
   "q1": 3.0,
   "q3": 9.0
  },
+ "levodopa_start_period": {
+  "first": "2011-04",
+  "last": "2026-02",
+  "n": 813
+ },
+ "last_part_iv_assessment": "2026-04",
  "timing_curated_visit": {
   "median_days": 181.0,
   "q1_days": 61.0,

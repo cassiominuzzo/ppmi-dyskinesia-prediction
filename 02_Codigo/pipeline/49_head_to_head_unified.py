@@ -173,15 +173,17 @@ elif mode == "sets":
     rows = []
     for n in names:
         lo, hi = np.percentile(bootC[n], [2.5, 97.5])
-        r = dict(predictor_set=n, k=len(MODELS[n]), C=round(pts[n], 4),
-                 C_score=round(cscore[n], 4), C_lo=round(lo, 4), C_hi=round(hi, 4))
+        # six decimals, because the table and the figure round these to three, and rounding a
+        # stored 0.6775 printed 0.677 in the figure beside 0.678 in the table (the value is 0.67755)
+        r = dict(predictor_set=n, k=len(MODELS[n]), C=round(pts[n], 6),
+                 C_score=round(cscore[n], 6), C_lo=round(lo, 6), C_hi=round(hi, 6))
         if n == ref:
             r.update(dC=0.0, d_lo=np.nan, d_hi=np.nan, p=np.nan)
         else:
             dv = np.array(bootD[n])
-            r.update(dC=round(pts[ref] - pts[n], 4),
-                     d_lo=round(float(np.percentile(dv, 2.5)), 4),
-                     d_hi=round(float(np.percentile(dv, 97.5)), 4),
+            r.update(dC=round(pts[ref] - pts[n], 6),
+                     d_lo=round(float(np.percentile(dv, 2.5)), 6),
+                     d_hi=round(float(np.percentile(dv, 97.5)), 6),
                      p=round(max(2 * min((dv <= 0).mean(), (dv >= 0).mean()), 1.0 / ok), 4))
         rows.append(r)
     out = pd.DataFrame(rows)

@@ -3,33 +3,16 @@
 # Replaces 22_figure1_participant_flow.py, which drew three columns because the
 # study then had two external cohorts.
 #
-# The counts are re-derived here from the raw MDS-UPDRS Part IV table and the
-# medication log, so the figure cannot drift from the analysis.
+# The counts come from the analysis base itself, so the figure cannot drift from the analysis.
 #
-# Two bookkeeping notes, recorded so that a reader who recounts gets the same
-# answer:
-#
-# 1. PPMI records dates as month and year only, so an assessment in the same month
-#    as levodopa initiation has a nominal time of zero and an assessment in the
-#    preceding month a nominal time of about minus one month. Participants are
-#    counted as identified if they have a Part IV assessment no earlier than one
-#    month before time-zero, which is the tolerance used when the cohort was first
-#    built and which yields 1,447.
-#
-# 2. Corrected on 28 August 2026 against the raw tables. An earlier version of this
-#    note said that five of the six participants without follow-up had a single
-#    assessment on the date of initiation and that the sixth already met the outcome
-#    at that date. That is wrong. All six without follow-up are free of the outcome
-#    at time-zero (PATNO 3514, 3559, 101492, 101513, 259658, 383233), and the
-#    participant who already meets the outcome at time-zero is a seventh, separate
-#    exclusion (PATNO 58783), which is what the code below computes by subtracting
-#    without_followup from the prevalent set. There are therefore seven exclusions,
-#    not six, and the raw re-derivation gives 1,440 eligible against the 1,441 held
-#    in the stored candidate matrix. That one-participant difference remains
-#    unexplained; none of the participants involved belongs to the development
-#    sample of 813, so no reported number changes. The manuscript legend currently
-#    says "six had no follow-up beyond that date, leaving 1,441", which omits the
-#    prevalent exclusion and the 1,440 against 1,441 reconciliation.
+# Corrected in November 2026. This script used to recount from the raw Part IV table with a
+# tolerance of one month before time-zero, and from a medication log that dates levodopa
+# slightly differently. That recount also reached 1,447, by coincidence: it included one
+# participant whose last assessment is 29 days before time-zero (PATNO 101492) and missed one
+# who is in the analysis (PATNO 41299). So it listed seven exclusions, and the figure showed
+# 1,447 minus 7 arriving at 1,441. The analysis base has six, and they add up: five with no
+# assessment after time-zero (3514, 3559, 101513, 259658, 383233) and one who already met the
+# outcome at time-zero (58783), who does have later assessments.
 
 import os
 
@@ -47,17 +30,13 @@ matplotlib.rcParams["svg.fonttype"] = "none"
 matplotlib.rcParams["font.family"] = "DejaVu Sans"
 
 OUT = C.ensure_dir(os.path.join(C.RESULTS, "Figuras"))
-TOLERANCE_YEARS = -31 / 365.25
 
-part4 = C.load_part_iv()
-seen = part4[part4.t >= TOLERANCE_YEARS]
-n_identified = int(seen.PATNO.nunique())
-
-last_assessment = seen.groupby("PATNO").t.max()
-without_followup = set(last_assessment[last_assessment <= 0].index)
-at_zero = seen[seen.t <= 0].groupby("PATNO")[["NP4DYSKI", "NP4WDYSK"]].max()
-prevalent = set(at_zero[(at_zero.NP4DYSKI >= 2) | (at_zero.NP4WDYSK >= 2)].index) - without_followup
-n_excluded_first = len(without_followup) + len(prevalent)
+base = pd.read_parquet(os.path.join(C.PROC, "analytic_base.parquet"))
+n_identified = len(base)
+no_time = base[base.exit <= 0]
+without_followup = no_time[no_time.event == 0]
+prevalent = no_time[no_time.event == 1]
+n_excluded_first = len(no_time)
 
 matrix = pd.read_parquet(os.path.join(C.PROC, "candidate_matrix.parquet"))
 if "ageonset" not in matrix.columns and "ageonset_x" in matrix.columns:
@@ -78,18 +57,8 @@ print(f"eligible: {n_eligible} ({events_eligible} events)")
 print(f"  excluded, incomplete on the 18 candidate clinical predictors: {n_incomplete}")
 print(f"development sample: {n_final} ({events_final} events)")
 
-# Reconciliation. Re-deriving the exclusions from the raw Part IV table gives
-# 1,447 - 6 - 1 = 1,440, whereas the stored candidate matrix holds 1,441. The
-# difference is one participant retained in the matrix despite having no
-# assessment after time-zero, and one participant with the outcome already
-# present at time-zero who was dropped. Neither belongs to the development
-# sample of 813, so no reported number changes; the item is recorded here so
-# that a reader who recounts finds the explanation rather than a discrepancy.
-balance = n_identified - n_excluded_first
-if balance != n_eligible:
-    print(f"\nreconciliation: raw derivation gives {balance} eligible against "
-          f"{n_eligible} in the stored matrix, a difference of "
-          f"{n_eligible - balance} participant(s); see the note at the top of this file")
+assert n_identified - n_excluded_first == n_eligible, "the flow no longer adds up"
+assert set(pd.to_numeric(base[base.exit > 0].PATNO)) == set(pd.to_numeric(eligible.PATNO))
 
 NAVY = "#1F4E79"
 GREY = "#6B6B6B"

@@ -154,6 +154,16 @@ def main():
     print("Part IV assessed every %.1f months (median); %d assessments per participant (median)"
           % (gap.median(), per.median()))
 
+    # ---- STROBE 5: the period over which levodopa was started and follow-up collected.
+    # Medication dates are recorded to the month, so these are months, not days.
+    tzd = tz[tz.PATNO.astype(int).isin(ids)].tzero_levodopa
+    out["levodopa_start_period"] = {"first": tzd.min().strftime("%Y-%m"),
+                                    "last": tzd.max().strftime("%Y-%m"), "n": int(tzd.notna().sum())}
+    out["last_part_iv_assessment"] = m.INFODT.max().strftime("%Y-%m")
+    print("levodopa started from %s to %s in the %d; last Part IV assessment %s"
+          % (out["levodopa_start_period"]["first"], out["levodopa_start_period"]["last"],
+             out["levodopa_start_period"]["n"], out["last_part_iv_assessment"]))
+
     # ---- timing of the predictor visits, by source
     cur = ip(pd.read_excel(C._find("Curated_Data_Cut", "PPMI_Curated_Data_Cut_Public_*.xlsx"),
                            sheet_name=0,

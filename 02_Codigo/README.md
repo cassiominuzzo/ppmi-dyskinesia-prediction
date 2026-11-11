@@ -73,7 +73,8 @@ Run in order. Each script states at the top which manuscript element it produces
 | `50_treatment_candidate_recomputed.py` | Recomputes the treatment row of Supplementary Table S8 with the amantadine-free dose, after reproducing the protocol of the multimodal screen |
 | `52_multimodal_screen.py` | Supplementary Table S8: all 89 multimodal candidates rebuilt from the raw downloads and rescreened. `--probe` reports the sample recovered for each candidate against the published one |
 | `51_outcome_anchoring.py` | Supplementary Table S2: whether crossing the outcome threshold is followed by a loss of function on the Modified Schwab and England scale |
-| `53_strobe_additions.py` | Supplementary Table S3, the unadjusted hazard ratios, and the descriptive numbers STROBE asks for: person-time and incidence rate, the assessment schedule, the timing of the two sources of predictors, the examinations recorded in the ON state, the participants with no pre-levodopa assessment, the boundaries of the risk tertiles in Figure 2 and the two patients of the Discussion |
+| `54_biospecimen_candidates.py` | The rows of the lysosomal assays in Supplementary Table S8, each read from one specimen and one reported quantity, with the false-discovery columns recomputed around them. Also runs every assay in every specimen. Run after 50 and after `52_multimodal_screen.py --write` |
+| `53_strobe_additions.py` | Supplementary Table S3, the unadjusted hazard ratios, the p values of Table 2, and the descriptive numbers STROBE asks for: person-time and incidence rate, the period of levodopa initiation, the assessment schedule, the timing of the two sources of predictors, the examinations recorded in the ON state, the participants with no pre-levodopa assessment, the boundaries of the risk tertiles in Figure 2 and the two patients of the Discussion |
 
 ### Scripts removed with the external validation
 
@@ -101,7 +102,7 @@ in the legend of Supplementary Table S8. The levodopa-equivalent dose that the p
 screen used cannot be recovered, because no dose column survives in the processed data:
 `50_treatment_candidate_recomputed.py` establishes this and replaces that one row with the
 amantadine-free dose the Methods describe. And the change in out-of-fold concordance of
-the other 88 candidates carries the estimate of the original screen, whose cross-validation
+the other 85 candidates carries the estimate of the original screen, whose cross-validation
 seeding was never recorded: `52_multimodal_screen.py` reproduces their hazard ratios and p
 values but not that column.
 

@@ -380,8 +380,8 @@ table(["Predictor", "Complete case (n = 813), β (SE)",
 
 legend(
     "(A) Of the 1,447 patients with an MDS-UPDRS Part IV assessment at or after levodopa initiation, "
-    "six had their only assessment on the date of initiation itself, giving zero follow-up, one of "
-    "whom already met the outcome at that date, so the analysis base is 1,441 participants with 302 "
+    "five had no assessment after the date of initiation, giving zero follow-up, and one already "
+    "met the outcome at that date, so the analysis base is 1,441 participants with 302 "
     "events. Imputation was restricted to the 1,114 "
     "participants with at least one pre-levodopa assessment, because the remaining 327 have no "
     "predictor information at all and imputing them would extrapolate rather than recover. Those 327 "
@@ -427,6 +427,56 @@ table(["Domain and candidate predictor", "n", "Events", "HR (95% CI)", "p", "LRT
       rows, widths=[7.2, 1.0, 1.1, 3.0, 1.3, 1.3, 1.9, 1.6, 4.2, 2.2],
       size=7, group_rows=groups)
 best = iv.loc[iv.p.idxmin()]
+# Corrected in October 2026. The legend used to say that none of the four nominal markers
+# survived false-discovery-rate control "under either procedure", but the CSF composite is
+# the only candidate in its domain, so its within-domain adjustment leaves p at 0.035; and it
+# named three groups as the only ones with limited power, when 18 candidates sit at 1.35 or
+# above. Both statements are now built from the table itself and checked against it.
+_nom = iv[iv.p < 0.05]
+_dom_size = iv.domain.value_counts()
+_shared = _nom[_nom.domain.map(_dom_size) > 1]
+_alone = _nom[_nom.domain.map(_dom_size) == 1]
+assert len(_nom) == 4 and len(_shared) == 3 and len(_alone) == 1, "nominal markers changed"
+assert (_alone.FDR_domain == _alone.p).all() and (_shared.FDR_domain >= 0.05).all()
+_fdr_dom = sorted({pv(x) for x in _shared.FDR_domain})
+_fdr_all = sorted({pv(x) for x in _nom.FDR_global})
+assert len(_fdr_dom) == 1 and len(_fdr_all) == 1
+
+
+def _mh(labels):
+    v = iv.loc[iv.label.isin(labels), "min_HR_80pct"]
+    assert len(v) == len(labels), labels
+    lo, hi = num(v.min()), num(v.max())
+    return lo if lo == hi else f"{lo} to {hi}"
+
+
+def _n(label):
+    return int(iv.loc[iv.label == label, "n"].iloc[0])
+
+
+_BINARY = {"SNCA variant carrier": "for SNCA carriers",
+           "GBA variant carrier (MUTRSLT positive)": "for GBA",
+           "LRRK2 variant carrier (MUTRSLT positive)": "for LRRK2",
+           "Any pathogenic variant detected": "for any pathogenic variant",
+           "APOE e4 allele count": "per APOE e4 allele",
+           "Orthostatic hypotension": "for orthostatic hypotension",
+           "Impulse control disorder (QUIP)": "for impulse control disorder"}
+_SAA = "CSF alpha-synuclein seed amplification assay, positive"
+_COG5 = ["Lexical fluency (FAS)", "Trail making A", "Trail making B", "Modified Boston naming test",
+         "Clock drawing"]
+_LIPIDS = ["Total GL2 (lactosylceramide), CSF", "Total glucosylceramide, CSF", "Total sphingomyelin, CSF"]
+_PGRN, _NFL, _GCASE = "Progranulin, CSF", "CSF neurofilament light", "Glucocerebrosidase activity, whole blood"
+_low = set(iv.loc[iv.min_HR_80pct >= 1.35, "label"])
+assert _low == set(_BINARY) | {_SAA, _PGRN, _NFL, _GCASE} | set(_COG5) | set(_LIPIDS), "low-power set changed"
+assert len({_n(x) for x in _LIPIDS + [_GCASE]}) == 1
+# Which specimen each assay was read from, and what the other specimens give. From
+# 54_biospecimen_candidates.py, which runs every assay in every specimen.
+_b54 = load("tab54_biospecimen_candidates.json")
+_alt = [r for r in _b54["every_specimen"] if not r["used"] and r["p"] < 0.05]
+assert len(_alt) == 1 and _alt[0]["test"] == "ps65 ubiquitin" and _alt[0]["specimen"] == "CSF", _alt
+_alt = _alt[0]
+_gl2 = [r for r in _b54["every_specimen"] if r["used"] and r["test"] == "total gl2"][0]
+_binary_txt = ", ".join(f"{_mh([k])} {v}" for k, v in _BINARY.items())
 legend(
     "Each candidate was added to the frozen six-variable clinical model, one at a time, and evaluated "
     "in the participants in whom it was recorded. Hazard ratios are per standard deviation for "
@@ -439,7 +489,10 @@ legend(
     "confidence interval. Four candidates were nominally associated with the outcome at p < 0.05, all "
     "of them cerebrospinal-fluid markers and all in the same direction, with lower values indicating "
     f"higher risk; the strongest was {best.label} at p = {pv(best.p)}. None survived false-discovery-rate "
-    "control under either procedure, and the largest change in discrimination among them was 0.0103, "
+    f"control across all 89 candidates (adjusted p = {_fdr_all[0]}), and the three single markers did "
+    f"not survive it within their domain either (adjusted p = {_fdr_dom[0]}); the composite, the only "
+    "candidate in its domain, keeps its unadjusted p there, because a correction over a single test "
+    f"changes nothing. The largest change in discrimination among the four was {_nom.dC.max():.4f}, "
     "with a confidence interval that includes zero. "
     "How much weight a null carries depends on what the analysis could have detected, and the last "
     "column states that directly: the smallest hazard ratio, per standard deviation for a "
@@ -450,25 +503,38 @@ legend(
     "those 291 belong entirely to the earlier recruitment wave and therefore have the longest "
     f"follow-up. For {int((iv.min_HR_80pct < 1.30).sum())} of the 89 candidates the detectable "
     f"hazard ratio is below 1.30 and for {int((iv.min_HR_80pct < 1.35).sum())} it is below 1.35, so "
-    "for most of the screen an effect of the size usually claimed for a prognostic biomarker would "
-    "not have been missed. Where that is not so, the column says so rather than leaving the reader "
-    "to infer it: rare genotypes, where only very large effects are detectable, at 15.4 for SNCA "
-    "carriers, 6.0 for GBA and 3.0 for LRRK2; the cerebrospinal-fluid seed amplification assay, "
-    "positive in most of the cohort and therefore carrying little information; and the five "
-    "cognitive tests administered to a subsample of about 440 participants with roughly 22 events "
-    "each. The single treatment "
+    "for most of the screen a hazard ratio of 1.30 per standard deviation would not have been missed. "
+    f"The column also shows where power was limited, and the {len(_low)} candidates at 1.35 or above "
+    "fall into two groups. Genotypes and other binary markers can reveal only large effects: "
+    f"{_binary_txt} and {_mh([_SAA])} for the cerebrospinal-fluid seed amplification assay, which is "
+    "positive in most of the cohort and therefore carries little information. Measures taken in small "
+    f"subsamples are limited by their few events: {_mh(_COG5)} for the five cognitive tests "
+    "administered to about 440 participants with roughly 22 events each; "
+    f"{_mh([_PGRN])} for progranulin, measured in {_n(_PGRN)}; {_mh(_LIPIDS + [_GCASE])} for the three "
+    f"lysosomal lipids and glucocerebrosidase activity, measured in {_n(_GCASE)}; and {_mh([_NFL])} for "
+    "cerebrospinal-fluid neurofilament "
+    f"light, measured in {_n(_NFL)}. The single treatment "
     "candidate is the total dopaminergic daily dose at time-zero with amantadine removed from the "
     "conversion, which is the variable the Methods describe and the one Table 1 reports. Five of the "
     "813 have no convertible dose, four of them because entacapone is recorded as a multiplier of the "
     "levodopa dose rather than as an absolute value; their dose is unknown rather than zero, so they "
     "are treated as missing, as every other candidate in this table treats a variable that was not "
-    "recorded. None of the five reached the outcome, so the event count is 165 either way. Its change "
-    "in discrimination "
-    "is the only one in this table estimated under the cross-validation protocol documented in "
-    "cohort.py, twenty repetitions of stratified five-fold, because that row was recomputed; the "
-    "other 88 carry the estimate of the original screen. Rows within each domain are ordered by p. "
-    "Sources: 52_multimodal_screen.py, which rebuilds the 89 candidates from the raw tables, and "
-    "50_treatment_candidate_recomputed.py.")
+    "recorded. None of the five reached the outcome, so the event count is 165 either way. "
+    "Each lysosomal and mitophagy assay was read from one specimen and one reported quantity, the "
+    "specimen measured in the most participants: cerebrospinal fluid for progranulin, whole blood for "
+    "glucocerebrosidase activity and plasma for pS65 ubiquitin. The three lipids were measured in all "
+    f"{_n(_LIPIDS[0])} in both specimens and are given in cerebrospinal fluid, where total GL2 was zero in "
+    f"{_gl2['zeros']}. Run in every other specimen, these assays leave the conclusion unchanged; the only "
+    f"nominal result is pS65 ubiquitin in cerebrospinal fluid (hazard ratio {num(_alt['HR'])}, 95% CI "
+    f"{num(_alt['lo'])} to {num(_alt['hi'])}, p = {pv(_alt['p'])}, {_alt['n']} participants), in the same "
+    "direction as the other cerebrospinal-fluid markers, with an adjusted p across all 89 of "
+    f"{pv(_b54['ps65_csf_fdr_global'])} if it replaced the plasma row. The change in discrimination of the "
+    "treatment row and of glucocerebrosidase activity, progranulin and pS65 ubiquitin is estimated "
+    "under the cross-validation protocol documented in cohort.py, twenty repetitions of stratified "
+    "five-fold, because those rows were recomputed; the other 85 carry the estimate of the original "
+    "screen. Rows within each domain are ordered by p. "
+    "Sources: 52_multimodal_screen.py, which rebuilds the 89 candidates from the raw tables, "
+    "50_treatment_candidate_recomputed.py and 54_biospecimen_candidates.py.")
 
 sec = doc.add_section()
 sec.orientation = WD_ORIENT.PORTRAIT

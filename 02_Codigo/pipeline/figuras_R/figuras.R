@@ -95,7 +95,7 @@ draw_fig1 <- function() {
   }
   EB <- list(c(0.65, 0.600, 0.99, 0.730), c(0.65, 0.290, 0.99, 0.420))
   exc_txt <- list(
-    c("Excluded (n = 7)", "no follow-up beyond time-zero (6)", "outcome already present at time-zero (1)"),
+    c("Excluded (n = 6)", "no follow-up beyond time-zero (5)", "outcome already present at time-zero (1)"),
     c("Excluded (n = 628)", "incomplete on at least one of the", "18 candidate clinical predictors"))
   for (i in 1:2) {
     b <- EB[[i]]; roundrect(b[1], b[2], b[3], b[4], col = "#F5F5F5", border = GREY, lwd = 1.2)

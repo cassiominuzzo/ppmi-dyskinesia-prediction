@@ -298,21 +298,45 @@ def mri():
     return out.merge(cth, on="PATNO", how="outer")
 
 
+# Each assay is read from one specimen and one reported quantity. Corrected in November 2026.
+# The results file holds several rows per participant under one test name, and this function
+# used to keep whichever came last in the file. That put three different things into one
+# variable: pS65 ubiquitin was the standard deviation of the replicates, not the measurement,
+# for all 277 participants; glucocerebrosidase activity mixed whole blood, cerebrospinal fluid
+# and plasma, on two units; progranulin mixed cerebrospinal fluid and plasma. The specimen is
+# now the one measured in the most participants of the development sample. The three lipids
+# were measured in all 233 in both specimens, and stay in cerebrospinal fluid, the compartment
+# closest to the brain and the one the earlier rows happened to use, so those three rows do
+# not change. 54_biospecimen_candidates.py reruns every assay in every specimen, to show that
+# the choice decides nothing.
 BIOSPECIMEN = {
-    "bio_gl2": "total gl2", "bio_glccer": "total glccer", "bio_sm": "total sm",
-    "bio_progranulin": "progranulin", "bio_gcase": "gcase activity",
-    "bio_ps65ub": "ps65 ubiquitin",
+    "bio_gl2": ("total gl2", "CSF", "ng/mL"),
+    "bio_glccer": ("total glccer", "CSF", "ng/mL"),
+    "bio_sm": ("total sm", "CSF", "ng/mL"),
+    "bio_progranulin": ("progranulin", "CSF", "ng/mL"),
+    "bio_gcase": ("gcase activity", "Whole Blood", "umol/L/hr"),
+    "bio_ps65ub": ("ps65 ubiquitin", "Plasma", "average (fM)"),
 }
+BIOSPECIMEN_LABEL = {
+    "bio_gl2": "Total GL2 (lactosylceramide), CSF",
+    "bio_glccer": "Total glucosylceramide, CSF",
+    "bio_sm": "Total sphingomyelin, CSF",
+    "bio_progranulin": "Progranulin, CSF",
+    "bio_gcase": "Glucocerebrosidase activity, whole blood",
+    "bio_ps65ub": "pS65 ubiquitin, plasma",
+}
+SPECIMEN_NAME = {"csf": "CSF", "cerebrospinal fluid": "CSF", "plasma": "Plasma",
+                 "whole blood": "Whole Blood"}
 
 
-def biospecimen(tz):
-    """The lysosomal and mitophagy assays at the baseline visit. These were run once, on
-    the baseline draw, in the sub-studies that requested them; a later sample exists for
-    some participants but it is post-levodopa by construction, so restricting to baseline
-    is what keeps the candidate pre-treatment. The results file is read line by line
-    because one record carries an unbalanced quote that stops the C parser partway
-    through."""
-    wanted = {v: k for k, v in BIOSPECIMEN.items()}
+def biospecimen_rows():
+    """Every baseline row of the six assays, with its specimen and reported quantity. The
+    assays were run once, on the baseline draw, in the sub-studies that requested them; a
+    later sample exists for some participants but it is post-levodopa by construction, so
+    restricting to baseline is what keeps the candidate pre-treatment. The results file is
+    read line by line because one record carries an unbalanced quote that stops the C parser
+    partway through."""
+    tests = {v[0] for v in BIOSPECIMEN.values()}
     rows = []
     path = raw("Biomarcadores_LCR_Sangue",
                "Current_Biospecimen_Analysis_Results_29Apr2026.csv")
@@ -321,16 +345,30 @@ def biospecimen(tz):
         header = next(reader)
         i_pat, i_name = header.index("PATNO"), header.index("TESTNAME")
         i_val, i_ev = header.index("TESTVALUE"), header.index("CLINICAL_EVENT")
+        i_type, i_unit = header.index("TYPE"), header.index("UNITS")
         for row in reader:
-            if len(row) <= max(i_pat, i_name, i_val, i_ev):
+            if len(row) <= max(i_pat, i_name, i_val, i_ev, i_type, i_unit):
                 continue
-            key = wanted.get(row[i_name].strip().lower())
-            if key and row[i_ev] == "BL":
-                rows.append((row[i_pat], key, row[i_val]))
-    d = ip(pd.DataFrame(rows, columns=["PATNO", "assay", "value"]))
+            test = row[i_name].strip().lower()
+            if test in tests and row[i_ev] == "BL":
+                rows.append((row[i_pat], test, SPECIMEN_NAME.get(row[i_type].strip().lower(),
+                                                                 row[i_type].strip()),
+                             row[i_unit].strip(), row[i_val]))
+    d = ip(pd.DataFrame(rows, columns=["PATNO", "test", "specimen", "unit", "value"]))
     d["value"] = pd.to_numeric(d["value"], errors="coerce")
-    d = d.dropna(subset=["value"]).groupby(["PATNO", "assay"], as_index=False).last()
-    return d.pivot(index="PATNO", columns="assay", values="value").reset_index()
+    return d.dropna(subset=["value"])
+
+
+def biospecimen(tz):
+    """The six assays on one row per participant, each from its declared specimen."""
+    d = biospecimen_rows()
+    out = pd.DataFrame({"PATNO": d.PATNO.drop_duplicates().values})
+    for key, (test, specimen, unit) in BIOSPECIMEN.items():
+        one = d[(d.test == test) & (d.specimen == specimen) & (d.unit == unit)]
+        assert len(one), (key, test, specimen, unit)
+        one = one.groupby("PATNO", as_index=False).value.last().rename(columns={"value": key})
+        out = out.merge(one, on="PATNO", how="left")
+    return out
 
 
 def ledd():
@@ -530,7 +568,8 @@ def main():
         print("%-24s %-22s %-22s %s"
               % (v, "%.3f (%.4f)" % (got["HR"], got["p"]),
                  "%.3f (%.4f)" % (row.HR, row.p), "match" if same else "DIFFERS"))
-        rows.append(dict(domain=row.domain, variable=v, label=row.label, unit=row.unit,
+        rows.append(dict(domain=row.domain, variable=v,
+                         label=BIOSPECIMEN_LABEL.get(v, row.label), unit=row.unit,
                          n=got["n"], events=got["events"], HR=round(got["HR"], 3),
                          lo=round(got["lo"], 3), hi=round(got["hi"], 3), p=got["p"],
                          LRT_p=got["LRT_p"], min_HR_80pct=got["min_HR_80pct"], min_HR_85pct=got["min_HR_85pct"],
