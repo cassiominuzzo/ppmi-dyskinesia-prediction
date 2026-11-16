@@ -7,7 +7,7 @@
 # cohort, so whether the 813 who remain are representative is a fair question and
 # the answer belongs in the manuscript rather than in a footnote.
 #
-# Supplementary Table S5 already shows that the two excluded strata have event
+# Supplementary Table S2 already shows that the two excluded strata have event
 # rates of 13.6% and 29.4% against 20.3% in the development sample, so missingness
 # is plainly not independent of the outcome. This script quantifies the difference
 # in baseline characteristics as well, and tests whether being excluded predicts

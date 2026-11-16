@@ -1,5 +1,5 @@
 # 51_outcome_anchoring.py
-# Produces: Supplementary Table S17, the functional consequence of crossing the outcome
+# Produces: Supplementary Table S3, the functional consequence of crossing the outcome
 #           threshold, and the numbers for the anchoring sentence in the Results.
 #
 # The question. The outcome of this study is a threshold on a scale, and the fairest
@@ -14,7 +14,7 @@
 # functional scale. The exposure is therefore item 4.1 alone, the time spent with
 # dyskinesia, which is a duration and not an impairment rating: a score of 2 means more
 # than a quarter of the waking day. That version of the outcome is already reported as a
-# sensitivity analysis in Supplementary Table S1.
+# sensitivity analysis in Supplementary Table S14.
 #
 # The design. The functional measure is the Modified Schwab and England scale, recorded at
 # the same visits throughout follow-up. Each participant contributes their own before and

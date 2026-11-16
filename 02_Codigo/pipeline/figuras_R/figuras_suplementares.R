@@ -1,7 +1,9 @@
 # figuras_suplementares.R
 # Produces: Supplementary Figure S1 (internal calibration at five years) and
-#           Supplementary Figure S2 (head-to-head with published predictor sets),
-#           each as PNG, SVG and PDF.
+#           Supplementary Figure S3 (head-to-head with published predictor sets),
+#           each as PNG at 300 dpi, SVG and PDF. The head-to-head figure was S2 until the
+#           November 2026 revision, when the decision curve, cited earlier in the text,
+#           took that number.
 #
 # Replaces 23_supplementary_figure_S1.py and 24_supplementary_figure_S2.py, which
 # pointed at the previous project layout and, more importantly, were drawn from
@@ -14,10 +16,11 @@
 #      out-of-fold linear predictor, and prints the check: mean predicted risk and O:E
 #      must equal the values in tab32_internal_performance.json.
 #
-#   S2 was drawn from tab67_head_to_head_CI.csv, which used a different complete-case
-#      sample and a different cross-validation from the table beside it, so the same
-#      six predictor sets carried two different C-indices in the same supplement. It is
-#      now drawn from 49_head_to_head_unified.py, the single analysis behind both.
+#   S3 (then S2) was drawn from tab67_head_to_head_CI.csv, which used a different
+#      complete-case sample and a different cross-validation from the table beside it,
+#      so the same six predictor sets carried two different C-indices in the same
+#      supplement. It is now drawn from 49_head_to_head_unified.py, the single analysis
+#      behind both.
 #
 # Inputs, all under 03_Resultados/Tabelas/ except the cohort:
 #   tab32_out_of_fold_linear_predictor.csv   out-of-fold linear predictor per participant
@@ -154,7 +157,7 @@ draw_s1 <- function() {
          adj = c(1, 1), cex = 0.85, font = 3, col = GREY)
 }
 
-# ============================================================ inputs, figure S2 =====
+# ============================================================ inputs, figure S3 =====
 S <- read.csv(file.path(TAB, "tab49_sets_unified.csv"), stringsAsFactors = FALSE)
 S <- S[order(-S$C), ]
 S$label <- sprintf("%s (%d)", S$predictor_set, S$k)
@@ -162,7 +165,7 @@ S$label <- sub("Total-6 \\(this study\\)", "Total-6, this study", S$label)
 cat("\nhead-to-head sets, ordered by out-of-fold C\n")
 print(S[, c("predictor_set", "k", "C", "C_lo", "C_hi", "dC", "d_lo", "d_hi", "p")], row.names = FALSE)
 
-draw_s2 <- function() {
+draw_s3 <- function() {
   n <- nrow(S); y <- n:1
   is_ref <- grepl("^Total-6", S$predictor_set)
   col <- ifelse(is_ref, TEAL, NAVY)
@@ -206,8 +209,8 @@ draw_s2 <- function() {
 
 # ------------------------------------------------------------------ output ---------
 for (fig in list(list(f = draw_s1, nm = "FigureS1_internal_calibration", w = 7.6, h = 8.2),
-                 list(f = draw_s2, nm = "FigureS2_head_to_head",         w = 12.4, h = 5.4))) {
-  png(file.path(OUT, paste0(fig$nm, ".png")), width = fig$w, height = fig$h, units = "in", res = 200)
+                 list(f = draw_s3, nm = "FigureS3_head_to_head",         w = 12.4, h = 5.4))) {
+  png(file.path(OUT, paste0(fig$nm, ".png")), width = fig$w, height = fig$h, units = "in", res = 300)
   fig$f(); dev.off()
   svg(file.path(OUT, paste0(fig$nm, ".svg")), width = fig$w, height = fig$h); fig$f(); dev.off()
   pdf(file.path(OUT, paste0(fig$nm, ".pdf")), width = fig$w, height = fig$h); fig$f(); dev.off()

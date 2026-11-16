@@ -1,5 +1,5 @@
 # 49_head_to_head_unified.py
-# Produces: Supplementary Table S15 and Supplementary Figure S2, from a single analysis.
+# Produces: Supplementary Table S12 and Supplementary Figure S3, from a single analysis.
 #
 # Why this script exists. The head-to-head comparison used to be split across two scripts
 # with two different protocols: one enumerated subsets to match degrees of freedom, the

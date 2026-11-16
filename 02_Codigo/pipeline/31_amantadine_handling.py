@@ -1,6 +1,6 @@
 # 31_amantadine_handling.py
-# Produces: Supplementary Table S8 (amantadine sensitivity analyses) and the
-#           corrected pre-levodopa dopaminergic dose variable of Supplementary Table S1.
+# Produces: Supplementary Table S11 (amantadine sensitivity analyses) and the
+#           corrected pre-levodopa dopaminergic dose variable of Table 1.
 #
 # Amantadine is the only drug in routine use with established anti-dyskinetic
 # efficacy, so it occupies two distinct positions in this study. It is included in

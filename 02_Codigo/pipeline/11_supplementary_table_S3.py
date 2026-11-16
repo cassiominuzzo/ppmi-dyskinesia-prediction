@@ -1,5 +1,6 @@
 # 11_supplementary_table_S3.py
-# Produces: Supplementary Table S3, sensitivity to outcome, time-zero and truncation
+# Produces: Supplementary Table S14, panel A, sensitivity to outcome, time-zero and truncation.
+#           The file name keeps an older numbering.
 # Original file in the project archive: 44_sensibilidade_desfecho_truncamento.py
 
 """44 — SENSIBILIDADE do desfecho e do truncamento (auditável). Mostra que o Total-6 é ROBUSTO a:

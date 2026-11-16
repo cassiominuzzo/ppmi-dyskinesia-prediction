@@ -14,7 +14,7 @@ them.** None is on the run order in the main README.
 | `10_supplementary_table_S1.py` | An earlier multimodal added-value table | `52_multimodal_screen.py` |
 | `14_head_to_head_with_CI.py` | Comparison against published predictor sets | `49_head_to_head_unified.py`, which fits every set in one complete-case sample so the differences are paired |
 | `23_supplementary_figure_S1.py` | Supplementary Figure S1 in matplotlib | `figuras_R/figuras_suplementares.R` |
-| `24_supplementary_figure_S2.py` | Supplementary Figure S2 in matplotlib | `figuras_R/figuras_suplementares.R`, drawn from `tab49_sets_unified.csv` |
+| `24_supplementary_figure_S2.py` | The head-to-head figure in matplotlib, then Supplementary Figure S2 and now S3 | `figuras_R/figuras_suplementares.R`, drawn from `tab49_sets_unified.csv` |
 | `25_figure2_km_tertiles.py` | Figure 2 in matplotlib | `figuras_R/figuras.R` |
 | `30_head_to_head_matched_df.py` | Head-to-head on a matched frame | `49_head_to_head_unified.py` |
 
@@ -22,7 +22,7 @@ Two of their outputs contradict the current results and are the reason this fold
 rather than a plain deletion:
 
 - `tab67_head_to_head_CI.csv` (from `14`) carries a different complete-case sample from the
-  one Supplementary Table S15 and Supplementary Figure S2 report. The unified analysis in
+  one Supplementary Table S12 and Supplementary Figure S3 report. The unified analysis in
   `49` fits all seven sets in the same 801 participants; the older script let each set use
   its own sample, so the concordances were not comparable with each other.
 - `tabS_multimodal_added_value.csv` (from `10`) carries seven candidates where the screen

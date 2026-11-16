@@ -1,5 +1,6 @@
 # 04b_table1.py
-# Produces: Table 1 of the manuscript, the development sample described.
+# Produces: Table 1 of the manuscript, the development sample described, overall and by
+#           recruitment wave.
 #
 # Why this script exists rather than 04_table1_and_incidence.py. That script describes the
 # eligible cohort, 1,447 participants with 303 events, split by whether the outcome
@@ -131,39 +132,80 @@ def main():
     t["PATNO"] = pd.to_numeric(t["PATNO"], errors="coerce").astype("Int64")
     d = d.merge(t, on="PATNO", how="left")
 
-    rows = []
-
-    def add(label, value):
-        rows.append({"Characteristic": label,
-                     "PPMI development sample, n = %d" % n: value})
-
-    add("Age at onset, years", iqr(d.ageonset)[0])
-    add("Age at levodopa initiation, years", iqr(d.age_at_levodopa)[0])
-    add("Disease duration from diagnosis to levodopa initiation, years",
-        iqr(d.duration_at_levodopa)[0])
-    add("Male, n (%)", count(d.SEX == 1, n)[0])
-    add("White race, n (%)", count(d.race == 1, n)[0])
-    add("Total MDS-UPDRS (I+II+III)", iqr(d.updrs_totscore)[0])
-    add("Hoehn and Yahr stage 2 or higher, n (%)", count(d.hy >= 2, n)[0])
-    add("Body-mass index, kg/m2", iqr(d.BMI)[0])
-    add("TD/PIGD ratio", iqr(d.td_pigd_ratio)[0])
-    add("Freezing of gait present (item 2.13 above zero), n (%)",
-        count(d.NP2FREZ > 0, n)[0])
-    add("Problematic dyskinesia (events), n (%)", count(d.event == 1, n)[0])
-    add("Follow-up from levodopa initiation, years", iqr(d.exit)[0])
+    # Added in November 2026: the two recruitment waves side by side, because the temporal
+    # validation fits the model in the earlier wave and applies it to the later one, and a
+    # reader judging that validation needs the case-mix of each (TRIPOD+AI item 20c asks
+    # for exactly this comparison). The wave is PPMI's own enroll_phase, the split used by
+    # 33_temporal_validation.py. The two waves are compared by the absolute standardised
+    # difference, the difference in means or proportions over the pooled standard
+    # deviation, rather than by p values: the question is how far apart the samples are,
+    # not whether 392 and 421 participants can detect a difference. It is not given for the
+    # events and the follow-up, which describe what happened after time-zero, not case-mix.
+    early = d[d.enroll_phase == 1]
+    late = d[d.enroll_phase == 2]
+    assert len(early) + len(late) == n, "every participant must belong to one wave"
+    assert (len(early), int(early.event.sum()), len(late), int(late.event.sum())) == (392, 145, 421, 20), \
+        "the waves no longer match 33_temporal_validation.py and the Results"
+    enrol = "visit_date_cur" if "visit_date_cur" in d.columns else "visit_date"
+    for label, wave in (("earlier", early), ("later", late)):
+        print("%s wave: n=%d, %d events, first visit %s to %s"
+              % (label, len(wave), int(wave.event.sum()), wave[enrol].min().date(), wave[enrol].max().date()))
+    groups = [("PPMI development sample, n = %d" % n, d),
+              ("Earlier wave, enrolled 2010 to 2019, n = %d" % len(early), early),
+              ("Later wave, enrolled 2020 to 2025, n = %d" % len(late), late)]
+    SMD = "Standardised difference, earlier against later wave"
 
     # Doses are described among those actually taking the drug. Averaging in the untreated
     # would report a dose nobody was prescribed.
+    specs = [
+        ("Age at onset, years", 1, lambda x: x.ageonset, True),
+        ("Age at levodopa initiation, years", 1, lambda x: x.age_at_levodopa, True),
+        ("Disease duration from diagnosis to levodopa initiation, years", 1,
+         lambda x: x.duration_at_levodopa, True),
+        ("Male, n (%)", None, lambda x: x.SEX == 1, True),
+        ("White race, n (%)", None, lambda x: x.race == 1, True),
+        ("Total MDS-UPDRS (I+II+III)", 1, lambda x: x.updrs_totscore, True),
+        ("Hoehn and Yahr stage 2 or higher, n (%)", None, lambda x: x.hy >= 2, True),
+        ("Body-mass index, kg/m2", 1, lambda x: x.BMI, True),
+        ("TD/PIGD ratio", 1, lambda x: x.td_pigd_ratio, True),
+        ("Freezing of gait present (item 2.13 above zero), n (%)", None, lambda x: x.NP2FREZ > 0, True),
+        ("Problematic dyskinesia (events), n (%)", None, lambda x: x.event == 1, False),
+        ("Follow-up from levodopa initiation, years", 1, lambda x: x.exit, False),
+        ("Levodopa daily dose at time-zero, mg", 0, lambda x: x.levodopa_mg.where(x.levodopa_mg > 0), True),
+        ("Total dopaminergic daily dose at time-zero, amantadine excluded, mg", 0,
+         lambda x: x.ledd_no_amantadine_mg.where(x.ledd_no_amantadine_mg > 0), True),
+        ("Dopamine agonist at time-zero, n (%)", None, lambda x: x.agonist == True, True),
+        ("Amantadine at time-zero, n (%)", None, lambda x: x.amantadine == True, True),
+    ]
+
+    def standardised_difference(places, a, b):
+        if places is None:
+            p, q = (s.fillna(False).astype(bool).mean() for s in (a, b))
+            pooled = np.sqrt((p * (1 - p) + q * (1 - q)) / 2)
+        else:
+            a, b = (pd.to_numeric(s, errors="coerce").dropna() for s in (a, b))
+            p, q = a.mean(), b.mean()
+            pooled = np.sqrt((a.var() + b.var()) / 2)
+        return "%.2f" % half_up(abs(p - q) / pooled, 2)
+
+    rows = []
+    for label, places, get, baseline in specs:
+        row = {"Characteristic": label}
+        for name, g in groups:
+            s = get(g)
+            row[name] = count(s, len(g))[0] if places is None else iqr(s, places)[0]
+        row[SMD] = standardised_difference(places, get(early), get(late)) if baseline else ""
+        rows.append(row)
     levodopa = d.levodopa_mg.where(d.levodopa_mg > 0)
-    add("Levodopa daily dose at time-zero, mg", iqr(levodopa, 0)[0])
     total = d.ledd_no_amantadine_mg.where(d.ledd_no_amantadine_mg > 0)
-    add("Total dopaminergic daily dose at time-zero, amantadine excluded, mg",
-        iqr(total, 0)[0])
-    add("Dopamine agonist at time-zero, n (%)", count(d.agonist == True, n)[0])
-    add("Amantadine at time-zero, n (%)", count(d.amantadine == True, n)[0])
 
     table = pd.DataFrame(rows)
     column = table.columns[1]
+    print()
+    print(table.to_string(index=False))
+    print("dose rows by wave are among those taking the drug: levodopa %d and %d, any dopaminergic %d and %d"
+          % (int(levodopa[d.enroll_phase == 1].notna().sum()), int(levodopa[d.enroll_phase == 2].notna().sum()),
+             int(total[d.enroll_phase == 1].notna().sum()), int(total[d.enroll_phase == 2].notna().sum())))
     race = d.race.value_counts(dropna=False)
     print("race, for the legend: White %d, Black %d, Asian %d, other or multiracial %d, not recorded %d"
           % (race.get(1.0, 0), race.get(2.0, 0), race.get(3.0, 0), race.get(4.0, 0), int(d.race.isna().sum())))

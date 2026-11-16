@@ -41,12 +41,12 @@ Run in order. Each script states at the top which manuscript element it produces
 | `03_baseline_predictor_matrix.py` | Baseline predictor matrix, all candidates pre-levodopa |
 | `03b_candidate_matrix.py` | `candidate_matrix.parquet`, the analysis matrix, rebuilt from the raw tables. The default run checks all 39 columns against the stored file and stops if any diverges |
 | `04_table1_and_incidence.py` | The eligible cohort described, and cumulative incidence. Note that this describes the 1,447 eligible, not the development sample |
-| `04b_table1.py` | Table 1 of the manuscript: the 813 of the development sample, with the treatment rows from script 27 and the four rows STROBE item 14a asks for (age at levodopa initiation, disease duration, Hoehn and Yahr stage, race). Prints each cell beside the published one |
+| `04b_table1.py` | Table 1 of the manuscript: the 813 of the development sample, with the treatment rows from script 27 and the four rows STROBE item 14a asks for (age at levodopa initiation, disease duration, Hoehn and Yahr stage, race). Since November 2026 also by recruitment wave, the split of the temporal validation, with the standardised difference between the waves. Prints each cell beside the published one |
 | `05_final_model_internal_validation.py` | Table 2; optimism correction; leave-one-site-out |
 | `06_dynamic_model_refit.py` | Dynamic mode of the calculator |
-| `11_supplementary_table_S3.py` | Supplementary Table S11, panel A: the twelve analyses varying time-zero, outcome definition and prevalent cases, with the out-of-fold concordance of each. The file name keeps an older numbering |
+| `11_supplementary_table_S3.py` | Supplementary Table S14, panel A: the twelve analyses varying time-zero, outcome definition and prevalent cases, with the out-of-fold concordance of each. The file name keeps an older numbering |
 | `12_competing_risk.py` | Aalen-Johansen adjustment, factor c(t) in Table 2 |
-| `13_supplementary_table_S4.py` | Supplementary Table S18: levodopa responsiveness across thresholds. The file name keeps an older numbering |
+| `13_supplementary_table_S4.py` | Levodopa responsiveness across thresholds. It was Supplementary Table S18 until the November 2026 revision removed it from the supplement, because responsiveness is measured after levodopa is started. The file name keeps an older numbering |
 | `21_full_audit.py` | Independent re-derivation of every key number from the raw tables |
 | `27_treatments_at_time_zero.py` | Treatment rows of Table 1, the amantadine-free dose included. Rewritten in August 2026 to import the audited drug searches from `cohort.py` |
 | `28_model_assumptions.py` | Proportional hazards and linearity checks |
@@ -62,19 +62,22 @@ Run in order. Each script states at the top which manuscript element it produces
 | `39_drug_name_quality_control.py` | Drug-name search audit and the time-zero sensitivity analysis |
 | `40_robust_discrimination.py` | Uno's C, time-dependent AUC, Brier score and index of prediction accuracy |
 | `41_included_vs_excluded.py` | The 813 included against the 628 excluded for incomplete data |
-| `42_penalty_sensitivity.py` | Hazard ratios and C across six values of the ridge penalty |
-| `43_selection_stability.py` | Selection frequency over 100 bootstrap resamples; resumable with `--limit` |
+| `42_penalty_sensitivity.py` | Hazard ratios and C across six values of the ridge penalty. Out of the supplement since the November 2026 revision |
+| `43_selection_stability.py` | Selection frequency over 100 bootstrap resamples; resumable with `--limit`. Out of the supplement since the November 2026 revision |
 | `44_classification_metrics.py` | Sensitivity, specificity and predictive values by risk threshold |
-| `45_informative_censoring.py` | Censoring decomposition, dropout model and delta-based imputation |
+| `45_informative_censoring.py` | Censoring decomposition, dropout model and delta-based imputation. Out of the supplement since the November 2026 revision |
 | `46_calculator_artifacts.py` | Regenerates `05_Calculadora/calculator_artifacts.json` from the raw data |
-| `48_supplementary_tables.py` | Builds the eighteen supplementary tables with their legends, reading every number from `03_Resultados/Tabelas/`, in the order the manuscript cites them |
-| `49_head_to_head_unified.py` | Supplementary Table S10 and Supplementary Figure S2 from one analysis: the published predictor sets with paired bootstrap intervals, and the discrimination attainable at each model size. Replaces the two earlier scripts, which used different samples and different cross-validation |
+| `48_supplementary_tables.py` | Builds the eighteen supplementary tables of the October 2026 version with their legends, reading every number from `03_Resultados/Tabelas/`. `55_submission_files.py` keeps fourteen of them and renumbers them |
+| `49_head_to_head_unified.py` | Supplementary Table S12 and Supplementary Figure S3 from one analysis: the published predictor sets with paired bootstrap intervals, and the discrimination attainable at each model size. Replaces the two earlier scripts, which used different samples and different cross-validation |
 | `49b_loo_variables.py` | Builds the seven baseline factors reported by Loo 2024, including the two the candidate matrix does not carry |
-| `50_treatment_candidate_recomputed.py` | Recomputes the treatment row of Supplementary Table S8 with the amantadine-free dose, after reproducing the protocol of the multimodal screen |
-| `52_multimodal_screen.py` | Supplementary Table S8: all 89 multimodal candidates rebuilt from the raw downloads and rescreened. `--probe` reports the sample recovered for each candidate against the published one |
-| `51_outcome_anchoring.py` | Supplementary Table S2: whether crossing the outcome threshold is followed by a loss of function on the Modified Schwab and England scale |
-| `54_biospecimen_candidates.py` | The rows of the lysosomal assays in Supplementary Table S8, each read from one specimen and one reported quantity, with the false-discovery columns recomputed around them. Also runs every assay in every specimen. Run after 50 and after `52_multimodal_screen.py --write` |
-| `53_strobe_additions.py` | Supplementary Table S3, the unadjusted hazard ratios, the p values of Table 2, and the descriptive numbers STROBE asks for: person-time and incidence rate, the period of levodopa initiation, the assessment schedule, the timing of the two sources of predictors, the examinations recorded in the ON state, the participants with no pre-levodopa assessment, the boundaries of the risk tertiles in Figure 2 and the two patients of the Discussion |
+| `50_treatment_candidate_recomputed.py` | Recomputes the treatment row of Supplementary Table S10 with the amantadine-free dose, after reproducing the protocol of the multimodal screen |
+| `52_multimodal_screen.py` | Supplementary Table S10: all 89 multimodal candidates rebuilt from the raw downloads and rescreened. `--probe` reports the sample recovered for each candidate against the published one |
+| `51_outcome_anchoring.py` | Supplementary Table S3: whether crossing the outcome threshold is followed by a loss of function on the Modified Schwab and England scale |
+| `54_biospecimen_candidates.py` | The rows of the lysosomal assays in Supplementary Table S10, each read from one specimen and one reported quantity, with the false-discovery columns recomputed around them. Also runs every assay in every specimen. Run after 50 and after `52_multimodal_screen.py --write` |
+| `53_strobe_additions.py` | Supplementary Table S4, the unadjusted hazard ratios, the p values of Table 2, and the descriptive numbers STROBE asks for: person-time and incidence rate, the period of levodopa initiation, the assessment schedule, the timing of the two sources of predictors, the examinations recorded in the ON state, the participants with no pre-levodopa assessment, the boundaries of the risk tertiles in Figure 2 and the two patients of the Discussion |
+| `55_submission_files.py` | The submission files of the November 2026 revision: tables and supplementary tables in Excel, the Supplementary Methods and figure legends in Word, and each figure as PNG at 300 dpi and SVG. Changes no number: it reads the delivered Word files, adds the recruitment waves to Table 1 from `04b_table1.py --write`, builds Supplementary Table S4 from `56_candidate_hazard_ratios.py` and Table 3 from `57_table3_multimodal_by_domain.py`, drops Supplementary Tables S14, S15, S16 and S18 of the October version, and renumbers the other tables and the supplementary figures in the order the revised manuscript first cites them, remapping every cross-reference in one pass; the header gives the mapping. Run after the figure scripts |
+| `56_candidate_hazard_ratios.py` | Supplementary Table S4 of the November 2026 revision: the unadjusted hazard ratio of each of the 18 clinical candidates, its hazard ratio adjusted for the six predictors, and for the twelve not retained the change in out-of-fold C-index when added to the six. Its six selected rows reproduce `tab53_unadjusted_hazard_ratios.csv` and the script stops if they do not |
+| `57_table3_multimodal_by_domain.py` | Table 3 of the November 2026 revision: the 89-candidate multimodal screen summarised by domain (candidates, participants, events, nominal associations, lowest false-discovery-rate-adjusted p, and the median and range of the change in out-of-fold C-index), read from the file behind Supplementary Table S10 |
 
 ### Scripts removed with the external validation
 
@@ -98,7 +101,7 @@ each one and its replacement. Nothing in the paper comes from that folder.
 
 Every figure and table in the manuscript and in the supplement is produced by a script
 in this folder. Two qualifications, both of which are stated in the scripts themselves and
-in the legend of Supplementary Table S8. The levodopa-equivalent dose that the published
+in the legend of Supplementary Table S10. The levodopa-equivalent dose that the published
 screen used cannot be recovered, because no dose column survives in the processed data:
 `50_treatment_candidate_recomputed.py` establishes this and replaces that one row with the
 amantadine-free dose the Methods describe. And the change in out-of-fold concordance of
@@ -112,10 +115,10 @@ Figures are written to `../03_Resultados/Figuras/` in PNG, SVG and PDF.
 
 | Script | O que faz |
 |---|---|
-| `figuras.R` | Figure 1 (fluxo de participantes), Figure 2 (incidência cumulativa por tercil) e Figure 3 (curva de decisão em dois painéis), em PNG, SVG e PDF. Substitui os scripts 38, 25 e 26, que apontavam para o layout antigo. A Figura 3 confere a redução por 1.000 contra o `tab34_decision_curve.json` antes de desenhar |
+| `figuras.R` | Figure 2 (incidência cumulativa por tercil) e Supplementary Figure S2 (curva de decisão em dois painéis), em PNG a 300 dpi, SVG e PDF. A Figure 1 é desenhada pelo `38_figure1_participant_flow.py`. Substitui os scripts 25 e 26, que apontavam para o layout antigo. A Figura S2 confere a redução por 1.000 contra o `tab34_decision_curve.json` antes de desenhar |
 | `dose_sem_amantadina.R` | Linhas de tratamento da Table 1, com a dose dopaminérgica recalculada sem a amantadina |
 | `amantadina_pkmerz.R` | Reproduz o script 31 com e sem o PK-Merz na busca de fármacos, e imprime a conferência contra o `tab31_amantadine.json` |
-| `figuras_suplementares.R` | Supplementary Figure S1 (calibração interna em 5 anos) e S2 (comparação direta), em PNG, SVG e PDF. Substitui os scripts 23 e 24, que apontavam para o layout antigo e vinham de análises que já não batem com o artigo. Confere a calibração contra o `tab32_internal_performance.json` e para com erro se divergir |
+| `figuras_suplementares.R` | Supplementary Figure S1 (calibração interna em 5 anos) e S3 (comparação direta), em PNG a 300 dpi, SVG e PDF. Substitui os scripts 23 e 24, que apontavam para o layout antigo e vinham de análises que já não batem com o artigo. Confere a calibração contra o `tab32_internal_performance.json` e para com erro se divergir |
 
 Rodar com `Rscript`, de qualquer diretório. A variável de ambiente `LID_RAW` aponta
 para `01_Dados_Brutos`; `LID_PROJECT` sobrescreve a raiz do projeto.

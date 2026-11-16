@@ -1,5 +1,7 @@
 # 13_supplementary_table_S4.py
-# Produces: Supplementary Table S4, levodopa responsiveness across thresholds
+# Produces: levodopa responsiveness across thresholds. It was Supplementary Table S18 until
+#           the November 2026 revision removed it from the supplement, because responsiveness
+#           is measured after levodopa is started. The file name keeps an older numbering.
 # Original file in the project archive: 50_responsividade_robustez.py
 
 """50 — ROBUSTEZ da responsividade (auditável): >40/50/60% + contínua; HR, p, ΔC OOF, PH."""

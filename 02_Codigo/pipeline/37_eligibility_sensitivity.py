@@ -1,5 +1,5 @@
 # 37_eligibility_sensitivity.py
-# Produces: an eligibility row of Supplementary Table S3.
+# Produces: an eligibility row of Supplementary Table S14.
 #
 # A small number of participants in the development sample were enrolled in PPMI
 # cohorts other than the Parkinson's disease cohort, including participants with

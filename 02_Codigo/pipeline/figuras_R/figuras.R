@@ -1,9 +1,15 @@
 # figuras.R
-# Produces: Figure 1 (participant flow) and Figure 2 (cumulative incidence by
-# tertile of model-predicted risk), each as PNG, SVG and PDF.
+# Produces: Figure 2 (cumulative incidence by tertile of model-predicted risk) and
+# Supplementary Figure S2 (decision curve), each as PNG at 300 dpi, SVG and PDF.
 #
-# Replaces 22/38_figure1_participant_flow.py and 25_figure2_km_tertiles.py, which
-# pointed at the previous project layout and could not run as shipped. Figure 2 also
+# Figure 1 is drawn by 38_figure1_participant_flow.py, which takes its counts from the
+# analysis base; draw_fig1 below is kept only as a cross-check and is no longer written
+# to disk, so the two cannot overwrite each other. Corrected in November 2026, when the
+# figures moved to 300 dpi and the decision curve moved to the supplement as
+# Supplementary Figure S2.
+#
+# Replaces 25_figure2_km_tertiles.py, which pointed at the previous project layout and
+# could not run as shipped. Figure 2 also
 # had the "Intermediate risk" label of the numbers-at-risk table overlapping the
 # first count; here the label column is sized from the rendered text width, so the
 # collision cannot recur.
@@ -152,9 +158,8 @@ draw_fig2 <- function() {
 }
 
 # ------------------------------------------------------------------ output ------
-for (fig in list(list(f = draw_fig1, nm = "Figure1_participant_flow", w = 10.2, h = 7.4),
-                 list(f = draw_fig2, nm = "Figure2_km_tertiles",      w = 9.6,  h = 8.4))) {
-  png(file.path(OUT, paste0(fig$nm, ".png")), width = fig$w, height = fig$h, units = "in", res = 200)
+for (fig in list(list(f = draw_fig2, nm = "Figure2_km_tertiles",      w = 9.6,  h = 8.4))) {
+  png(file.path(OUT, paste0(fig$nm, ".png")), width = fig$w, height = fig$h, units = "in", res = 300)
   fig$f(); dev.off()
   svg(file.path(OUT, paste0(fig$nm, ".svg")), width = fig$w, height = fig$h); fig$f(); dev.off()
   pdf(file.path(OUT, paste0(fig$nm, ".pdf")), width = fig$w, height = fig$h); fig$f(); dev.off()
@@ -165,9 +170,9 @@ cat("at risk at", paste(TICKS, collapse = ", "), "years:\n")
 for (g in 1:3) cat(sprintf("  %-18s %s\n", NAMES[g], paste(atrisk[, g], collapse = "  ")))
 cat(sprintf("log-rank p = %.3g\n", pval))
 
-# ============================================================== FIGURE 3 =========
-# Decision-curve analysis at five years. Promoted from the supplement because it is the
-# figure that answers "and what would this change?", which a C-index cannot. Two panels,
+# =============================================== SUPPLEMENTARY FIGURE S2 =========
+# Decision-curve analysis at five years. It was Figure 3 until the November 2026 revision
+# returned it to the supplement, where the text now cites it in one sentence. Two panels,
 # because net benefit is the right quantity but is on a scale nobody has intuition for:
 # the second panel restates the same difference as interventions avoided per 1,000
 # patients, which is the same number a clinician can act on.
@@ -187,7 +192,7 @@ if (file.exists(DCA)) {
   stopifnot(abs(dc$net_red[which.min(abs(dc$threshold - 0.20))] -
                 dj$at_20pct$false_positives_avoided_per_1000) < 0.5)
 
-  draw_fig3 <- function() {
+  draw_s2 <- function() {
     layout(matrix(1:2, ncol = 1), heights = c(1.15, 1))
     xr <- c(0.05, 0.50)
 
@@ -237,13 +242,13 @@ if (file.exists(DCA)) {
   }
 
   for (nm in c("png", "svg", "pdf")) {
-    f <- file.path(OUT, paste0("Figure3_decision_curve.", nm))
-    if (nm == "png") png(f, width = 8.6, height = 8.0, units = "in", res = 200)
+    f <- file.path(OUT, paste0("FigureS2_decision_curve.", nm))
+    if (nm == "png") png(f, width = 8.6, height = 8.0, units = "in", res = 300)
     if (nm == "svg") svg(f, width = 8.6, height = 8.0)
     if (nm == "pdf") pdf(f, width = 8.6, height = 8.0)
-    draw_fig3(); dev.off()
+    draw_s2(); dev.off()
   }
-  cat("saved Figure3_decision_curve as png, svg and pdf\n")
+  cat("saved FigureS2_decision_curve as png, svg and pdf\n")
   cat("  model superior to both defaults at ",
       paste(sprintf("%.0f%% to %.0f%%", 100 * dj$superior_bands[, 1],
                     100 * dj$superior_bands[, 2]), collapse = ", "), "\n", sep = "")

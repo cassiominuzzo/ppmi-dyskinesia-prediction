@@ -1,10 +1,10 @@
 # 50_treatment_candidate_recomputed.py
-# Produces: the corrected treatment row of Supplementary Table S4, and the
+# Produces: the corrected treatment row of Supplementary Table S10, and the
 #           false-discovery-rate columns of that table recomputed around it.
 #
 # The problem. The Methods state that amantadine was removed from the levodopa-equivalent
 # conversion, because the sum would otherwise add drugs that raise the risk of dyskinesia
-# to one that treats it. The single treatment candidate screened in Supplementary Table S4
+# to one that treats it. The single treatment candidate screened in Supplementary Table S10
 # was nevertheless the conversion with amantadine still inside it, so the supplement
 # contradicted the Methods. This script recomputes that one row with the amantadine-free
 # dose, which is the variable the Methods describe and the one Table 1 reports.

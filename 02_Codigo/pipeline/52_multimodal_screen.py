@@ -1,5 +1,5 @@
 # 52_multimodal_screen.py
-# Produces: Supplementary Table S4, the incremental value of 89 multimodal candidate
+# Produces: Supplementary Table S10, the incremental value of 89 multimodal candidate
 #           predictors over the six-variable clinical model.
 #
 # Why this script exists. The screen was the largest single analysis in the supplement and
@@ -29,7 +29,7 @@
 # count of cohort.out_of_fold_c, so the published screen used a cross-validation whose
 # seeding was never recorded. Where this script reports a change in C it uses the protocol
 # documented in cohort.py and used everywhere else in the paper, and the legend of
-# Supplementary Table S4 says so.
+# Supplementary Table S10 says so.
 #
 # Timing, recovered the same way. Everything from the curated cut, which is every clinical
 # scale, every cerebrospinal fluid and blood assay and the striatal binding, is the last
@@ -71,7 +71,7 @@ PER_UNIT = {"orthostasis", "quip_any", "GBA", "LRRK2", "SNCA", "APOE_e4", "any_m
             "CSFSAA_pos"}
 _CURATED = None
 
-# The constant the published Supplementary Table S4 was built with. See screen() for how it
+# The constant the published Supplementary Table S10 was built with. See screen() for how it
 # was recovered and for why it is 85 per cent power rather than the 80 the header claims.
 PUBLISHED_K = 3.0
 
@@ -383,7 +383,7 @@ def ledd():
     here gives 1.132 with p 0.061 against the published 1.092 with p 0.153. Neither is the
     number the supplement reports. The published row used the conversion with amantadine
     still inside it, which contradicts the Methods, and script 50 replaces it with the
-    amantadine-free dose: 1.10, p 0.160. That is the row Supplementary Table S4 carries,
+    amantadine-free dose: 1.10, p 0.160. That is the row Supplementary Table S10 carries,
     and this one exists so that the discrepancy is visible rather than buried."""
     path = os.path.join(TAB, "tab27_treatments_per_patient.csv")
     if not os.path.exists(path):
@@ -474,7 +474,7 @@ def screen(d, col):
     # and to the sample standard deviation for the eight reported per unit.
     #
     # Two constants are returned because the published table used the second. Solving for K
-    # across all 88 checkable rows of Supplementary Table S4 gives 3.00 with a spread of
+    # across all 88 checkable rows of Supplementary Table S10 gives 3.00 with a spread of
     # 0.03, which is exactly the scatter that rounding the printed value to two decimals
     # produces. But K = 3.00 is not the 80% the column header claims: z_0.975 + z_0.80 is
     # 2.8016, and 3.00 solves to z of 1.04, which is 85% power. The published numbers are

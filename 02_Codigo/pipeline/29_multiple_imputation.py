@@ -1,5 +1,5 @@
 # 29_multiple_imputation.py
-# Produces: Supplementary Table S6 (multiple imputation as a sensitivity analysis)
+# Produces: Supplementary Table S2 (multiple imputation as a sensitivity analysis)
 #
 # Missingness in the eligible PPMI cohort has two distinct structures:
 #   (a) participants with a pre-levodopa assessment but one or more variables missing

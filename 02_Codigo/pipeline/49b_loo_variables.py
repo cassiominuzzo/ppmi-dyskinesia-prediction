@@ -23,7 +23,7 @@
 # at the same visit the other predictors use: the last study visit on or before time-zero,
 # which is the rule of 03_baseline_predictor_matrix.py.
 #
-# The mapping is a judgement, and it is stated in the legend of Supplementary Table S15 so
+# The mapping is a judgement, and it is stated in the legend of Supplementary Table S12 so
 # that a reader can disagree with it. Direction is not imposed: every set, this one
 # included, is refitted in these data.
 #

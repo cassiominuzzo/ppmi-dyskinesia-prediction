@@ -1,5 +1,5 @@
 # 54_biospecimen_candidates.py
-# Produces: the corrected rows of the lysosomal assays in Supplementary Table S8, and the
+# Produces: the corrected rows of the lysosomal assays in Supplementary Table S10, and the
 #           false-discovery-rate columns of that table recomputed around them.
 #
 # The problem. 52_multimodal_screen.py read these assays by keeping the last row in the file

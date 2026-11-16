@@ -6,6 +6,11 @@
 # document can be regenerated after any upstream script is re-run. The numbering follows
 # the order of first citation in the manuscript, which is what fixes S1 to S18.
 #
+# That was the October 2026 manuscript. The November 2026 revision shortened the text, so
+# 55_submission_files.py drops four of these tables and renumbers the other fourteen in the
+# new order of citation. The legends and the methods text written here keep the October
+# numbers, and 55 remaps every cross-reference in one pass; its header gives the mapping.
+#
 # Renumbered in October 2026, when the manuscript was restructured to follow STROBE and its
 # Results began citing the supplement in a different order. Each block below still carries
 # the number it had before, which is how it is referred to in the comments and in earlier
