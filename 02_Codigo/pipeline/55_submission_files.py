@@ -160,6 +160,52 @@ def group(items, title_re):
     return preamble, units
 
 
+# Every table defines its own abbreviations in a closing line, as journals ask, so that it can
+# be read without the text. The line lists only the abbreviations the table actually uses.
+# Gene symbols, Roman numerals, software and PPMI field names are left as they are.
+ABBREVIATIONS = [
+    (r"C-index", "C-index", "concordance index"),
+    (r"CI", "CI", "confidence interval"),
+    (r"CSF", "CSF", "cerebrospinal fluid"),
+    (r"FAS", "FAS", "letter fluency with F, A and S"),
+    (r"FDR", "FDR", "false-discovery rate"),
+    (r"HR", "HR", "hazard ratio"),
+    (r"HVLT-R", "HVLT-R", "Hopkins Verbal Learning Test, Revised"),
+    (r"ICV", "ICV", "intracranial volume"),
+    (r"IQR", "IQR", "interquartile range"),
+    (r"JLO", "JLO", "judgement of line orientation"),
+    (r"LP", "LP", "linear predictor"),
+    (r"LRT", "LRT", "likelihood-ratio test"),
+    (r"MDS-UPDRS", "MDS-UPDRS", "Movement Disorder Society Unified Parkinson's Disease Rating Scale"),
+    (r"MoCA", "MoCA", "Montreal Cognitive Assessment"),
+    (r"MRI", "MRI", "magnetic resonance imaging"),
+    (r"PD", "PD", "Parkinson's disease"),
+    (r"PIGD", "PIGD", "postural-instability gait-difficulty"),
+    (r"PPMI", "PPMI", "Parkinson's Progression Markers Initiative"),
+    (r"QUIP", "QUIP", "Questionnaire for Impulsive-Compulsive Disorders in Parkinson's Disease"),
+    (r"RBD", "RBD", "rapid-eye-movement sleep behaviour disorder"),
+    (r"ROC", "ROC", "receiver operating characteristic"),
+    (r"SCOPA(?:-AUT)?", "SCOPA-AUT", "Scales for Outcomes in Parkinson's Disease, Autonomic"),
+    (r"SD", "SD", "standard deviation"),
+    (r"SE", "SE", "standard error"),
+    (r"STAI", "STAI", "State-Trait Anxiety Inventory"),
+    (r"STRIDE-PD", "STRIDE-PD", "Stalevo Reduction in Dyskinesia Evaluation in Parkinson's Disease trial"),
+    (r"SWEDD", "SWEDD", "scans without evidence of dopaminergic deficit"),
+    (r"TD/PIGD", "TD/PIGD", "tremor-dominant to postural-instability gait-difficulty ratio"),
+    (r"UPSIT", "UPSIT", "University of Pennsylvania Smell Identification Test"),
+]
+
+
+def with_abbreviations(title, parts):
+    text = title + "\n" + "\n".join(v if k != "table" else "\n".join("\t".join(r) for r in v) for k, v in parts)
+    used = []
+    for pattern, short, full in ABBREVIATIONS:
+        # PIGD on its own, not only inside TD/PIGD; PD on its own, not inside STRIDE-PD
+        if re.search(r"(?<![\w/-])%s(?![\w/])" % pattern, text):
+            used.append("%s, %s" % (short, full))
+    return parts + ([("note", "Abbreviations: " + "; ".join(used) + ".")] if used else [])
+
+
 def renum_parts(parts):
     return [(k, renum(v) if k != "table" else [[renum(c) for c in row] for row in v]) for k, v in parts]
 
@@ -265,7 +311,7 @@ for u in units:
         table1_by_wave(u)
     title, parts = renum(u["title"]), renum_parts(u["parts"])
     check_refs(blob(title, parts), "Table " + u["id"])
-    write_sheet(wb, "Table " + u["id"], title, parts, split_title=True)
+    write_sheet(wb, "Table " + u["id"], title, with_abbreviations(title, parts), split_title=True)
 
 # Table 3, new in November 2026: the multimodal screen by domain, from
 # 57_table3_multimodal_by_domain.py, which reads the file behind Supplementary Table S10. It
@@ -305,9 +351,9 @@ T3_LEGEND = (
     "candidate survived false-discovery-rate control. The four nominal associations were cerebrospinal-fluid "
     "alpha-synuclein, total tau, phosphorylated tau and their composite, which changed the C-index by 0.004 "
     "to 0.010. Supplementary Table S10 gives every candidate with its hazard ratio, confidence intervals and "
-    "power. FDR, false-discovery rate.")
+    "power.")
 check_refs(T3_TITLE + T3_LEGEND, "Table 3")
-write_sheet(wb, "Table 3", T3_TITLE, [("table", rows3), ("note", T3_LEGEND)])
+write_sheet(wb, "Table 3", T3_TITLE, with_abbreviations(T3_TITLE, [("table", rows3), ("note", T3_LEGEND)]))
 assert wb.sheetnames == ["Table 1", "Table 2", "Table 3"], wb.sheetnames
 wb.save(os.path.join(DST, "Tables.xlsx"))
 print("Tables.xlsx:", wb.sheetnames, "| a Tabela 3 vem do 57")
@@ -377,12 +423,104 @@ def s4_all_candidates(u):
                    ("note", legend)]
 
 
+def replace_once(parts, old, new_text):
+    hits = [i for i, (k, v) in enumerate(parts) if k == "note" and old in v]
+    assert len(hits) == 1, (len(hits), old[:60])
+    i = hits[0]
+    parts[i] = ("note", parts[i][1].replace(old, new_text))
+
+
+# Supplementary Table S6 (S4 in October) gains the C-index the abstract and the Results quote,
+# corrected for optimism by bootstrap, beside the apparent and out-of-fold values and the
+# calibration slope, read from 32_internal_performance.py. Until November 2026 the text cited
+# this table for numbers it did not carry. Two sentences of its legend referred to passages
+# that the revision removed from the abstract and the Results, and are rewritten.
+def s6_add_performance(title, parts):
+    import json
+    j = json.load(open(os.path.join(C.RESULTS, "Tabelas", "tab32_internal_performance.json"), encoding="utf-8"))
+    k = [i for i, (kind, _) in enumerate(parts) if kind == "table"][0]
+    rows = parts[k][1]
+    assert rows[0] == ["Measure", "Value", "SD across repetitions"] and rows[1][0] == "Harrell's C-index", rows[:2]
+    assert rows[2][0].startswith("Uno") and len(rows) == 3
+    corrected = "%.3f (%.3f to %.3f)" % (j["C_corrected"], j["C_corrected_lo"], j["C_corrected_hi"])
+    assert (corrected, "%.3f" % j["C_apparent"], "%.3f" % j["C_out_of_fold"], "%.2f" % j["slope_out_of_fold"]) == \
+        ("0.701 (0.656 to 0.750)", "0.712", "0.696", "1.07"), "the values the text quotes"
+    parts[k] = ("table", [rows[0],
+                          ["Harrell's C-index, apparent", "%.3f" % j["C_apparent"], ""],
+                          ["Harrell's C-index, corrected for optimism over %d bootstrap resamples (95%% CI)"
+                           % j["bootstrap"], corrected, ""],
+                          ["Harrell's C-index, out of fold, twenty repetitions", "%.3f" % j["C_out_of_fold"], ""],
+                          ["Harrell's C-index, out of fold, ten repetitions", rows[1][1], rows[1][2]],
+                          rows[2],
+                          ["Calibration slope, out of fold", "%.2f" % j["slope_out_of_fold"], ""]])
+    replace_once(parts,
+        "(A) Harrell's C-index is the concordance reported throughout the paper, and it is known to be optimistic "
+        "when censoring is heavy, which it is here: 79.7% of the development sample is censored. Uno's estimator "
+        "weights each comparable pair by the inverse probability of remaining uncensored and is the appropriate "
+        "check. It is 0.05 lower, which is the honest measure of how much of the apparent discrimination is an "
+        "artefact of censoring, and it is reported alongside Harrell's C in the abstract for that reason.",
+        "(A) Harrell's C-index is the concordance reported throughout the paper. The first three rows give it in "
+        "the data used for fitting, corrected for optimism by bootstrap, which is the estimate in the abstract and "
+        "the Results, and out of fold by twenty repetitions of five-fold cross-validation, the protocol behind "
+        "every comparison of discrimination. The next two rows share the same ten repetitions, so that Harrell's "
+        "and Uno's estimates are computed on the same folds. Harrell's C is optimistic when censoring is heavy, "
+        "which it is here: 79.7% of the development sample is censored. Uno's estimator weights each comparable "
+        "pair by the inverse probability of remaining uncensored and is the appropriate check. It is 0.05 lower, "
+        "which is the honest measure of how much of the apparent discrimination is an artefact of censoring. The "
+        "out-of-fold calibration slope exceeds one because of the deliberate shrinkage of the ridge penalty.")
+    replace_once(parts,
+        "This panel is included so that a claim made in the Results can be checked rather than taken on trust: "
+        "the spread of site-level estimates reflects small numbers rather than heterogeneity in performance.",
+        "The spread of site-level estimates reflects small numbers rather than heterogeneity in performance.")
+    replace_once(parts,
+        "Panels A and B are averaged over 10 repetitions of five-fold cross-validation and panels C and D over "
+        "twenty;",
+        "In panel A, the bootstrap row uses 500 resamples and the out-of-fold rows the repetitions shown; panel B "
+        "is averaged over ten repetitions of five-fold cross-validation and panels C and D over twenty;")
+    old = "Supplementary Table S6. Discrimination, accuracy and calibration of the development model out of fold"
+    assert title == old, title
+    return "Supplementary Table S6. Discrimination, accuracy and calibration of the development model", parts
+
+
+# Supplementary Table S11 (S9 in October) gains the dopamine-agonist rows the Results quote
+# beside amantadine, from 58_dopamine_agonist.py, modelled as amantadine is in panel A.
+def s11_add_agonist(title, parts):
+    import json
+    j = json.load(open(os.path.join(C.RESULTS, "Tabelas", "tab58_dopamine_agonist.json"), encoding="utf-8"))
+    old = "Supplementary Table S11. Amantadine at time-zero and during follow-up: four sensitivity analyses"
+    assert title == old, title
+    title = ("Supplementary Table S11. Amantadine and dopamine agonists at time-zero, and amantadine during "
+             "follow-up")
+    hr = lambda a, lo, hi: "%.2f (%.2f to %.2f)" % (a, lo, hi)
+    dc3 = ("%+.3f" % j["delta_C"]).replace("-", "−")
+    rows = [["Model", "n", "Agonist users", "Hazard ratio (95% CI)", "p", "Change in out-of-fold C"],
+            ["Unadjusted", "%d" % j["n"], "%d" % j["users"], hr(j["unadjusted_HR"], j["unadjusted_lo"], j["unadjusted_hi"]),
+             "%.3f" % j["unadjusted_p"], "not applicable"],
+            ["Adjusted for the six clinical predictors", "%d" % j["n"], "%d" % j["users"],
+             hr(j["adjusted_HR"], j["adjusted_lo"], j["adjusted_hi"]), "%.3f" % j["adjusted_p"], dc3]]
+    assert rows[2][3] == "0.96 (0.71 to 1.29)" and rows[1][3] == "1.09 (0.80 to 1.49)", "the values the text quotes"
+    note = max(i for i, (k, _) in enumerate(parts) if k == "note")
+    parts = parts[:note] + [("panel", "E. Dopamine agonist at time-zero"), ("table", rows)] + parts[note:]
+    replace_once(parts,
+        "Change in out-of-fold C is against the reference value of 0.696. Source: 31_amantadine_handling.py.",
+        "(E) Dopamine-agonist use at time-zero, taken from the same treatment record and modelled as amantadine "
+        "is in panel A, was not associated with the outcome and did not improve discrimination. Change in "
+        "out-of-fold C is against the reference value of 0.696. Sources: 31_amantadine_handling.py and "
+        "58_dopamine_agonist.py.")
+    return title, parts
+
+
 kept = sorted([u for u in units if u["id"] not in REMOVED], key=lambda u: int(TABLE_MAP[u["id"]][1:]))
 for u in kept:
     new = TABLE_MAP[u["id"]]
     title, parts = renum(u["title"]), renum_parts(u["parts"])
     if new == "S4":
         title, parts = s4_all_candidates(u)
+    if new == "S6":
+        title, parts = s6_add_performance(title, parts)
+    if new == "S11":
+        title, parts = s11_add_agonist(title, parts)
+    parts = with_abbreviations(title, parts)
     assert title.startswith("Supplementary Table %s. " % new), (u["id"], title[:40])
     check_refs(blob(title, parts), new)
     write_sheet(wb, "Table " + new, title, parts)
