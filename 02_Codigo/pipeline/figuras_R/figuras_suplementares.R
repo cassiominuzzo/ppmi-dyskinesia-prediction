@@ -4,6 +4,16 @@
 #           each as PNG at 300 dpi, SVG and PDF. The head-to-head figure was S2 until the
 #           November 2026 revision, when the decision curve, cited earlier in the text,
 #           took that number.
+#           Also JMD_Figure2_calibration: the same calibration drawn as a main-text figure
+#           for the Journal of Movement Disorders package, where it is Figure 2. Same data
+#           and same checks as S1; the drawing differs (no quintile labels or connecting line,
+#           a key in place of the label on the diagonal, the axes meeting at zero, a count
+#           axis on the distribution panel) and uses only navy and grey, so it prints in
+#           black and white.
+#
+# Usage:  Rscript figuras_suplementares.R                       every figure
+#         Rscript figuras_suplementares.R JMD_Figure2_calibration   only the figures named,
+#         so that adding one figure does not rewrite the others
 #
 # Replaces 23_supplementary_figure_S1.py and 24_supplementary_figure_S2.py, which
 # pointed at the previous project layout and, more importantly, were drawn from
@@ -157,6 +167,55 @@ draw_s1 <- function() {
          adj = c(1, 1), cex = 0.85, font = 3, col = GREY)
 }
 
+# The calibration as Figure 2 of the JMD package: the quintiles of S1 with their intervals,
+# a key at the top left, the three summary measures in the empty lower right corner, and
+# below it the distribution of predicted risk on a count axis with the quintile boundaries.
+draw_calibration_jmd <- function() {
+  layout(matrix(1:2, ncol = 1), heights = c(4.3, 1.1))
+  at <- seq(0, TOP, 0.1)
+  lab <- paste0(at * 100, "%")
+
+  par(mar = c(4.4, 5.6, 0.8, 1.4), mgp = c(3.1, 0.75, 0), las = 1)
+  plot(NA, xlim = c(0, TOP), ylim = c(0, TOP), xaxs = "i", yaxs = "i", axes = FALSE,
+       xlab = "", ylab = "")
+  abline(h = at[-1], v = at[-1], col = "#E9E9E9", lwd = 0.8)
+  segments(0, 0, TOP, TOP, lty = 2, lwd = 1.6, col = GREY)
+  axis(1, at = at, labels = lab, lwd = 0, lwd.ticks = 1.1, cex.axis = 1.0)
+  axis(2, at = at, labels = lab, lwd = 0, lwd.ticks = 1.1, cex.axis = 1.0)
+  box(bty = "l", lwd = 1.1)
+  mtext("Predicted five-year risk (out-of-fold)", side = 1, line = 2.7, cex = 1.08)
+  mtext("Observed five-year risk (Kaplan-Meier)", side = 2, line = 3.6, cex = 1.08, las = 0)
+  cap <- 0.008
+  segments(Q$pred, Q$lo, Q$pred, Q$hi, lwd = 2.0, col = NAVY)
+  segments(Q$pred - cap, Q$lo, Q$pred + cap, Q$lo, lwd = 2.0, col = NAVY)
+  segments(Q$pred - cap, Q$hi, Q$pred + cap, Q$hi, lwd = 2.0, col = NAVY)
+  points(Q$pred, Q$obs, pch = 21, bg = NAVY, col = "white", cex = 2.0, lwd = 1.6)
+  legend("topleft", inset = c(0.02, 0.02), bty = "n", cex = 0.95, y.intersp = 1.5, seg.len = 2.4,
+         legend = c("Observed risk in each fifth of predicted risk (95% CI)", "Perfect calibration"),
+         pch = c(21, NA), pt.bg = c(NAVY, NA), col = c(NAVY, GREY), pt.cex = 1.6,
+         lty = c(1, 2), lwd = c(2.0, 1.6), text.col = INK)
+  text(TOP * 0.975, c(0.118, 0.080, 0.042), adj = c(1, 0.5), cex = 0.95, col = INK,
+       c(sprintf("Observed to expected ratio  %.2f", OE),
+         sprintf("Calibration slope  %.2f", SLOPE),
+         sprintf("Integrated calibration index  %.1f percentage points", 100 * ICI)))
+
+  par(mar = c(2.6, 5.6, 0.6, 1.4))
+  h <- hist(pmin(d$risk, TOP - 1e-9), breaks = seq(0, TOP, 0.02), plot = FALSE)
+  ymax <- ceiling(max(h$counts) / 20) * 20
+  plot(NA, xlim = c(0, TOP), ylim = c(0, ymax), xaxs = "i", yaxs = "i", axes = FALSE,
+       xlab = "", ylab = "")
+  abline(v = quantile(d$risk, seq(0.2, 0.8, 0.2)), lty = 3, col = GREY, lwd = 1.0)
+  rect(h$breaks[-length(h$breaks)], 0, h$breaks[-1], h$counts, col = PALE, border = NAVY, lwd = 0.8)
+  axis(1, at = at, labels = lab, lwd = 0, lwd.ticks = 1.1, cex.axis = 1.0)
+  axis(2, at = seq(0, ymax, ymax / 2), lwd = 0, lwd.ticks = 1.1, cex.axis = 0.9)
+  box(bty = "l", lwd = 1.1)
+  mtext("Participants", side = 2, line = 3.6, cex = 0.95, las = 0)
+  if (ABOVE > 0)
+    text(TOP * 0.975, ymax * 0.95,
+         sprintf("%d participants above %.0f%%\nare counted in the last bar", ABOVE, 100 * TOP),
+         adj = c(1, 1), cex = 0.85, font = 3, col = GREY)
+}
+
 # ============================================================ inputs, figure S3 =====
 S <- read.csv(file.path(TAB, "tab49_sets_unified.csv"), stringsAsFactors = FALSE)
 S <- S[order(-S$C), ]
@@ -208,8 +267,15 @@ draw_s3 <- function() {
 }
 
 # ------------------------------------------------------------------ output ---------
-for (fig in list(list(f = draw_s1, nm = "FigureS1_internal_calibration", w = 7.6, h = 8.2),
-                 list(f = draw_s3, nm = "FigureS3_head_to_head",         w = 12.4, h = 5.4))) {
+FIGS <- list(list(f = draw_s1, nm = "FigureS1_internal_calibration", w = 7.6, h = 8.2),
+             list(f = draw_s3, nm = "FigureS3_head_to_head",         w = 12.4, h = 5.4),
+             list(f = draw_calibration_jmd, nm = "JMD_Figure2_calibration", w = 7.2, h = 8.1))
+ONLY <- commandArgs(trailingOnly = TRUE)
+if (length(ONLY)) {
+  stopifnot(all(ONLY %in% sapply(FIGS, `[[`, "nm")))
+  FIGS <- Filter(function(x) x$nm %in% ONLY, FIGS)
+}
+for (fig in FIGS) {
   png(file.path(OUT, paste0(fig$nm, ".png")), width = fig$w, height = fig$h, units = "in", res = 300)
   fig$f(); dev.off()
   svg(file.path(OUT, paste0(fig$nm, ".svg")), width = fig$w, height = fig$h); fig$f(); dev.off()
