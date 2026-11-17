@@ -305,10 +305,40 @@ def table1_by_wave(u):
     u["parts"][k[0]] = ("table", new)
 
 
+# Table 2 gave only the confidence interval of the cumulative incidence, while the text quotes
+# the point estimates (12.2%, 24.0% and 37.7%) and cites Table 2 for them. The point estimate
+# is added to each cell from the Kaplan-Meier fit of the development sample, and the interval
+# recomputed in the same fit must equal the delivered one, so nothing else can move.
+def table2_incidence(u):
+    from lifelines import KaplanMeierFitter
+    d = C.build_cohort(with_metadata=False)
+    assert len(d) == 813 and int(d.event.sum()) == 165
+    km = KaplanMeierFitter().fit(d.exit, d.event)
+    band = km.confidence_interval_survival_function_
+    hits = 0
+    for i, (kind, rows) in enumerate(u["parts"]):
+        if kind != "table":
+            continue
+        for r in rows:
+            if r[0] != "Cumulative incidence, 95% CI":
+                continue
+            years = [int(re.match(r"(\d+) years", h).group(1)) for h in rows[0][1:] if h]
+            for j, h in enumerate(years, 1):
+                s = float(km.survival_function_at_times(h).iloc[0])
+                lo_s, hi_s = band[band.index <= h].iloc[-1]
+                assert r[j] == "%.1f to %.1f%%" % (100 * (1 - hi_s), 100 * (1 - lo_s)), (h, r[j])
+                r[j] = "%.1f%% (%s)" % (100 * (1 - s), r[j])
+            r[0] = "Cumulative incidence (95% CI)"
+            hits += 1
+    assert hits == 1
+
+
 wb = Workbook(); wb.remove(wb.active)
 for u in units:
     if u["id"] == "1":
         table1_by_wave(u)
+    if u["id"] == "2":
+        table2_incidence(u)
     title, parts = renum(u["title"]), renum_parts(u["parts"])
     check_refs(blob(title, parts), "Table " + u["id"])
     write_sheet(wb, "Table " + u["id"], title, with_abbreviations(title, parts), split_title=True)
@@ -561,10 +591,40 @@ assert len(cal) == len(h2h) == len(dca) == 1
 anchor = body.find(W + "sectPr")
 head = copy.deepcopy([p for p in sfig.paragraphs if p.text.strip() == "Supplementary Figures:"][0]._p)
 anchor.addprevious(head)
+def calibration_second_quintile():
+    """The second quintile of out-of-fold five-year risk exactly as figuras_suplementares.R draws
+    it: mean predicted risk, and Kaplan-Meier observed risk with its log-log interval, in %.
+    The delivered legend gave 8.5% and 3.8%, rounded from values already rounded to four
+    decimals (0.0845 and 0.0375); at full precision they are 8.4% and 3.7%."""
+    import json
+    import numpy as np
+    from lifelines import KaplanMeierFitter
+    tab = os.path.join(C.RESULTS, "Tabelas")
+    perf = json.load(open(os.path.join(tab, "tab32_internal_performance.json"), encoding="utf-8"))
+    d = C.build_cohort(with_metadata=False)
+    beta = C.fit_total6(d).params_[C.TOTAL6].values
+    d = d.merge(pd.read_csv(os.path.join(tab, "tab32_out_of_fold_linear_predictor.csv")), on="PATNO")
+    assert len(d) == 813
+    centre = float((d[C.TOTAL6].mean().values * beta).sum())
+    d["risk"] = 1 - perf["calibration"]["5"]["S0"] ** np.exp(d.lp_out_of_fold - centre)
+    assert abs(d.risk.mean() - perf["calibration"]["5"]["predicted_mean"]) < 1e-6
+    s = d[pd.qcut(d.risk, 5, labels=False) == 1]
+    km = KaplanMeierFitter().fit(s.exit, s.event)
+    band = km.confidence_interval_survival_function_
+    lo_s, hi_s = band[band.index <= 5].iloc[-1]
+    return (100 * (1 - float(km.survival_function_at_times(5).iloc[0])), 100 * s.risk.mean(),
+            100 * (1 - hi_s), 100 * (1 - lo_s))
+
+
 for p in cal + dca + h2h:
     e = copy.deepcopy(p._p)
     for d in list(e.iter(W + "drawing")):
         d.getparent().remove(d)
+    if p is cal[0]:
+        replace_in(e, "an observed risk of 8.5% against 16.4% predicted, although its confidence interval, "
+                      "3.8% to 18.5%,",
+                   "an observed risk of %.1f%% against %.1f%% predicted, although its confidence interval, "
+                   "%.1f%% to %.1f%%," % calibration_second_quintile())
     anchor.addprevious(e)
 for p in body.iter(W + "p"):           # one pass over the whole document, legends included
     renum_in(p)
