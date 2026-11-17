@@ -116,6 +116,9 @@ draw_fig1 <- function() {
 
 # ============================================================== FIGURE 2 =========
 NAMES <- c("Low risk", "Intermediate risk", "High risk"); COLS <- c(TEAL, GOLD, RED)
+# each group also has its own line pattern, so that the three curves stay distinct in the
+# greyscale print of the journal, where teal and red become almost the same grey
+LTYS <- c("13", "52", "solid")
 TMAX <- 10; TICKS <- c(0, 2, 4, 6, 8, 10)
 fits <- lapply(1:3, function(g) survfit(Surv(exit, event) ~ 1, data = coh[coh$grp == g, ]))
 atrisk <- sapply(1:3, function(g) sapply(TICKS, function(tt) sum(coh$exit[coh$grp == g] >= tt)))
@@ -135,9 +138,10 @@ draw_fig2 <- function() {
   mtext("Cumulative incidence of\nproblematic dyskinesia (%)", side = 2, line = 2.6, cex = 1.1, las = 0)
   for (g in 1:3) {
     f <- fits[[g]]; k <- f$time <= TMAX
-    lines(c(0, f$time[k]), c(0, (1 - f$surv[k]) * 100), type = "s", col = COLS[g], lwd = 2.6)
+    lines(c(0, f$time[k]), c(0, (1 - f$surv[k]) * 100), type = "s", col = COLS[g], lwd = 2.6,
+          lty = LTYS[g])
   }
-  legend("topleft", bty = "n", lwd = 2.6, col = COLS, seg.len = 1.6, cex = 1.05,
+  legend("topleft", bty = "n", lwd = 2.6, col = COLS, lty = LTYS, seg.len = 3.4, cex = 1.05,
          legend = sprintf("%s (n=%d)", NAMES, as.vector(table(coh$grp))))
   text(TMAX, 4, if (pval < 0.001) "log-rank p < 0.001" else sprintf("log-rank p = %.3f", pval),
        adj = c(1, 0), font = 3, col = GREY, cex = 1.05)
