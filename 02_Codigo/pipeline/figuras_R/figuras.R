@@ -124,7 +124,9 @@ pval <- pchisq(lr$chisq, df = length(lr$n) - 1, lower.tail = FALSE)
 
 draw_fig2 <- function() {
   layout(matrix(1:2, ncol = 1), heights = c(3.05, 1.0))
-  par(mar = c(4.4, 5.4, 1.0, 1.4), mgp = c(3.0, 0.8, 0), las = 1)
+  # the left margin is wide enough for the row labels of the numbers-at-risk table, which sit
+  # in it so that every count can stand directly under its time on the axis above
+  par(mar = c(4.4, 8.6, 1.0, 1.4), mgp = c(3.0, 0.8, 0), las = 1)
   plot(NA, xlim = c(0, TMAX), ylim = c(0, 85), xaxt = "n", yaxt = "n",
        xlab = "", ylab = "", bty = "n")
   axis(1, at = TICKS, cex.axis = 1.05, lwd = 1.2)
@@ -140,21 +142,21 @@ draw_fig2 <- function() {
   text(TMAX, 4, if (pval < 0.001) "log-rank p < 0.001" else sprintf("log-rank p = %.3f", pval),
        adj = c(1, 0), font = 3, col = GREY, cex = 1.05)
 
-  # numbers at risk: the label column is sized from the rendered text width,
-  # so no label can run into the first count whatever the font or device.
-  par(mar = c(0, 5.4, 0.4, 1.4))
-  plot(NA, xlim = c(0, 1), ylim = c(0, 1), axes = FALSE, xlab = "", ylab = "")
-  text(0, 0.90, "Patients at risk", adj = c(0, 0.5), font = 2, cex = 1.02, col = INK)
-  # label width, plus half the widest count (they are centred), plus a clear gap
-  labw <- max(strwidth(NAMES, cex = 0.98)) +
-          strwidth("000", cex = 0.98) / 2 + strwidth("nn", cex = 0.98)
-  x0 <- min(labw, 0.36)
+  # numbers at risk, each directly under its time: the panel has the horizontal scale and
+  # the margins of the curves above, and the group labels stand right-aligned in the left
+  # margin, clear of the first count. (Until November 2026 the counts were spread over the
+  # width left by the labels, so the count at year 0 stood under year 2.)
+  par(mar = c(0, 8.6, 0.4, 1.4))
+  plot(NA, xlim = c(0, TMAX), ylim = c(0, 1), axes = FALSE, xlab = "", ylab = "")
+  xr <- -(strwidth("000", cex = 0.98) / 2 + strwidth("nn", cex = 0.98))
+  text(xr, 0.90, "Patients at risk", adj = c(1, 0.5), font = 2, cex = 1.02, col = INK, xpd = NA)
   for (g in 1:3) {
     yy <- 0.58 - (g - 1) * 0.24
-    text(0, yy, NAMES[g], adj = c(0, 0.5), col = COLS[g], cex = 0.98)
-    for (i in seq_along(TICKS))
-      text(x0 + (TICKS[i] / TMAX) * (1 - x0), yy, atrisk[i, g], adj = c(0.5, 0.5), cex = 0.98, col = INK)
+    text(xr, yy, NAMES[g], adj = c(1, 0.5), col = COLS[g], cex = 0.98, xpd = NA)
+    text(TICKS, yy, atrisk[, g], adj = c(0.5, 0.5), cex = 0.98, col = INK)
   }
+  widest <- max(strwidth(NAMES, cex = 0.98), strwidth("Patients at risk", cex = 1.02, font = 2))
+  stopifnot(grconvertX(xr - widest, "user", "ndc") > 0)   # the labels fit inside the figure
 }
 
 # ------------------------------------------------------------------ output ------
@@ -162,7 +164,9 @@ for (fig in list(list(f = draw_fig2, nm = "Figure2_km_tertiles",      w = 9.6,  
   png(file.path(OUT, paste0(fig$nm, ".png")), width = fig$w, height = fig$h, units = "in", res = 300)
   fig$f(); dev.off()
   svg(file.path(OUT, paste0(fig$nm, ".svg")), width = fig$w, height = fig$h); fig$f(); dev.off()
-  pdf(file.path(OUT, paste0(fig$nm, ".pdf")), width = fig$w, height = fig$h); fig$f(); dev.off()
+  # cairo_pdf rather than pdf: the pdf device sets every hyphen as a minus sign
+  # ("Kaplan−Meier"), which the JMD figures rasterised from these files would show
+  cairo_pdf(file.path(OUT, paste0(fig$nm, ".pdf")), width = fig$w, height = fig$h); fig$f(); dev.off()
   cat("saved", fig$nm, "as png, svg and pdf\n")
 }
 cat("\nn per tertile:", paste(as.vector(table(coh$grp)), collapse = ", "), "\n")
@@ -196,38 +200,49 @@ if (file.exists(DCA)) {
     layout(matrix(1:2, ncol = 1), heights = c(1.15, 1))
     xr <- c(0.05, 0.50)
 
-    par(mar = c(3.2, 5.4, 2.0, 1.4), mgp = c(3.0, 0.8, 0), las = 1)
+    par(mar = c(3.2, 5.4, 4.4, 1.4), mgp = c(3.0, 0.8, 0), las = 1)
     plot(NA, xlim = xr, ylim = c(-0.03, 0.215), xaxt = "n", yaxt = "n",
          xlab = "", ylab = "", bty = "n")
     # The bands in which the model beats both defaults, shaded so that the gaps between
     # them are visible. Reporting the lowest and highest winning threshold as one range
     # hides the fact that treating everyone is better between 11% and 14%. Drawn first,
     # so that the axes and the curves sit on top of the shading rather than under it.
+    # The shading is named in the key rather than in a note inside the panel, where the
+    # dotted incidence line and the treat-all curve ran through the words, and it is dark
+    # enough to survive conversion to CMYK and print.
+    SHADE <- "#D3E9E3"
     for (i in seq_len(nrow(dj$superior_bands)))
       rect(dj$superior_bands[i, 1] - 0.005, -1, dj$superior_bands[i, 2] + 0.005, 1,
-           col = "#EFF5F4", border = NA)
+           col = SHADE, border = NA)
     at <- seq(0.05, 0.50, 0.05)
     axis(1, at = at, labels = paste0(at * 100, "%"), cex.axis = 1.0, lwd = 1.2)
     axis(2, at = seq(0, 0.20, 0.05), cex.axis = 1.0, lwd = 1.2)
     mtext("Net benefit at five years", side = 2, line = 3.0, cex = 1.06, las = 0)
-    mtext("A", side = 3, line = 0.6, at = 0.036, cex = 1.3, font = 2, col = INK)
-    text(mean(xr), -0.024, "shaded where the model beats both defaults", cex = 0.88,
-         font = 3, col = GREY)
+    mtext("A", side = 3, line = 2.9, at = 0.036, cex = 1.3, font = 2, col = INK)
     abline(h = 0, col = GREY, lwd = 1.4)
     abline(v = INC, lty = 3, col = GREY, lwd = 1.2)
     lines(dc$threshold, dc$net_benefit_treat_all, lwd = 2.2, col = GOLD, lty = 2)
     lines(dc$threshold, dc$net_benefit_model, lwd = 3.0, col = TEAL)
+    # the incidence label to the left of its line. The key stands above the panel, on white:
+    # inside it, over a shaded band, its shading sample looked like an empty square
     text(INC, 0.205, sprintf("observed incidence, %.0f%%", 100 * INC),
-         adj = c(-0.06, 0.5), cex = 0.9, font = 3, col = GREY)
-    legend("topright", bty = "n", cex = 1.0, seg.len = 1.8, y.intersp = 1.3,
-           lwd = c(3.0, 2.2, 1.4), lty = c(1, 2, 1), col = c(TEAL, GOLD, GREY),
-           legend = c("The model", "Treat every patient", "Treat no patient"))
+         adj = c(1.04, 0.5), cex = 0.9, font = 3, col = GREY)
+    stopifnot(all(dc$net_benefit_model[dc$threshold >= INC - strwidth("observed incidence, 24%", cex = 0.9) &
+                                       dc$threshold <= INC] < 0.205 - strheight("o", cex = 0.9)))
+    legend(mean(xr), par("usr")[4] + 0.004, xjust = 0.5, yjust = 0, ncol = 2, xpd = NA,
+           bty = "n", cex = 1.0, seg.len = 1.8, y.intersp = 1.25, x.intersp = 0.8,
+           text.width = max(strwidth(c("Treat every patient", "Model better than both"), cex = 1.0)),
+           lwd = c(3.0, 2.2, 1.4, NA), lty = c(1, 2, 1, NA), col = c(TEAL, GOLD, GREY, GREY),
+           pch = c(NA, NA, NA, 22), pt.bg = c(NA, NA, NA, SHADE), pt.cex = 2.6, pt.lwd = 1.0,
+           legend = c("The model", "Treat every patient", "Treat no patient",
+                      "Model better than both"))
 
     par(mar = c(4.4, 5.4, 1.2, 1.4))
     plot(NA, xlim = xr, ylim = c(-110, 560), xaxt = "n", yaxt = "n",
          xlab = "", ylab = "", bty = "n")
     axis(1, at = at, labels = paste0(at * 100, "%"), cex.axis = 1.0, lwd = 1.2)
-    axis(2, at = seq(-100, 500, 100), cex.axis = 1.0, lwd = 1.2)
+    yat <- seq(-100, 500, 100)
+    axis(2, at = yat, labels = sub("^-", "−", yat), cex.axis = 1.0, lwd = 1.2)
     abline(h = 0, col = GREY, lwd = 1.4)
     mtext("Threshold probability at which a clinician would act", side = 1, line = 2.8, cex = 1.06)
     mtext("Unnecessary interventions\navoided per 1,000 patients", side = 2, line = 2.7,
@@ -236,16 +251,21 @@ if (file.exists(DCA)) {
     abline(v = INC, lty = 3, col = GREY, lwd = 1.2)
     lines(dc$threshold, dc$net_red, lwd = 3.0, col = NAVY)
     k <- which.min(abs(dc$threshold - 0.20))
-    points(dc$threshold[k], dc$net_red[k], pch = 21, bg = RED, col = RED, cex = 1.5)
-    text(dc$threshold[k], dc$net_red[k], sprintf("  %.0f at a threshold of 20%%", dc$net_red[k]),
-         adj = c(0, 0.2), cex = 0.95, col = INK)
+    # the label sits above and to the left of its point, where the curve is lower, with a
+    # short leader, so that neither the curve nor the dotted incidence line crosses it
+    xk <- dc$threshold[k]; yk <- dc$net_red[k]
+    segments(xk - 0.002, yk + 16, xk - 0.010, yk + 58, col = GREY, lwd = 1)
+    points(xk, yk, pch = 21, bg = RED, col = RED, cex = 1.5)
+    text(xk - 0.011, yk + 74, sprintf("%.0f at a threshold of 20%%", yk),
+         adj = c(1, 0.5), cex = 0.95, col = INK)
+    stopifnot(all(dc$net_red[dc$threshold <= xk] < yk + 74 - strheight("0", cex = 0.95)))
   }
 
   for (nm in c("png", "svg", "pdf")) {
     f <- file.path(OUT, paste0("FigureS2_decision_curve.", nm))
-    if (nm == "png") png(f, width = 8.6, height = 8.0, units = "in", res = 300)
-    if (nm == "svg") svg(f, width = 8.6, height = 8.0)
-    if (nm == "pdf") pdf(f, width = 8.6, height = 8.0)
+    if (nm == "png") png(f, width = 8.6, height = 8.4, units = "in", res = 300)
+    if (nm == "svg") svg(f, width = 8.6, height = 8.4)
+    if (nm == "pdf") cairo_pdf(f, width = 8.6, height = 8.4)
     draw_s2(); dev.off()
   }
   cat("saved FigureS2_decision_curve as png, svg and pdf\n")

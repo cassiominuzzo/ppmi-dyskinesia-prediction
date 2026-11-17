@@ -250,7 +250,9 @@ draw_s3 <- function() {
   k <- !is_ref
   plot(NA, xlim = c(-0.05, 0.16), ylim = c(0.4, n + 0.6), yaxt = "n", xaxt = "n",
        xlab = "", ylab = "", bty = "n")
-  axis(1, at = seq(-0.04, 0.14, 0.04), cex.axis = 1.0, lwd = 1.2)
+  dat <- seq(-0.04, 0.12, 0.04)
+  axis(1, at = dat, labels = sub("^-", "−", formatC(dat, format = "f", digits = 2)),
+       cex.axis = 1.0, lwd = 1.2)
   mtext("Difference from the Total-6 (95% CI)", side = 1, line = 2.4, cex = 1.02)
   mtext("B", side = 3, line = 0.9, at = -0.075, cex = 1.35, font = 2, col = INK)
   abline(v = 0, lwd = 1.4, col = GREY)
@@ -279,6 +281,8 @@ for (fig in FIGS) {
   png(file.path(OUT, paste0(fig$nm, ".png")), width = fig$w, height = fig$h, units = "in", res = 300)
   fig$f(); dev.off()
   svg(file.path(OUT, paste0(fig$nm, ".svg")), width = fig$w, height = fig$h); fig$f(); dev.off()
-  pdf(file.path(OUT, paste0(fig$nm, ".pdf")), width = fig$w, height = fig$h); fig$f(); dev.off()
+  # cairo_pdf rather than pdf: the pdf device sets every hyphen as a minus sign
+  # ("Total−6"), which the JMD figures rasterised from these files would show
+  cairo_pdf(file.path(OUT, paste0(fig$nm, ".pdf")), width = fig$w, height = fig$h); fig$f(); dev.off()
   cat("saved", fig$nm, "as png, svg and pdf\n")
 }
